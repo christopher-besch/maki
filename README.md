@@ -1,2 +1,3 @@
-# open_gl_test
+# OpenGL Test
+
 Experimental C++ Rendering Backend for Manim.
