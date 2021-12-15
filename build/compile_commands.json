@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/chris/gl/build/test",
+  "command": "/usr/bin/c++  -I/home/chris/gl/test/src  -Wall -Wextra -pedantic -g -std=gnu++17 -Winvalid-pch -x c++-header -include /home/chris/gl/build/test/CMakeFiles/test.dir/cmake_pch.hxx -o CMakeFiles/test.dir/cmake_pch.hxx.gch -c /home/chris/gl/build/test/CMakeFiles/test.dir/cmake_pch.hxx.cxx",
+  "file": "/home/chris/gl/build/test/CMakeFiles/test.dir/cmake_pch.hxx.cxx"
+},
+{
+  "directory": "/home/chris/gl/build/test",
+  "command": "/usr/bin/c++  -I/home/chris/gl/test/src  -Wall -Wextra -pedantic -g -std=gnu++17 -Winvalid-pch -include /home/chris/gl/build/test/CMakeFiles/test.dir/cmake_pch.hxx -o CMakeFiles/test.dir/src/main.cpp.o -c /home/chris/gl/test/src/main.cpp",
+  "file": "/home/chris/gl/test/src/main.cpp"
+}
+]
