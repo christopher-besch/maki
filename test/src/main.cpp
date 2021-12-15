@@ -2,7 +2,14 @@
 
 int main()
 {
-    // 4x ntialiasing
+    // initialise GLFW
+    if(!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW" << std::endl;
+        getchar();
+        return -1;
+    }
+
+    // 4x antialiasing
     glfwWindowHint(GLFW_SAMPLES, 4);
     // OpenGL 3.3
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -24,8 +31,17 @@ int main()
     glfwMakeContextCurrent(window);
     // init glfw
     glewExperimental = true;
-    if(glfwInit() != GLEW_OK) {
-        std::cerr << "Failed to initialize GLFW" << std::endl;
+    if(glewInit() != GLEW_OK) {
+        std::cerr << "Failed to initialize GLEW" << std::endl;
         return -1;
     }
+
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+
+    do {
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    } while(glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0);
 }

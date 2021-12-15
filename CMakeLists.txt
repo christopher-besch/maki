@@ -6,6 +6,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # dependencies
+add_subdirectory("${CMAKE_SOURCE_DIR}/vendor/glfw")
+add_subdirectory("${CMAKE_SOURCE_DIR}/vendor/glm")
+
+find_package(GLEW REQUIRED)
+set(OpenGL_GL_PREFERENCE "GLVND")
+find_package(OpenGL REQUIRED)
 
 # use warnings and multi threading
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")

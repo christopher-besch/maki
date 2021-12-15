@@ -1,5 +1,0 @@
-/home/chris/gl/build/CMakeFiles/edit_cache.dir
-/home/chris/gl/build/CMakeFiles/rebuild_cache.dir
-/home/chris/gl/build/test/CMakeFiles/test.dir
-/home/chris/gl/build/test/CMakeFiles/edit_cache.dir
-/home/chris/gl/build/test/CMakeFiles/rebuild_cache.dir
