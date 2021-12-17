@@ -1,5 +1,7 @@
 # OpenGL Test
 
+Based on [opengl-tutorial.org](http://www.opengl-tutorial.org).
+
 ## Compilation
 
 ```
