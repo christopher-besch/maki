@@ -32,3 +32,8 @@
 *.app
 
 build
+
+vendor/glew/
+vendor/glfw/
+vendor/glm/
+vendor/stb/
