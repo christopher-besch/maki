@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "controls.h"
 #include "load_shader.h"
 #include "load_texture.h"
 
@@ -24,7 +25,7 @@ int main()
 
     // open window, create context
     GLFWwindow* window;
-    window = glfwCreateWindow(1024, 768, "Hello World", nullptr, nullptr);
+    window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World", nullptr, nullptr);
     if(window == nullptr) {
         std::cerr << "Failed to open GLFW window." << std::endl;
         glfwTerminate();
@@ -47,6 +48,7 @@ int main()
 
     glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
     // accept fragment if closer
     glDepthFunc(GL_LESS);
 
@@ -58,22 +60,6 @@ int main()
 
     // matrix uniform
     GLuint mvp_id = glGetUniformLocation(program_id, "mvp");
-
-    // projection matrices
-    mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
-    // mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 100.0f);
-
-    // camera matrix
-    mat4 view = glm::lookAt(
-        glm::vec3(4, 3, 3),  // camera location
-        glm::vec3(0, 0, 0),  // look at
-        glm::vec3(0, 0, 1)); // up direction
-
-    // triangle matrx
-    mat4 model = mat4(1.0f);
-    // model      = glm::translate(model, vec3(0.0f, 0.0f, 0.0f));
-
-    mat4 mvp = projection * view * model;
 
     // cube vertices
     const GLfloat vertex_buffer_data[] = {
@@ -178,10 +164,24 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(uv_buffer_data), uv_buffer_data, GL_STATIC_DRAW);
 
+    double  last_time = glfwGetTime();
+    float   delta_time;
+    Control ctrl;
     do {
+        double current_time = glfwGetTime();
+        delta_time          = current_time - last_time;
+        last_time           = current_time;
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glUseProgram(program_id);
+
+        mat4 projection, view;
+        compute_mat_from_input(ctrl, delta_time, projection, view, window);
+
+        mat4 model = mat4(1.0f);
+
+        mat4 mvp = projection * view * model;
 
         glUniformMatrix4fv(mvp_id, 1, false, &mvp[0][0]);
 

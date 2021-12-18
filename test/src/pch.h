@@ -1,3 +1,5 @@
+#pragma once
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -21,3 +23,7 @@ using vec4 = glm::vec4;
 using mat4 = glm::mat4;
 using vec3 = glm::vec3;
 using mat3 = glm::mat3;
+
+constexpr float PI     = 3.14f;
+constexpr int   WIDTH  = 1024;
+constexpr int   HEIGHT = 768;
