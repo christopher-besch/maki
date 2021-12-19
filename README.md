@@ -1,6 +1,15 @@
-# OpenGL Test
+# Maki
 
-Based on [opengl-tutorial.org](http://www.opengl-tutorial.org).
+Experimental Rendering Backend for Manim. 
+
+## References
+
+- [christopher-besch/opengl_reference](https://github.com/christopher-besch/opengl_reference)
+- [christopher-besch/lynton_legacy](https://github.com/christopher-besch/lynton_legacy)
+- [christopher-besch/lynton](https://github.com/christopher-besch/lynton)
+- [christopher-besch/ray_tracer](https://github.com/christopher-besch/ray_tracer)
+- [The Cherno OpenGL](https://www.youtube.com/watch?v=W3gAzLwfIP0&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2)
+- [opengl-tutorial.org](http://www.opengl-tutorial.org)
 
 ## Compilation
 
