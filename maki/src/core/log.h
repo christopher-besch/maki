@@ -42,35 +42,43 @@ public:
     }
 };
 
-// raise
+// asserts
 #ifdef NDEBUG
-#define raise_critical(...)                                     \
+#define MAKI_RAISE_CRITICAL(...)                                \
     do {                                                        \
         ::Maki::Log::get_error_logger()->critical(__VA_ARGS__); \
         std::exit(EXIT_FAILURE);                                \
     } while(0)
 
+#define MAKI_ASSERT(x, ...)
+
 #else
-#define raise_critical(...)                                                                                     \
+#define MAKI_RAISE_CRITICAL(...)                                                                                \
     do {                                                                                                        \
         ::Maki::Log::get_error_logger()->critical(__VA_ARGS__);                                                 \
         ::Maki::Log::get_error_logger()->critical("(in {}:{}; in function: {})", __FILE__, __LINE__, __func__); \
         std::exit(EXIT_FAILURE);                                                                                \
     } while(0)
+
+#define MAKI_ASSERT(x, ...)                  \
+    do {                                     \
+        if(!x)                               \
+            MAKI_RAISE_CRITICAL(__VA_ARGS__) \
+    } while(0)
 #endif
 
 // Maki logger -> to be used by Maki internally
-#define log_maki_extra(...)   Log::get_maki_logger()->trace(__VA_ARGS__)
-#define log_maki_general(...) Log::get_maki_logger()->debug(__VA_ARGS__)
-#define log_maki_warn(...)    Log::get_maki_logger()->warn(__VA_ARGS__)
+#define MAKI_LOG_EXTRA(...)   Log::get_maki_logger()->trace(__VA_ARGS__)
+#define MAKI_LOG_GENERAl(...) Log::get_maki_logger()->debug(__VA_ARGS__)
+#define MAKI_LOG_WARN(...)    Log::get_maki_logger()->warn(__VA_ARGS__)
 
 #ifdef NDEBUG
-#define log_maki_error(...)                         \
+#define MAKI_LOG_ERROR(...)                         \
     do {                                            \
         Log::get_maki_logger()->error(__VA_ARGS__); \
     } while(0)
 #else
-#define log_maki_error(...)                                                                         \
+#define MAKI_LOG_ERROR(...)                                                                         \
     do {                                                                                            \
         Log::get_maki_logger()->error(__VA_ARGS__);                                                 \
         Log::get_maki_logger()->error("(in {}:{}; in function: {})", __FILE__, __LINE__, __func__); \
@@ -78,21 +86,21 @@ public:
 #endif
 
 // client logger -> can be used by the client
-#define log_client_extra(...)   ::Maki::Log::get_client_logger()->trace(__VA_ARGS__)
-#define log_client_general(...) ::Maki::Log::get_client_logger()->debug(__VA_ARGS__)
-#define log_client_warn(...)    ::Maki::Log::get_client_logger()->warn(__VA_ARGS__)
+#define MAKI_CLIENT_LOG_EXTRA(...)   ::Maki::Log::get_client_logger()->trace(__VA_ARGS__)
+#define MAKI_CLIENT_LOG_GENERAL(...) ::Maki::Log::get_client_logger()->debug(__VA_ARGS__)
+#define MAKI_CLIENT_LOG_WARN(...)    ::Maki::Log::get_client_logger()->warn(__VA_ARGS__)
 
 #ifdef NDEBUG
-#define log_client_error(...)                                 \
+#define MAKI_CLIENT_LOG_ERROR(...)                            \
     do {                                                      \
         ::Maki::Log::get_client_logger()->error(__VA_ARGS__); \
     } while(0)
 #else
-#define log_client_error(...)                                                                                 \
+#define MAKI_CLIENT_LOG_ERROR(...)                                                                            \
     do {                                                                                                      \
         ::Maki::Log::get_client_logger()->error(__VA_ARGS__);                                                 \
         ::Maki::Log::get_client_logger()->error("(in {}:{}; in function: {})", __FILE__, __LINE__, __func__); \
     } while(0)
 #endif
 
-}; // namespace Maki
+} // namespace Maki

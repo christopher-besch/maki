@@ -20,6 +20,10 @@
 
 #include <stb_image.h>
 
+// TODO: doesn't work because of spdlog weirdness
+// often used custom declarations
+// #include "core/log.h"
+
 // definitions
 using vec4 = glm::vec4;
 using mat4 = glm::mat4;

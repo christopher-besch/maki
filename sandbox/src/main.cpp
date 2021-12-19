@@ -2,6 +2,7 @@
 
 int main()
 {
-    Maki::Log::init();
-    log_client_error("Hello World");
+    Maki::Renderer* renderer = Maki::init(Maki::Renderer::Implementation::open_gl);
+    MAKI_CLIENT_LOG_EXTRA("Hello World");
+    Maki::shutdown(renderer);
 }

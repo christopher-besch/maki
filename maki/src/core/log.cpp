@@ -14,11 +14,11 @@ void Log::init()
         // log to console and file
         std::vector<spdlog::sink_ptr> default_log_sinks;
         default_log_sinks.emplace_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());
-        default_log_sinks[0]->set_pattern("%^[%T] %n: %v%$");
+        default_log_sinks[0]->set_pattern("%^[%T] %n:\t%v%$");
         // log to std error stream
         std::vector<spdlog::sink_ptr> error_log_sinks;
         error_log_sinks.emplace_back(std::make_shared<spdlog::sinks::stderr_color_sink_mt>());
-        error_log_sinks[0]->set_pattern("%^[%T] %n: %v%$");
+        error_log_sinks[0]->set_pattern("%^[%T] %n:\t%v%$");
 
         s_maki_logger   = std::make_shared<spdlog::logger>("Maki", default_log_sinks.begin(), default_log_sinks.end());
         s_client_logger = std::make_shared<spdlog::logger>("Client", default_log_sinks.begin(), default_log_sinks.end());
@@ -42,4 +42,4 @@ void Log::init()
     }
 }
 
-}; // namespace Maki
+} // namespace Maki
