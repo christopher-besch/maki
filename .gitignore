@@ -37,3 +37,4 @@ vendor/glew/
 vendor/glfw/
 vendor/glm/
 vendor/stb/
+vendor/spdlog/

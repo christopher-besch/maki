@@ -2,5 +2,6 @@
 
 int main()
 {
-    Maki::test();
+    Lynton::Log::init();
+    log_client_error("Hello World");
 }
