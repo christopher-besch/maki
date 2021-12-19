@@ -2,5 +2,5 @@
 
 int main()
 {
-    t();
+    Maki::test();
 }
