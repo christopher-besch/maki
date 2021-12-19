@@ -1,6 +1,6 @@
 # Maki
 
-Experimental Rendering Backend for Manim. 
+**M**athematical **A**nimation and **K**nickknack **I**nscriber (Maki), an experimental rendering backend for [Manim](https://github.com/ManimCommunity/manim). 
 
 ## References
 
