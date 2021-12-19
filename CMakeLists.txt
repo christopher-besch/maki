@@ -30,3 +30,5 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 endif()
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/test")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/maki")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/sandbox")

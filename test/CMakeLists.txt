@@ -17,12 +17,12 @@ target_link_libraries(test PRIVATE ${GLEW_LIBRARIES})
 
 target_include_directories(test PRIVATE ${STB_INCLUDE_DIRS})
 
-# copy shaders in beginning
+# copy resources in beginning
 file(
   COPY "${CMAKE_CURRENT_SOURCE_DIR}/res"
   DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/"
 )
-# copy shaders before each build
+# copy resources before each build
 add_custom_command(
   TARGET test
   PRE_BUILD
