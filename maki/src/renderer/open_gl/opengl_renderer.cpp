@@ -1,7 +1,8 @@
 #include "pch.h"
 
+#include "opengl_renderer.h"
+
 #include "core/log.h"
-#include "open_gl_renderer.h"
 
 namespace Maki {
 
@@ -27,7 +28,7 @@ OpenGLRenderer::~OpenGLRenderer()
     MAKI_LOG_EXTRA("Destructing OpenGL Renderer.");
 }
 
-void OpengGLRenderer::draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader)
+void OpenGLRenderer::draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader)
 {
     shader->bind();
     vertex_array->bind();

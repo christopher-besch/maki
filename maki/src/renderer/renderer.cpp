@@ -1,8 +1,9 @@
 #include "pch.h"
 
-#include "core/log.h"
-#include "open_gl/open_gl_renderer.h"
 #include "renderer.h"
+
+#include "core/log.h"
+#include "open_gl/opengl_renderer.h"
 
 namespace Maki {
 

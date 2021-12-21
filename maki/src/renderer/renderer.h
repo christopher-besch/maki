@@ -1,7 +1,7 @@
 #pragma once
 
 #include "platform/window.h"
-#include "renderer/index_buffer.h"
+#include "renderer/buffer.h"
 #include "renderer/shader.h"
 #include "renderer/vertex_array.h"
 
