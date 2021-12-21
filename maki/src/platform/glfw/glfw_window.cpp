@@ -22,9 +22,9 @@ void Window::create()
     // 4x antialiasing
     glfwWindowHint(GLFW_SAMPLES, 4);
     // TODO: differentiate between OpenGL and Vulkan
-    // OpenGL 3.3
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    // OpenGL version
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     // for macos
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     // disable old OpenGL
@@ -47,7 +47,7 @@ void Window::init()
         MAKI_LOG_ERROR("GLFW Error ({0}): {1}", error, description);
     });
 
-#ifdef NDEBUG
+#ifndef NDEBUG
     if(Renderer::get_renderer_api() == Renderer::Implementation::open_gl)
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #endif

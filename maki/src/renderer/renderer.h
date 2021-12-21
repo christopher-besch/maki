@@ -1,6 +1,9 @@
 #pragma once
 
 #include "platform/window.h"
+#include "renderer/index_buffer.h"
+#include "renderer/shader.h"
+#include "renderer/vertex_array.h"
 
 namespace Maki {
 
@@ -31,6 +34,8 @@ public:
     {
         return m_window->should_close();
     }
+
+    virtual void draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader) = 0;
 
     virtual void end_frame() = 0;
 
