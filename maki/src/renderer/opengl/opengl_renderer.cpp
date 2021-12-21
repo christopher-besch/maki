@@ -30,11 +30,11 @@ OpenGLRenderer::~OpenGLRenderer()
 
 void OpenGLRenderer::draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader)
 {
-    shader->bind();
-    vertex_array->bind();
-    index_buffer->bind();
+    // shader->bind();
+    // vertex_array->bind();
+    // index_buffer->bind();
 
-    glDrawElements(GL_TRIANGLES, index_buffer->get_count(), GL_UNSIGNED_INT, nullptr);
+    // glDrawElements(GL_TRIANGLES, index_buffer->get_count(), GL_UNSIGNED_INT, nullptr);
 }
 
 void OpenGLRenderer::end_frame()

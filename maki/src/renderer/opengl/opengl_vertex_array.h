@@ -4,7 +4,7 @@
 
 namespace Maki {
 
-class OpenGLVertexArray: VertexArray {
+class OpenGLVertexArray: public VertexArray {
 };
 
 } // namespace Maki

@@ -1,5 +1,8 @@
+#include "pch.h"
+
 #include "buffer.h"
 
+#include "renderer/opengl/opengl_buffer.h"
 #include "renderer/renderer.h"
 
 namespace Maki {
@@ -10,7 +13,7 @@ VertexBuffer* VertexBuffer::create()
     case Renderer::Implementation::none:
         MAKI_RAISE_CRITICAL("Renderer::Implementation::none is not supported.");
         return nullptr;
-    case Renderer::Implementation::open_gl:
+    case Renderer::Implementation::opengl:
         return new OpenGLVertexBuffer();
     default:
         MAKI_RAISE_CRITICAL("The requested renderer implementation is not supported.");
@@ -24,7 +27,7 @@ IndexBuffer* IndexBuffer::create()
     case Renderer::Implementation::none:
         MAKI_RAISE_CRITICAL("Renderer::Implementation::none is not supported.");
         return nullptr;
-    case Renderer::Implementation::open_gl:
+    case Renderer::Implementation::opengl:
         return new OpenGLIndexBuffer();
     default:
         MAKI_RAISE_CRITICAL("The requested renderer implementation is not supported.");

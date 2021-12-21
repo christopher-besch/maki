@@ -10,8 +10,8 @@ namespace Maki {
 class Renderer {
 public:
     enum class Implementation {
-        none    = 0,
-        open_gl = 1
+        none   = 0,
+        opengl = 1
     };
 
 public:
