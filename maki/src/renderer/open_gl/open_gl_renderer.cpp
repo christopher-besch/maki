@@ -20,4 +20,9 @@ OpenGLRenderer::~OpenGLRenderer()
     MAKI_LOG_EXTRA("Destructing OpenGL Renderer.");
 }
 
+void OpenGLRenderer::end_frame()
+{
+    m_window->update();
+}
+
 } // namespace Maki

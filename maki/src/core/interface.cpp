@@ -1,25 +1,25 @@
-#include "interface.h"
-
 #include "pch.h"
+
+#include "interface.h"
 
 #include "core/log.h"
 
 namespace Maki {
 
-Renderer* init(Renderer::Implementation renderer_impl, const std::string& title, uint32_t width, uint32_t height)
+RenderDriver* init(Renderer::Implementation renderer_impl, const std::string& title, uint32_t width, uint32_t height)
 {
     Log::init();
     MAKI_LOG_EXTRA("Initializing.");
     Renderer::set_renderer_api(renderer_impl);
-    Renderer* renderer = Renderer::create(title, width, height);
-    return renderer;
+    RenderDriver* render_driver = new RenderDriver(title, width, height);
+    render_driver->run();
+    return render_driver;
 }
 
-bool shutdown(Renderer* renderer)
+void shutdown(RenderDriver* render_driver)
 {
     MAKI_LOG_EXTRA("Shutting down.");
-    delete renderer;
-    return true;
+    delete render_driver;
 }
 
 } // namespace Maki

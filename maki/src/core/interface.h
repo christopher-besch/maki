@@ -1,14 +1,13 @@
 // designed to be easily marshalled to python
 #pragma once
 
-#include "renderer/renderer.h"
+#include "core/render_driver.h"
 
 namespace Maki {
 
 // return nullptr at failure
-Renderer* init(Renderer::Implementation renderer_impl, const std::string& title, uint32_t width, uint32_t height);
+RenderDriver* init(Renderer::Implementation renderer_impl, const std::string& title, uint32_t width, uint32_t height);
 
-// return false at failure
-bool shutdown(Renderer* renderer);
+void shutdown(RenderDriver* render_driver);
 
 } // namespace Maki

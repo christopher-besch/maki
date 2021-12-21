@@ -53,5 +53,17 @@ void Window::init()
 #endif
 }
 
+void Window::update()
+{
+    glfwSwapBuffers(m_window);
+    glfwPollEvents();
+}
+
+bool Window::should_close()
+{
+    // TODO: move escape key to better location
+    return glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwWindowShouldClose(m_window);
+}
+
 } // namespace Maki
 #endif

@@ -6,8 +6,6 @@
 
 namespace Maki {
 
-Renderer::Implementation Renderer::s_renderer_impl = Renderer::Implementation::none;
-
 Renderer* Renderer::create(const std::string& title, uint32_t width, uint32_t height)
 {
     switch(s_renderer_impl) {

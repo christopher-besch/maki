@@ -12,6 +12,11 @@ public:
     };
 
 public:
+    // create renderer with implementation specified in s_renderer_impl
+    // every implementation-specific class uses this concept
+    static Renderer* create(const std::string& title, uint32_t width, uint32_t height);
+
+public:
     Renderer(const std::string& title, uint32_t width, uint32_t height)
         : m_window(new Window(title, width, height)) {}
     virtual ~Renderer()
@@ -22,14 +27,17 @@ public:
     static Implementation get_renderer_api() { return s_renderer_impl; }
     static void           set_renderer_api(Implementation renderer_impl) { s_renderer_impl = renderer_impl; }
 
-    // create renderer with implementation specified in s_renderer_impl
-    // every implementation-specific class uses this concept
-    static Renderer* create(const std::string& title, uint32_t width, uint32_t height);
+    bool should_terminate()
+    {
+        return m_window->should_close();
+    }
 
-private:
-    static Implementation s_renderer_impl;
+    virtual void end_frame() = 0;
 
-private:
+protected:
+    static inline Implementation s_renderer_impl {Renderer::Implementation::none};
+
+protected:
     Window* m_window;
 };
 

@@ -15,8 +15,12 @@ public:
     // init performed at creationg of first window
     void init();
 
+    void update();
+
+    bool should_close();
+
 private:
-    static int s_window_count;
+    static inline int s_window_count {0};
 
 private:
     std::string m_title;
