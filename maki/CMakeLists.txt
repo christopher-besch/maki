@@ -32,3 +32,13 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/res"
   "${CMAKE_CURRENT_BINARY_DIR}/res"
 )
+
+# platform config
+set(platforms "glfw")
+set(platform "none" CACHE STRING "Platform to be used, one of: ${platforms}")
+set_property(CACHE platform PROPERTY STRINGS ${platforms})
+
+if(NOT platform IN_LIST platforms)
+  message(FATAL_ERROR "The platform must be one of: ${platforms}")
+endif()
+add_compile_definitions(PLATFORM=${platform})

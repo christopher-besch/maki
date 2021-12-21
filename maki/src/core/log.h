@@ -1,7 +1,5 @@
 #pragma once
 
-#include "pch.h"
-
 // TODO: move to pch.h, produces weird error when attempting -> break stb compilation in stb.cpp
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
@@ -60,10 +58,10 @@ public:
         std::exit(EXIT_FAILURE);                                                                                \
     } while(0)
 
-#define MAKI_ASSERT(x, ...)                  \
-    do {                                     \
-        if(!x)                               \
-            MAKI_RAISE_CRITICAL(__VA_ARGS__) \
+#define MAKI_ASSERT(x, ...)                   \
+    do {                                      \
+        if(!(x))                              \
+            MAKI_RAISE_CRITICAL(__VA_ARGS__); \
     } while(0)
 #endif
 

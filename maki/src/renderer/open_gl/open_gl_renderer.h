@@ -1,14 +1,12 @@
 #pragma once
 
-#include "pch.h"
-
 #include "renderer/renderer.h"
 
 namespace Maki {
 
 class OpenGLRenderer: public Renderer {
 public:
-    OpenGLRenderer();
+    OpenGLRenderer(const std::string& title, uint32_t width, uint32_t height);
     ~OpenGLRenderer();
 };
 

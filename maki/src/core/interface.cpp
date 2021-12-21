@@ -6,12 +6,12 @@
 
 namespace Maki {
 
-Renderer* init(Renderer::Implementation renderer_impl)
+Renderer* init(Renderer::Implementation renderer_impl, const std::string& title, uint32_t width, uint32_t height)
 {
     Log::init();
     MAKI_LOG_EXTRA("Initializing.");
     Renderer::set_renderer_api(renderer_impl);
-    Renderer* renderer = Renderer::create();
+    Renderer* renderer = Renderer::create(title, width, height);
     return renderer;
 }
 
