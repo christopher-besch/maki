@@ -18,6 +18,7 @@ public:
 private:
     static int s_window_count;
 
+private:
     std::string m_title;
     uint32_t    m_width, m_height;
 

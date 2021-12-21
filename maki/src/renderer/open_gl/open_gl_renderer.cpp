@@ -9,6 +9,10 @@ OpenGLRenderer::OpenGLRenderer(const std::string& title, uint32_t width, uint32_
     : Renderer(title, width, height)
 {
     MAKI_LOG_EXTRA("Creating OpenGL Renderer.");
+    MAKI_LOG_EXTRA("Initializing GLEW.");
+    glewExperimental = true;
+    if(glewInit() != GLEW_OK)
+        MAKI_RAISE_CRITICAL("Failed to initialize GLEW.");
 }
 
 OpenGLRenderer::~OpenGLRenderer()

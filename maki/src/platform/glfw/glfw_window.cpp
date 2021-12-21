@@ -9,6 +9,10 @@ namespace Maki {
 
 Window::~Window()
 {
+    glfwDestroyWindow(m_window);
+    --s_window_count;
+    if(s_window_count == 0)
+        glfwTerminate();
 }
 
 void Window::create()
@@ -47,12 +51,6 @@ void Window::init()
     if(Renderer::get_renderer_api() == Renderer::Implementation::open_gl)
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #endif
-
-    MAKI_LOG_EXTRA("Initializing GLEW.");
-
-    glewExperimental = true;
-    if(glewInit() != GLEW_OK)
-        MAKI_RAISE_CRITICAL("Failed to initialize GLEW.");
 }
 
 } // namespace Maki
