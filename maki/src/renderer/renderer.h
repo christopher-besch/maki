@@ -19,6 +19,9 @@ public:
     // every implementation-specific class uses this concept
     static Renderer* create(const std::string& title, uint32_t width, uint32_t height);
 
+    static Implementation get_renderer_api() { return s_renderer_impl; }
+    static void           set_renderer_api(Implementation renderer_impl) { s_renderer_impl = renderer_impl; }
+
 public:
     Renderer(const std::string& title, uint32_t width, uint32_t height)
         : m_window(new Window(title, width, height)) {}
@@ -26,9 +29,6 @@ public:
     {
         delete m_window;
     }
-
-    static Implementation get_renderer_api() { return s_renderer_impl; }
-    static void           set_renderer_api(Implementation renderer_impl) { s_renderer_impl = renderer_impl; }
 
     bool should_terminate()
     {
