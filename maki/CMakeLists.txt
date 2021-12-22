@@ -21,6 +21,7 @@ target_include_directories(maki PUBLIC ${STB_INCLUDE_DIRS})
 target_link_libraries(maki PUBLIC spdlog)
 
 # copy resources in beginning
+message("-- Copying resources")
 file(
   COPY "${CMAKE_CURRENT_SOURCE_DIR}/res"
   DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/"
@@ -32,6 +33,7 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/res"
   "${CMAKE_CURRENT_BINARY_DIR}/res"
 )
+message("-- Copying resources - OK")
 
 # platform config
 set(platforms "glfw")

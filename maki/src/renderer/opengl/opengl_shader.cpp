@@ -80,7 +80,7 @@ std::string OpenGLShader::read_file(const std::string& path)
         stream.close();
     }
     else
-        MAKI_RAISE_CRITICAL("Impossible to open '{0}'}", path);
+        MAKI_RAISE_CRITICAL("Impossible to open '{0}'.", path);
     return out;
 }
 

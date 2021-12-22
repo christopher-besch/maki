@@ -35,7 +35,7 @@ VertexBuffer* VertexBuffer::create(const std::initializer_list<BufferElement>& e
     }
 }
 
-IndexBuffer* IndexBuffer::create(uint32_t count, uint32_t* indices)
+IndexBuffer* IndexBuffer::create(uint32_t count, const uint32_t* indices)
 {
     switch(Renderer::get_renderer_api()) {
     case Renderer::Implementation::none:

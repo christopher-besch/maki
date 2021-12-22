@@ -24,7 +24,7 @@ private:
 
 class OpenGLIndexBuffer: public IndexBuffer {
 public:
-    OpenGLIndexBuffer(uint32_t count, uint32_t* indices);
+    OpenGLIndexBuffer(uint32_t count, const uint32_t* indices);
     ~OpenGLIndexBuffer();
 
     virtual void bind() const override;

@@ -17,7 +17,7 @@ OpenGLRenderer::OpenGLRenderer(const std::string& title, uint32_t width, uint32_
 
 #ifndef NDEBUG
     glDebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei, const GLchar* message, const void*) {
-        MAKI_LOG_ERROR("Message from OpenGL:\nSource: {0}\nType: {1}\nID: {2}\nSeverity: {3}\n\n{4}", source, type, id, severity, message);
+        MAKI_LOG_ERROR("Message from OpenGL: Source: {0} Type: {1} ID: {2} Severity: {3}\n{4}", source, type, id, severity, message);
     },
                            nullptr);
 #endif
@@ -30,7 +30,7 @@ OpenGLRenderer::~OpenGLRenderer()
 
 void OpenGLRenderer::draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader)
 {
-    // shader->bind();
+    shader->bind();
     vertex_array->bind();
     index_buffer->bind();
 

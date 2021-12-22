@@ -32,8 +32,8 @@ void OpenGLVertexArray::add_vertex_buffer(VertexBuffer* vertex_buffer)
         glEnableVertexAttribArray(m_next_attrib_id);
         glVertexAttribPointer(
             m_next_attrib_id,
-            data_type_to_gl_enum(element.type),
             data_type_components(element.type),
+            data_type_to_gl_enum(element.type),
             element.normalized ? GL_TRUE : GL_FALSE,
             vertex_buffer->get_stride(),
             reinterpret_cast<const void*>(element.offset));

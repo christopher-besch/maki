@@ -63,7 +63,7 @@ protected:
 
 class IndexBuffer {
 public:
-    static IndexBuffer* create(uint32_t count, uint32_t* indices);
+    static IndexBuffer* create(uint32_t count, const uint32_t* indices);
 
 public:
     virtual ~IndexBuffer() = default;
