@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/log.h"
-#include "core/types.h"
+#include "renderer/types.h"
 
 namespace Maki {
 
@@ -37,6 +37,9 @@ public:
 
     virtual void bind() const   = 0;
     virtual void unbind() const = 0;
+
+    const std::vector<BufferElement>& get_elements() { return m_elements; }
+    uint32_t                          get_stride() { return m_stride; }
 
 protected:
     void calculate_offset_and_stride()
