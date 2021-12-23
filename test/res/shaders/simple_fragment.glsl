@@ -11,5 +11,4 @@ uniform sampler2D texture_sampler;
 void main()
 {
     color = texture(texture_sampler, uv).rgb;
-    a;lsdlkfjsd;dlfkasja;lskdjf;alsd
 }

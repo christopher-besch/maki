@@ -45,7 +45,7 @@ void OpenGLShader::compile(const std::unordered_map<GLenum, std::string>& shader
             std::vector<char> log(max_length);
             glGetShaderInfoLog(shader, max_length, &max_length, &log[0]);
 
-            MAKI_LOG_ERROR("Shader compilation failure: {0}", log.data());
+            MAKI_RAISE_CRITICAL("Shader compilation failure: {0}", log.data());
         }
         glAttachShader(m_id, shader);
         shader_ids[shader_id_idx++] = shader;
@@ -62,7 +62,7 @@ void OpenGLShader::compile(const std::unordered_map<GLenum, std::string>& shader
         std::vector<char> log(max_length);
         glGetProgramInfoLog(m_id, max_length, &max_length, &log[0]);
 
-        MAKI_LOG_ERROR("Shader linkage failure: {0}", log.data());
+        MAKI_RAISE_CRITICAL("Shader linkage failure: {0}", log.data());
     }
 
     for(int i {0}; i < shader_id_idx; ++i) {
