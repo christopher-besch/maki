@@ -46,6 +46,7 @@ void OpenGLVertexBuffer::unbind() const
 
 // IndexBuffer
 OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t count, const uint32_t* indices)
+    : m_count(count)
 {
     glCreateBuffers(1, &m_id);
     bind();

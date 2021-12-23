@@ -9,8 +9,6 @@ OpenGLShader::OpenGLShader(const std::string& vert_path, const std::string& frag
 {
     std::string vert_source = read_file(vert_path);
     std::string frag_source = read_file(frag_path);
-    MAKI_LOG_EXTRA("{0}", GL_VERTEX_SHADER);
-    MAKI_LOG_EXTRA("{0}", GL_FRAGMENT_SHADER);
 
     compile({{GL_VERTEX_SHADER, vert_source},
              {GL_FRAGMENT_SHADER, frag_source}});
