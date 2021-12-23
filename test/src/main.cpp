@@ -3,6 +3,7 @@
 #include "controls.h"
 #include "load_shader.h"
 #include "load_texture.h"
+#include "shader.h"
 
 int main()
 {
@@ -40,6 +41,12 @@ int main()
         return -1;
     }
 
+    glDebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei, const GLchar* message, const void*) {
+        std::cout << "Message from OpenGL: Source: " << source << " Type: " << type << " ID: " << id << " Severity: " << severity << "\n"
+                  << message << std::endl;
+    },
+                           nullptr);
+
     GLuint vertex_array_id;
     glGenVertexArrays(1, &vertex_array_id);
     glBindVertexArray(vertex_array_id);
@@ -52,14 +59,16 @@ int main()
     // accept fragment if closer
     glDepthFunc(GL_LESS);
 
-    GLuint program_id = load_shaders("res/shaders/simple_vertex.glsl", "res/shaders/simple_fragment.glsl");
-    if(!program_id) {
-        glfwTerminate();
-        return -1;
-    }
+    // GLuint program_id = load_shaders("test/res/shaders/simple_vertex.glsl", "test/res/shaders/simple_fragment.glsl");
+    // if(!program_id) {
+    //     glfwTerminate();
+    //     return -1;
+    // }
+
+    OpenGLShader* shader = new OpenGLShader("test/res/shaders/simple_vertex.glsl", "test/res/shaders/simple_fragment.glsl");
 
     // matrix uniform
-    GLuint mvp_id = glGetUniformLocation(program_id, "mvp");
+    GLuint mvp_id = glGetUniformLocation(shader->get_id(), "mvp");
 
     // cube vertices
     const GLfloat vertex_buffer_data[] = {
@@ -111,7 +120,7 @@ int main()
         -1.0f, 1.0f, 1.0f,
         1.0f, -1.0f, 1.0f};
 
-    GLuint texture = load_texture("res/images/uvtemplate.tga");
+    GLuint texture = load_texture("test/res/images/uvtemplate.tga");
     if(!texture) {
         glfwTerminate();
         return -1;
@@ -174,9 +183,10 @@ int main()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glUseProgram(program_id);
+        shader->bind();
 
-        mat4 projection, view;
+        mat4 projection,
+            view;
         compute_mat_from_input(ctrl, delta_time, projection, view, window);
 
         mat4 model = mat4(1.0f);
@@ -216,9 +226,10 @@ int main()
     // cleanup
     glDeleteBuffers(1, &vertex_buffer);
     glDeleteVertexArrays(1, &vertex_array_id);
-    glDeleteProgram(program_id);
 
     glfwTerminate();
+
+    delete shader;
 
     return 0;
 }

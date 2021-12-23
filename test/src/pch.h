@@ -22,6 +22,7 @@
 using vec4 = glm::vec4;
 using mat4 = glm::mat4;
 using vec3 = glm::vec3;
+using vec2 = glm::vec2;
 using mat3 = glm::mat3;
 
 constexpr float PI     = 3.14f;

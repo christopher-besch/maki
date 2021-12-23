@@ -1,16 +1,11 @@
 #include "pch.h"
 
-#include "core/log.h"
-#include "opengl_shader.h"
-
-namespace Maki {
+#include "shader.h"
 
 OpenGLShader::OpenGLShader(const std::string& vert_path, const std::string& frag_path)
 {
     std::string vert_source = read_file(vert_path);
     std::string frag_source = read_file(frag_path);
-    MAKI_LOG_EXTRA("{0}", GL_VERTEX_SHADER);
-    MAKI_LOG_EXTRA("{0}", GL_FRAGMENT_SHADER);
 
     compile({{GL_VERTEX_SHADER, vert_source},
              {GL_FRAGMENT_SHADER, frag_source}});
@@ -25,7 +20,6 @@ void OpenGLShader::compile(const std::unordered_map<GLenum, std::string>& shader
 {
     m_id = glCreateProgram();
 
-    MAKI_ASSERT(shader_sources.size() <= 16, "Only up to 16 shaders are supported.");
     // used to delete shaders once attached
     std::array<GLenum, 8> shader_ids;
     int                   shader_id_idx {0};
@@ -45,7 +39,7 @@ void OpenGLShader::compile(const std::unordered_map<GLenum, std::string>& shader
             std::vector<char> log(max_length);
             glGetShaderInfoLog(shader, max_length, &max_length, &log[0]);
 
-            MAKI_LOG_ERROR("Shader compilation failure: {0}", log.data());
+            std::cout << "Shader compilation failure: " << log.data() << std::endl;
         }
         glAttachShader(m_id, shader);
         shader_ids[shader_id_idx++] = shader;
@@ -62,7 +56,7 @@ void OpenGLShader::compile(const std::unordered_map<GLenum, std::string>& shader
         std::vector<char> log(max_length);
         glGetProgramInfoLog(m_id, max_length, &max_length, &log[0]);
 
-        MAKI_LOG_ERROR("Shader linkage failure: {0}", log.data());
+        std::cout << "Shader linkage failure: " << log.data() << std::endl;
     }
 
     for(int i {0}; i < shader_id_idx; ++i) {
@@ -82,7 +76,7 @@ std::string OpenGLShader::read_file(const std::string& path)
         stream.close();
     }
     else
-        MAKI_RAISE_CRITICAL("Impossible to open '{0}'.", path);
+        std::cout << "Impossible to open " << path << std::endl;
     return out;
 }
 
@@ -109,12 +103,12 @@ void OpenGLShader::set_float4(const std::string& name, const vec4& val)
 void OpenGLShader::set_mat3(const std::string& name, const mat3& val)
 {
     int location = glGetUniformLocation(m_id, name.c_str());
-    glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(val));
+    // glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(val));
 }
 void OpenGLShader::set_mat4(const std::string& name, const mat4& val)
 {
     int location = glGetUniformLocation(m_id, name.c_str());
-    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(val));
+    // glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(val));
 }
 void OpenGLShader::set_int1(const std::string& name, int val)
 {
@@ -130,5 +124,3 @@ void OpenGLShader::unbind() const
 {
     glUseProgram(0);
 }
-
-} // namespace Maki

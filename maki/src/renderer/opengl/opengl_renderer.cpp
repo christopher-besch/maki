@@ -3,6 +3,7 @@
 #include "opengl_renderer.h"
 
 #include "core/log.h"
+#include "core/stringifier.h"
 
 namespace Maki {
 
@@ -17,7 +18,12 @@ OpenGLRenderer::OpenGLRenderer(const std::string& title, uint32_t width, uint32_
 
 #ifndef NDEBUG
     glDebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei, const GLchar* message, const void*) {
-        MAKI_LOG_ERROR("Message from OpenGL: Source: {0} Type: {1} ID: {2} Severity: {3}\n{4}", source, type, id, severity, message);
+        MAKI_LOG_ERROR("Message from OpenGL: Source: {0} Type: {1} ID: {2} Severity: {3}\n{4}",
+                       Stringifier::gl_msg_source(source),
+                       Stringifier::gl_msg_type(type),
+                       id,
+                       Stringifier::gl_msg_severity(severity),
+                       message);
     },
                            nullptr);
 #endif
