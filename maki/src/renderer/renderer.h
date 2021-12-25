@@ -1,5 +1,6 @@
 #pragma once
 
+#include "platform/event.h"
 #include "platform/window.h"
 #include "renderer/buffer.h"
 #include "renderer/shader.h"
@@ -17,14 +18,13 @@ public:
 public:
     // create renderer with implementation specified in s_renderer_impl
     // every implementation-specific class uses this concept
-    static Renderer* create(const std::string& title, uint32_t width, uint32_t height);
+    static Renderer* create(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler);
 
     static Implementation get_renderer_api() { return s_renderer_impl; }
     static void           set_renderer_api(Implementation renderer_impl) { s_renderer_impl = renderer_impl; }
 
 public:
-    Renderer(const std::string& title, uint32_t width, uint32_t height)
-        : m_window(new Window(title, width, height)) {}
+    Renderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler);
     virtual ~Renderer()
     {
         delete m_window;

@@ -4,6 +4,7 @@
 
 ## References
 
+- [Light](https://github.com/Light3039/Light)
 - [christopher-besch/opengl_reference](https://github.com/christopher-besch/opengl_reference)
 - [christopher-besch/lynton_legacy](https://github.com/christopher-besch/lynton_legacy)
 - [christopher-besch/lynton](https://github.com/christopher-besch/lynton)

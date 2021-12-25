@@ -23,8 +23,8 @@ inline void log_gl_error(const std::string& source, const std::string& type, GLu
                    source, type, id, severity, message);
 }
 
-OpenGLRenderer::OpenGLRenderer(const std::string& title, uint32_t width, uint32_t height)
-    : Renderer(title, width, height)
+OpenGLRenderer::OpenGLRenderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler)
+    : Renderer(title, width, height, driver_event_handler)
 {
     MAKI_LOG_EXTRA("Creating OpenGL Renderer.");
     MAKI_LOG_EXTRA("Initializing GLEW.");

@@ -5,8 +5,8 @@
 
 namespace Maki {
 
-Window::Window(const std::string& title, uint32_t width, uint32_t height)
-    : m_title(title), m_width(width), m_height(height)
+Window::Window(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler, EventHandler renderer_event_handler)
+    : m_title(title), m_width(width), m_height(height), m_driver_event_handler(driver_event_handler), m_renderer_event_handler(renderer_event_handler)
 {
     // check compatibility
 #if PROJECT == glfw

@@ -9,10 +9,21 @@ namespace Maki {
 
 Window::~Window()
 {
-    glfwDestroyWindow(m_window);
+    glfwDestroyWindow(m_handle);
     --s_window_count;
     if(s_window_count == 0)
         glfwTerminate();
+}
+
+void Window::update()
+{
+    glfwSwapBuffers(m_handle);
+    glfwPollEvents();
+}
+
+bool Window::should_close()
+{
+    return glfwWindowShouldClose(m_handle);
 }
 
 void Window::create()
@@ -30,11 +41,15 @@ void Window::create()
     // disable old OpenGL
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
+    m_handle = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
     ++s_window_count;
-    if(m_window == nullptr)
+    if(m_handle == nullptr)
         MAKI_RAISE_CRITICAL("Failed to create GLFW window.");
-    glfwMakeContextCurrent(m_window);
+    glfwMakeContextCurrent(m_handle);
+
+    glfwSetWindowUserPointer(m_handle, this);
+
+    bind_event_callbacks();
 }
 
 void Window::init()
@@ -53,16 +68,23 @@ void Window::init()
 #endif
 }
 
-void Window::update()
+void Window::bind_event_callbacks()
 {
-    glfwSwapBuffers(m_window);
-    glfwPollEvents();
-}
+    // std::function<bool(double offset_x, double offset_y)> m_on_scroll {nullptr};
+    // std::function<bool(MouseBtn btn)>                     m_on_mouse_btn_pressed {nullptr};
+    // std::function<bool(MouseBtn btn)>                     m_on_mouse_btn_release {nullptr};
+    // std::function<bool(Key key)>                          m_on_key_pressed {nullptr};
+    // std::function<bool(Key key)>                          m_on_key_repeated {nullptr};
+    // std::function<bool(Key key)>                          m_on_key_release {nullptr};
+    // std::function<bool(int width, int height)>            m_on_window_resize {nullptr};
 
-bool Window::should_close()
-{
-    // TODO: move escape key to better location
-    return glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwWindowShouldClose(m_window);
+    glfwSetCursorPosCallback(m_handle, [](GLFWwindow* handle, double x, double y) {
+        Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
+        // hand through layers until handled
+        // only execute callback when not empty
+        (window->m_renderer_event_handler.on_mouse_move && window->m_renderer_event_handler.on_mouse_move(x, y)) ||
+            (window->m_driver_event_handler.on_mouse_move && window->m_driver_event_handler.on_mouse_move(x, y));
+    });
 }
 
 } // namespace Maki
