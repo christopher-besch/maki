@@ -35,6 +35,8 @@ public:
         return m_window->should_close();
     }
 
+    virtual void set_clear_col(vec3 color) = 0;
+
     virtual void draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader) = 0;
 
     virtual void end_frame() = 0;

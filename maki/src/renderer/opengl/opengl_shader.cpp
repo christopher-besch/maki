@@ -50,6 +50,7 @@ void OpenGLShader::compile(const std::unordered_map<GLenum, std::string>& shader
     }
 
     glLinkProgram(m_id);
+    MAKI_LOG_EXTRA("Shaders linked.");
 
     GLint is_linked {0};
     glGetProgramiv(m_id, GL_LINK_STATUS, &is_linked);
@@ -86,37 +87,51 @@ std::string OpenGLShader::read_file(const std::string& path)
 
 void OpenGLShader::set_float1(const std::string& name, float val)
 {
+    bind();
     int location = glGetUniformLocation(m_id, name.c_str());
+    MAKI_ASSERT(location != -1, "Can't find Uniform '{0}'.", name);
     glUniform1f(location, val);
 }
 void OpenGLShader::set_float2(const std::string& name, const vec2& val)
 {
+    bind();
     int location = glGetUniformLocation(m_id, name.c_str());
+    MAKI_ASSERT(location != -1, "Can't find Uniform '{0}'.", name);
     glUniform2f(location, val.x, val.y);
 }
 void OpenGLShader::set_float3(const std::string& name, const vec3& val)
 {
+    bind();
     int location = glGetUniformLocation(m_id, name.c_str());
+    MAKI_ASSERT(location != -1, "Can't find Uniform '{0}'.", name);
     glUniform3f(location, val.x, val.y, val.z);
 }
 void OpenGLShader::set_float4(const std::string& name, const vec4& val)
 {
+    bind();
     int location = glGetUniformLocation(m_id, name.c_str());
+    MAKI_ASSERT(location != -1, "Can't find Uniform '{0}'.", name);
     glUniform4f(location, val.x, val.y, val.z, val.w);
 }
 void OpenGLShader::set_mat3(const std::string& name, const mat3& val)
 {
+    bind();
     int location = glGetUniformLocation(m_id, name.c_str());
+    MAKI_ASSERT(location != -1, "Can't find Uniform '{0}'.", name);
     glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(val));
 }
 void OpenGLShader::set_mat4(const std::string& name, const mat4& val)
 {
+    bind();
     int location = glGetUniformLocation(m_id, name.c_str());
+    MAKI_ASSERT(location != -1, "Can't find Uniform '{0}'.", name);
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(val));
 }
 void OpenGLShader::set_int1(const std::string& name, int val)
 {
+    bind();
     int location = glGetUniformLocation(m_id, name.c_str());
+    MAKI_ASSERT(location != -1, "Can't find Uniform '{0}'.", name);
     glUniform1i(location, val);
 }
 

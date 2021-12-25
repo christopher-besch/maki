@@ -24,3 +24,4 @@
 // often used custom declarations
 // TODO: doesn't work because of spdlog weirdness
 // #include "core/log.h"
+#include "core/definitions.h"

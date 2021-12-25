@@ -9,6 +9,8 @@ public:
     OpenGLRenderer(const std::string& title, uint32_t width, uint32_t height);
     ~OpenGLRenderer();
 
+    virtual void set_clear_col(vec3 color) override;
+
     virtual void draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader) override;
 
     virtual void end_frame() override;

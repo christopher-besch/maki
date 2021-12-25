@@ -29,7 +29,7 @@ file(
 # copy resources before each build
 add_custom_command(
   TARGET maki
-  PRE_BUILD
+  POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/res"
   "${CMAKE_CURRENT_BINARY_DIR}/res"
 )

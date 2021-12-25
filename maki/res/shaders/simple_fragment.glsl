@@ -15,9 +15,11 @@
 
 in vec3 pos;
 
+uniform vec3 u_color;
+
 out vec3 color;
 
 void main()
 {
-	color = pos;
+	color = u_color;
 }

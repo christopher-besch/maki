@@ -8,12 +8,8 @@ namespace Maki {
 void RenderDriver::run()
 {
     // TODO: remove example
-    glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glDepthFunc(GL_LESS);
-
     Shader* shader = Shader::create("maki/res/shaders/simple_vertex.glsl", "maki/res/shaders/simple_fragment.glsl");
+    shader->set_float3("u_color", {1.0f, 1.0f, 0.0f});
 
     const float vertex_buffer_data[] = {
         -1.0f,

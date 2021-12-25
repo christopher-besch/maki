@@ -58,11 +58,20 @@ OpenGLRenderer::OpenGLRenderer(const std::string& title, uint32_t width, uint32_
     },
                            nullptr);
 #endif
+    set_clear_col({0.0f, 0.0f, 0.4f});
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glDepthFunc(GL_LESS);
 }
 
 OpenGLRenderer::~OpenGLRenderer()
 {
     MAKI_LOG_EXTRA("Destructing OpenGL Renderer.");
+}
+
+void OpenGLRenderer::set_clear_col(vec3 color)
+{
+    glClearColor(color.r, color.g, color.b, 0.0f);
 }
 
 void OpenGLRenderer::draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader)
