@@ -15,10 +15,16 @@ Window::~Window()
         glfwTerminate();
 }
 
-void Window::update()
+void Window::end_frame()
 {
     glfwSwapBuffers(m_handle);
     glfwPollEvents();
+}
+
+void Window::set_cursor_type(CursorType type)
+{
+    // TODO: add function for other modes
+    glfwSetInputMode(m_handle, GLFW_CURSOR, static_cast<int>(type));
 }
 
 void Window::create()

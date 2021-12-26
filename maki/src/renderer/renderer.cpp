@@ -22,7 +22,7 @@ Renderer* Renderer::create(const std::string& title, uint32_t width, uint32_t he
 }
 
 Renderer::Renderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler)
-    : m_camera {new Camera(width, height)}
+    : m_camera {new Camera(width, height)}, m_last_time {Clock::now()}
 {
     EventHandler renderer_event_handler;
     renderer_event_handler.on_window_resize = [this](int width, int height) {
@@ -35,6 +35,17 @@ Renderer::Renderer(const std::string& title, uint32_t width, uint32_t height, Ev
         return false;
     };
     m_window = new Window(title, width, height, driver_event_handler, renderer_event_handler);
+}
+
+void Renderer::start_frame()
+{
+    TimePoint current_time = Clock::now();
+    m_last_frame_time      = current_time - m_last_time;
+    m_last_time            = current_time;
+}
+void Renderer::end_frame()
+{
+    m_window->end_frame();
 }
 
 } // namespace Maki

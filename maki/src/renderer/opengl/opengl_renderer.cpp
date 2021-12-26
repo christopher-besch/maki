@@ -85,6 +85,7 @@ void OpenGLRenderer::draw(VertexArray* vertex_array, IndexBuffer* index_buffer, 
 
 void OpenGLRenderer::start_frame()
 {
+    Renderer::start_frame();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

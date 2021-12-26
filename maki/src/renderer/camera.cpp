@@ -37,23 +37,26 @@ void Camera::set_position(vec3 position)
 
     outdate_view();
 }
-void Camera::set_rotation(float hor_angle, float ver_angle)
+void Camera::set_rotation(vec2 angle)
 {
-    m_hor_angle = hor_angle;
-    m_ver_angle = ver_angle;
+    m_angle = angle;
 
     outdate_direction();
 }
 void Camera::move(vec3 delta)
 {
-    m_position += delta;
+    calc_direction();
+    m_position += delta.x * m_right;
+    m_position += delta.y * m_up;
+    m_position += delta.z * m_direction;
 
     outdate_view();
 }
-void Camera::rotate(float delta_hor, float delta_ver)
+void Camera::rotate(vec2 delta_angle)
 {
-    m_hor_angle += delta_hor;
-    m_ver_angle += delta_ver;
+    m_angle += delta_angle;
+    // can't break your ribs
+    m_angle.y = std::clamp(m_angle.y, -PI / 2.0f, PI / 2.0f);
 
     outdate_direction();
 }
@@ -71,7 +74,6 @@ void Camera::calc_view_projection()
     // cache still valid?
     if(!m_view_projection_outdated)
         return;
-    MAKI_LOG_GENERAl("Calculate camera view projection.");
 
     calc_projection();
     calc_view();
@@ -84,7 +86,6 @@ void Camera::calc_projection()
 {
     if(!m_projection_outdated)
         return;
-    MAKI_LOG_GENERAl("Calculate camera projection.");
 
     switch(m_type) {
     case CameraType::perspective:
@@ -103,7 +104,6 @@ void Camera::calc_view()
 {
     if(!m_view_outdated)
         return;
-    MAKI_LOG_GENERAl("Calculate camera view.");
 
     calc_direction();
 
@@ -115,15 +115,14 @@ void Camera::calc_direction()
 {
     if(!m_direction_outdated)
         return;
-    MAKI_LOG_GENERAl("Calculate camera direction.");
 
-    m_direction = {cos(m_ver_angle) * sin(m_hor_angle),
-                   sin(m_ver_angle),
-                   cos(m_ver_angle) * cos(m_hor_angle)};
+    m_direction = {cos(m_angle.y) * sin(m_angle.x),
+                   sin(m_angle.y),
+                   cos(m_angle.y) * cos(m_angle.x)};
 
-    m_right = {sin(m_hor_angle - PI / 2.0f),
+    m_right = {sin(m_angle.x - PI / 2.0f),
                0.0f,
-               cos(m_hor_angle - PI / 2.0f)};
+               cos(m_angle.x - PI / 2.0f)};
 
     m_up = glm::cross(m_right, m_direction);
 
