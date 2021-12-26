@@ -24,8 +24,8 @@ Renderer* Renderer::create(const std::string& title, uint32_t width, uint32_t he
 Renderer::Renderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler)
 {
     EventHandler renderer_event_handler;
-    renderer_event_handler.on_mouse_move = [](double pos_x, double pos_y) {
-        MAKI_LOG_GENERAl("{} - {}", pos_x, pos_y);
+    renderer_event_handler.on_window_resize = [](int width, int height) {
+        MAKI_LOG_GENERAl("{} {}", width, height);
         return true;
     };
     m_window = new Window(title, width, height, driver_event_handler, renderer_event_handler);

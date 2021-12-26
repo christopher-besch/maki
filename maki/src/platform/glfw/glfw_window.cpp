@@ -70,20 +70,52 @@ void Window::init()
 
 void Window::bind_event_callbacks()
 {
-    // std::function<bool(double offset_x, double offset_y)> m_on_scroll {nullptr};
-    // std::function<bool(MouseBtn btn)>                     m_on_mouse_btn_pressed {nullptr};
-    // std::function<bool(MouseBtn btn)>                     m_on_mouse_btn_release {nullptr};
-    // std::function<bool(Key key)>                          m_on_key_pressed {nullptr};
-    // std::function<bool(Key key)>                          m_on_key_repeated {nullptr};
-    // std::function<bool(Key key)>                          m_on_key_release {nullptr};
-    // std::function<bool(int width, int height)>            m_on_window_resize {nullptr};
-
-    glfwSetCursorPosCallback(m_handle, [](GLFWwindow* handle, double x, double y) {
+    glfwSetCursorPosCallback(m_handle, [](GLFWwindow* handle, double pos_x, double pos_y) {
         Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
-        // hand through layers until handled
+        // propagate through layers until handled
         // only execute callback when not empty
-        (window->m_renderer_event_handler.on_mouse_move && window->m_renderer_event_handler.on_mouse_move(x, y)) ||
-            (window->m_driver_event_handler.on_mouse_move && window->m_driver_event_handler.on_mouse_move(x, y));
+        (window->m_renderer_event_handler.on_mouse_move && window->m_renderer_event_handler.on_mouse_move(pos_x, pos_y)) ||
+            (window->m_driver_event_handler.on_mouse_move && window->m_driver_event_handler.on_mouse_move(pos_x, pos_y));
+    });
+    glfwSetScrollCallback(m_handle, [](GLFWwindow* handle, double offset_x, double offset_y) {
+        Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
+        (window->m_renderer_event_handler.on_scroll && window->m_renderer_event_handler.on_scroll(offset_x, offset_y)) ||
+            (window->m_driver_event_handler.on_scroll && window->m_driver_event_handler.on_scroll(offset_x, offset_y));
+    });
+    glfwSetMouseButtonCallback(m_handle, [](GLFWwindow* handle, int button, int action, int) {
+        Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
+        switch(action) {
+        case GLFW_PRESS:
+            (window->m_renderer_event_handler.on_mouse_btn_press && window->m_renderer_event_handler.on_mouse_btn_press(static_cast<MouseBtn>(button))) ||
+                (window->m_driver_event_handler.on_mouse_btn_press && window->m_driver_event_handler.on_mouse_btn_press(static_cast<MouseBtn>(button)));
+            return;
+        case GLFW_RELEASE:
+            (window->m_renderer_event_handler.on_mouse_btn_release && window->m_renderer_event_handler.on_mouse_btn_release(static_cast<MouseBtn>(button))) ||
+                (window->m_driver_event_handler.on_mouse_btn_release && window->m_driver_event_handler.on_mouse_btn_release(static_cast<MouseBtn>(button)));
+            return;
+        }
+    });
+    glfwSetKeyCallback(m_handle, [](GLFWwindow* handle, int key, int, int action, int) {
+        Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
+        switch(action) {
+        case GLFW_PRESS:
+            (window->m_renderer_event_handler.on_key_press && window->m_renderer_event_handler.on_key_press(static_cast<Key>(key))) ||
+                (window->m_driver_event_handler.on_key_press && window->m_driver_event_handler.on_key_press(static_cast<Key>(key)));
+            return;
+        case GLFW_RELEASE:
+            (window->m_renderer_event_handler.on_key_release && window->m_renderer_event_handler.on_key_release(static_cast<Key>(key))) ||
+                (window->m_driver_event_handler.on_key_release && window->m_driver_event_handler.on_key_release(static_cast<Key>(key)));
+            return;
+        case GLFW_REPEAT:
+            (window->m_renderer_event_handler.on_key_repeat && window->m_renderer_event_handler.on_key_repeat(static_cast<Key>(key))) ||
+                (window->m_driver_event_handler.on_key_repeat && window->m_driver_event_handler.on_key_repeat(static_cast<Key>(key)));
+            return;
+        }
+    });
+    glfwSetWindowSizeCallback(m_handle, [](GLFWwindow* handle, int width, int height) {
+        Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
+        (window->m_renderer_event_handler.on_window_resize && window->m_renderer_event_handler.on_window_resize(width, height)) ||
+            (window->m_driver_event_handler.on_window_resize && window->m_driver_event_handler.on_window_resize(width, height));
     });
 }
 
