@@ -3,6 +3,7 @@
 #include "platform/event.h"
 #include "platform/window.h"
 #include "renderer/buffer.h"
+#include "renderer/camera.h"
 #include "renderer/shader.h"
 #include "renderer/vertex_array.h"
 
@@ -28,22 +29,32 @@ public:
     virtual ~Renderer()
     {
         delete m_window;
+        delete m_camera;
     }
 
-    virtual void set_clear_col(vec4 color)                                             = 0;
-    virtual void set_viewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
+    Camera* get_camera() { return m_camera; }
+
+    virtual void set_clear_col(vec4 color) = 0;
 
     bool should_terminate() { return m_should_terminate; }
 
     virtual void draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader) = 0;
     virtual void start_frame()                                                              = 0;
-    virtual void end_frame()                                                                = 0;
+    // to be augmented by implementation
+    virtual void end_frame()
+    {
+        m_window->update();
+    }
+
+protected:
+    virtual void set_viewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
 
 protected:
     static inline Implementation s_renderer_impl {Renderer::Implementation::none};
 
 protected:
     Window* m_window;
+    Camera* m_camera;
     bool    m_should_terminate {false};
 };
 

@@ -33,10 +33,20 @@ void RenderDriver::run()
     vertex_array->add_vertex_buffer(vertex_buffer);
     vertex_array->set_index_buffer(index_buffer);
 
+    int   i {1};
+    float x {0.0f};
     do {
         m_renderer->start_frame();
+        m_renderer->get_camera()->set_fov(glm::radians(float(i)));
+        MAKI_LOG_WARN("fov: {} degrees", i);
+        mat4 mvp = m_renderer->get_camera()->get_view_projection() * mat4 {1.0f};
+        shader->set_mat4("u_mvp", mvp);
+        shader->set_float3("u_color", {1.0f, x, 0.0f});
         m_renderer->draw(vertex_array, index_buffer, shader);
         m_renderer->end_frame();
+        i += 10;
+        x += 0.1f;
+        x = fmod(x, 1.0f);
     } while(!m_renderer->should_terminate());
 
     delete shader;

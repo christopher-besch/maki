@@ -14,12 +14,12 @@ inline void log_gl_extra(const std::string& source, const std::string& type, GLu
 }
 inline void log_gl_warn(const std::string& source, const std::string& type, GLuint id, const std::string& severity, const char* message)
 {
-    MAKI_LOG_WARN("OpenGL MessageMessage from OpenGL: Source: {0} Type: {1} ID: {2} Severity: {3}\n{4}",
+    MAKI_LOG_WARN("OpenGL Message: Source: {0} Type: {1} ID: {2} Severity: {3}\n{4}",
                   source, type, id, severity, message);
 }
 inline void log_gl_error(const std::string& source, const std::string& type, GLuint id, const std::string& severity, const char* message)
 {
-    MAKI_LOG_ERROR("OpenGL MessageMessage from OpenGL: Source: {0} Type: {1} ID: {2} Severity: {3}\n{4}",
+    MAKI_LOG_ERROR("OpenGL Message: Source: {0} Type: {1} ID: {2} Severity: {3}\n{4}",
                    source, type, id, severity, message);
 }
 
@@ -73,10 +73,6 @@ void OpenGLRenderer::set_clear_col(vec4 color)
 {
     glClearColor(color.r, color.g, color.b, color.a);
 }
-void OpenGLRenderer::set_viewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
-{
-    glViewport(x, y, width, height);
-}
 
 void OpenGLRenderer::draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader)
 {
@@ -92,9 +88,9 @@ void OpenGLRenderer::start_frame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void OpenGLRenderer::end_frame()
+void OpenGLRenderer::set_viewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
 {
-    m_window->update();
+    glViewport(x, y, width, height);
 }
 
 } // namespace Maki

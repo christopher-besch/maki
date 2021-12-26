@@ -16,10 +16,11 @@
 
 layout(location = 0) in vec3 a_position;
 
+uniform mat4 u_mvp;
+
 out vec3 pos;
 
 void main(){
-    gl_Position.xyz = a_position;
-    gl_Position.w = 1.0;
+    gl_Position = u_mvp * vec4(a_position, 1.0);
     pos = a_position;
 }
