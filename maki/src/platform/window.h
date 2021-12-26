@@ -16,8 +16,6 @@ public:
     // should be run after gl draws
     void update();
 
-    bool should_close();
-
 private:
     void create();
     // init performed at creation of first window

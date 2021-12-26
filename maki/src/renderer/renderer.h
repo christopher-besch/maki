@@ -30,22 +30,21 @@ public:
         delete m_window;
     }
 
-    bool should_terminate()
-    {
-        return m_window->should_close();
-    }
+    virtual void set_clear_col(vec4 color)                                             = 0;
+    virtual void set_viewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
 
-    virtual void set_clear_col(vec3 color) = 0;
+    bool should_terminate() { return m_should_terminate; }
 
     virtual void draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader) = 0;
-
-    virtual void end_frame() = 0;
+    virtual void start_frame()                                                              = 0;
+    virtual void end_frame()                                                                = 0;
 
 protected:
     static inline Implementation s_renderer_impl {Renderer::Implementation::none};
 
 protected:
     Window* m_window;
+    bool    m_should_terminate {false};
 };
 
 } // namespace Maki

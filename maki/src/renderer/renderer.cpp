@@ -24,9 +24,13 @@ Renderer* Renderer::create(const std::string& title, uint32_t width, uint32_t he
 Renderer::Renderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler)
 {
     EventHandler renderer_event_handler;
-    renderer_event_handler.on_window_resize = [](int width, int height) {
-        MAKI_LOG_GENERAl("{} {}", width, height);
-        return true;
+    renderer_event_handler.on_window_resize = [this](int width, int height) {
+        set_viewport(0, 0, width, height);
+        return false;
+    };
+    renderer_event_handler.on_window_close = [this]() {
+        m_should_terminate = true;
+        return false;
     };
     m_window = new Window(title, width, height, driver_event_handler, renderer_event_handler);
 }

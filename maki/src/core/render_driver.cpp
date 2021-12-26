@@ -34,7 +34,7 @@ void RenderDriver::run()
     vertex_array->set_index_buffer(index_buffer);
 
     do {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        m_renderer->start_frame();
         m_renderer->draw(vertex_array, index_buffer, shader);
         m_renderer->end_frame();
     } while(!m_renderer->should_terminate());

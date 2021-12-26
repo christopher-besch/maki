@@ -24,7 +24,7 @@ inline void log_gl_error(const std::string& source, const std::string& type, GLu
 }
 
 OpenGLRenderer::OpenGLRenderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler)
-    : Renderer(title, width, height, driver_event_handler)
+    : Renderer {title, width, height, driver_event_handler}
 {
     MAKI_LOG_EXTRA("Creating OpenGL Renderer.");
     MAKI_LOG_EXTRA("Initializing GLEW.");
@@ -58,7 +58,7 @@ OpenGLRenderer::OpenGLRenderer(const std::string& title, uint32_t width, uint32_
     },
                            nullptr);
 #endif
-    set_clear_col({0.0f, 0.0f, 0.4f});
+    set_clear_col({0.0f, 0.0f, 0.4f, 1.0f});
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_LESS);
@@ -69,9 +69,13 @@ OpenGLRenderer::~OpenGLRenderer()
     MAKI_LOG_EXTRA("Destructing OpenGL Renderer.");
 }
 
-void OpenGLRenderer::set_clear_col(vec3 color)
+void OpenGLRenderer::set_clear_col(vec4 color)
 {
-    glClearColor(color.r, color.g, color.b, 0.0f);
+    glClearColor(color.r, color.g, color.b, color.a);
+}
+void OpenGLRenderer::set_viewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
+{
+    glViewport(x, y, width, height);
 }
 
 void OpenGLRenderer::draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader)
@@ -81,6 +85,11 @@ void OpenGLRenderer::draw(VertexArray* vertex_array, IndexBuffer* index_buffer, 
     index_buffer->bind();
 
     glDrawElements(GL_TRIANGLES, index_buffer->get_count(), GL_UNSIGNED_INT, nullptr);
+}
+
+void OpenGLRenderer::start_frame()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void OpenGLRenderer::end_frame()

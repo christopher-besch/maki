@@ -16,8 +16,8 @@ struct EventHandler {
     std::function<bool(Key key)>                          on_key_repeat {nullptr};
     std::function<bool(Key key)>                          on_key_release {nullptr};
     std::function<bool(int width, int height)>            on_window_resize {nullptr};
+    std::function<bool()>                                 on_window_close {nullptr};
     // these might also be worth implementing:
-    // on_window_close
     // on_window_lose_focus
     // on_window_gain_focus
     // on_window_minimize

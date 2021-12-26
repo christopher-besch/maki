@@ -21,11 +21,6 @@ void Window::update()
     glfwPollEvents();
 }
 
-bool Window::should_close()
-{
-    return glfwWindowShouldClose(m_handle);
-}
-
 void Window::create()
 {
     MAKI_LOG_EXTRA("Creating GLFW window '{0}' ({1}, {2}).", m_title, m_width, m_height);
@@ -116,6 +111,11 @@ void Window::bind_event_callbacks()
         Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
         (window->m_renderer_event_handler.on_window_resize && window->m_renderer_event_handler.on_window_resize(width, height)) ||
             (window->m_driver_event_handler.on_window_resize && window->m_driver_event_handler.on_window_resize(width, height));
+    });
+    glfwSetWindowCloseCallback(m_handle, [](GLFWwindow* handle) {
+        Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
+        (window->m_renderer_event_handler.on_window_close && window->m_renderer_event_handler.on_window_close()) ||
+            (window->m_driver_event_handler.on_window_close && window->m_driver_event_handler.on_window_close());
     });
 }
 
