@@ -31,9 +31,9 @@ private:
     vec2 m_cur_mouse_pos;
 
     // in units per millisecond
-    float m_speed {0.03f};
+    float m_speed {0.05f};
     // in radians per millisecond
-    float m_rotation_speed {0.0003f};
+    float m_rotation_speed {0.00003f};
 };
 
 } // namespace Maki

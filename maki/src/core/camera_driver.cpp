@@ -117,8 +117,7 @@ void CameraDriver::update(long delta_time)
 {
     m_renderer->get_camera()->move(m_vel * float(delta_time) * m_speed);
     if(m_capture_mouse) {
-        MAKI_LOG_WARN("{} {}", glm::degrees(m_cur_mouse_pos.x - m_last_mouse_pos.x), glm::degrees(m_cur_mouse_pos.y - m_last_mouse_pos.y));
-        m_renderer->get_camera()->rotate((m_cur_mouse_pos - m_last_mouse_pos) * (delta_time * m_rotation_speed));
+        m_renderer->get_camera()->rotate((m_last_mouse_pos - m_cur_mouse_pos) * (delta_time * m_rotation_speed));
         m_last_mouse_pos = m_cur_mouse_pos;
     }
 }
