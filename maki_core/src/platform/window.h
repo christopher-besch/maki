@@ -26,8 +26,7 @@ public:
 
     void set_cursor_type(CursorType type);
 
-    EventHandler get_driver_event_handler() { return m_driver_event_handler; }
-    void         set_driver_event_handler(EventHandler driver_event_handler) { m_driver_event_handler = driver_event_handler; }
+    EventHandler& get_driver_event_handler() { return m_driver_event_handler; }
 
 private:
     void create();

@@ -9,7 +9,7 @@ namespace Maki {
 
 VertexArray* VertexArray::create()
 {
-    switch(Renderer::get_renderer_api()) {
+    switch(Renderer::get_renderer_impl()) {
     case Renderer::Implementation::none:
         MAKI_RAISE_CRITICAL("Renderer::Implementation::none is not supported.");
         return nullptr;

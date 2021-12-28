@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "core/camera_driver.h"
+#include "driver/camera_driver.h"
 #include "render_driver.h"
 #include "renderer/shader.h"
 
@@ -9,7 +9,7 @@ namespace Maki {
 void RenderDriver::run()
 {
     // TODO: remove example
-    Shader* shader = Shader::create("maki/res/shaders/simple_vertex.glsl", "maki/res/shaders/simple_fragment.glsl");
+    Shader* shader = Shader::create("maki_core/res/shaders/simple_vertex.glsl", "maki_core/res/shaders/simple_fragment.glsl");
     shader->set_float3("u_color", {1.0f, 1.0f, 0.0f});
 
     // cube vertices
@@ -73,10 +73,8 @@ void RenderDriver::run()
     vertex_array->add_vertex_buffer(vertex_buffer);
     vertex_array->set_index_buffer(index_buffer);
 
-    CameraDriver camera_driver(m_renderer);
-
     do {
-        camera_driver.update(m_renderer->get_last_frame_time());
+        m_camera_driver->update(m_renderer->get_last_frame_time());
         m_renderer->start_frame();
         // m_renderer->get_camera()->set_fov(glm::radians(float(i)));
         mat4 mvp = m_renderer->get_camera()->get_view_projection() * mat4 {1.0f};

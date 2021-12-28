@@ -11,7 +11,7 @@ Window::Window(const std::string& title, uint32_t width, uint32_t height, EventH
     // check compatibility
 #if PROJECT == glfw
     MAKI_ASSERT(
-        Renderer::get_renderer_api() == Renderer::Implementation::opengl,
+        Renderer::get_renderer_impl() == Renderer::Implementation::opengl,
         "Unsupported Implementation for a GLFW Window.");
 #endif
     if(s_window_count == 0)

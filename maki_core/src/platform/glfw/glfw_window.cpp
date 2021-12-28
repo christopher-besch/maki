@@ -64,7 +64,7 @@ void Window::init()
     });
 
 #ifndef NDEBUG
-    if(Renderer::get_renderer_api() == Renderer::Implementation::opengl)
+    if(Renderer::get_renderer_impl() == Renderer::Implementation::opengl)
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #endif
 }

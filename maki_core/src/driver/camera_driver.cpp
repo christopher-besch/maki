@@ -94,8 +94,8 @@ bool CameraDriver::on_mouse_move(double pos_x, double pos_y)
 
 void CameraDriver::set_event_handler()
 {
-    EventHandler event_handler;
-    event_handler.on_key_press = [this](Key key) {
+    EventHandler& event_handler = m_renderer->get_driver_event_handler();
+    event_handler.on_key_press  = [this](Key key) {
         return on_key_press(key);
     };
     event_handler.on_key_release = [this](Key key) {
@@ -110,7 +110,6 @@ void CameraDriver::set_event_handler()
     event_handler.on_mouse_move = [this](double pos_x, double pos_y) {
         return on_mouse_move(pos_x, pos_y);
     };
-    m_renderer->set_driver_event_handler(event_handler);
 }
 
 void CameraDriver::update(long delta_time)

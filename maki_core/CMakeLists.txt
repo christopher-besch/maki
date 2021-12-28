@@ -18,7 +18,7 @@ target_link_libraries(maki_core PUBLIC ${GLEW_LIBRARIES})
 
 target_include_directories(maki_core PUBLIC ${STB_INCLUDE_DIRS})
 
-target_link_libraries(maki_core PUBLIC spdlog)
+target_link_libraries(maki_core PUBLIC spdlog::spdlog)
 
 # copy resources in beginning
 message("-- Copying resources")

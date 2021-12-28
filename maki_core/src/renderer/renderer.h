@@ -19,21 +19,20 @@ public:
 public:
     // create renderer with implementation specified in s_renderer_impl
     // every implementation-specific class uses this concept
-    static Renderer* create(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler);
+    static Renderer* create(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler = EventHandler {});
 
-    static Implementation get_renderer_api() { return s_renderer_impl; }
-    static void           set_renderer_api(Implementation renderer_impl) { s_renderer_impl = renderer_impl; }
+    static Implementation get_renderer_impl() { return s_renderer_impl; }
+    static void           set_renderer_impl(Implementation renderer_impl) { s_renderer_impl = renderer_impl; }
 
 public:
-    Renderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler);
+    Renderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler = EventHandler {});
     virtual ~Renderer()
     {
         delete m_window;
         delete m_camera;
     }
 
-    EventHandler get_driver_event_handler() { return m_window->get_driver_event_handler(); }
-    void         set_driver_event_handler(EventHandler driver_event_handler) { m_window->set_driver_event_handler(driver_event_handler); }
+    EventHandler& get_driver_event_handler() { return m_window->get_driver_event_handler(); }
 
     void set_cursor_type(CursorType type) { m_window->set_cursor_type(type); }
 
@@ -47,7 +46,7 @@ public:
     bool should_terminate() { return m_should_terminate; }
 
     virtual void draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader) = 0;
-    // to be augmented by implementation
+    // to be augmented by implementation -> Renderer func have to be called from implementation
     virtual void start_frame();
     virtual void end_frame();
 

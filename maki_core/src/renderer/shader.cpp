@@ -9,7 +9,7 @@ namespace Maki {
 
 Shader* Shader::create(const std::string& vert_path, const std::string& frag_path)
 {
-    switch(Renderer::get_renderer_api()) {
+    switch(Renderer::get_renderer_impl()) {
     case Renderer::Implementation::none:
         MAKI_RAISE_CRITICAL("Renderer::Implementation::none is not supported.");
         return nullptr;

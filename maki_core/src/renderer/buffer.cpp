@@ -9,7 +9,7 @@ namespace Maki {
 
 VertexBuffer* VertexBuffer::create(const std::initializer_list<BufferElement>& elements, size_t size)
 {
-    switch(Renderer::get_renderer_api()) {
+    switch(Renderer::get_renderer_impl()) {
     case Renderer::Implementation::none:
         MAKI_RAISE_CRITICAL("Renderer::Implementation::none is not supported.");
         return nullptr;
@@ -23,7 +23,7 @@ VertexBuffer* VertexBuffer::create(const std::initializer_list<BufferElement>& e
 
 VertexBuffer* VertexBuffer::create(const std::initializer_list<BufferElement>& elements, const void* data, size_t size)
 {
-    switch(Renderer::get_renderer_api()) {
+    switch(Renderer::get_renderer_impl()) {
     case Renderer::Implementation::none:
         MAKI_RAISE_CRITICAL("Renderer::Implementation::none is not supported.");
         return nullptr;
@@ -37,7 +37,7 @@ VertexBuffer* VertexBuffer::create(const std::initializer_list<BufferElement>& e
 
 IndexBuffer* IndexBuffer::create(uint32_t count, const uint32_t* indices)
 {
-    switch(Renderer::get_renderer_api()) {
+    switch(Renderer::get_renderer_impl()) {
     case Renderer::Implementation::none:
         MAKI_RAISE_CRITICAL("Renderer::Implementation::none is not supported.");
         return nullptr;

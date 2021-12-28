@@ -1,5 +1,6 @@
 #pragma once
 
+#include "driver/camera_driver.h"
 #include "renderer/renderer.h"
 
 namespace Maki {
@@ -7,8 +8,7 @@ namespace Maki {
 class RenderDriver {
 public:
     RenderDriver(const std::string& title, uint32_t width, uint32_t height)
-        // TODO: set correct EventHandler
-        : m_renderer(Renderer::create(title, width, height, EventHandler {}))
+        : m_renderer {Renderer::create(title, width, height)}, m_camera_driver {new CameraDriver(m_renderer)}
     {
     }
 
@@ -20,7 +20,8 @@ public:
     void run();
 
 private:
-    Renderer* m_renderer;
+    Renderer*     m_renderer;
+    CameraDriver* m_camera_driver;
 };
 
 } // namespace Maki
