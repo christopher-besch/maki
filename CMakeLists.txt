@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(opengl_test)
+project(maki)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -19,6 +19,8 @@ set(STB_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/vendor/stb")
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/vendor/spdlog")
 
+add_subdirectory("${CMAKE_SOURCE_DIR}/vendor/pybind11")
+
 # use warnings and multi threading
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
@@ -32,5 +34,6 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 endif()
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/test")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/maki_core")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/maki")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/sandbox")
