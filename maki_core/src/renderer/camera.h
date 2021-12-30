@@ -50,24 +50,25 @@ private:
     vec3 m_position {0.0f, 0.0f, 10.0f};
     // all angles in radians
     // horizontal, vertical
+    // default: look into the screen (negative z)
     vec2  m_angle {PI, 0.0f};
     float m_fov {PI / 4};
 
     // mainly for caching
     // always normalized
-    vec3 m_direction {0.0f, 0.0f, -1.0f}; // default: into the screen
-    vec3 m_right {1.0f, 0.0f, 0.0f};
-    vec3 m_up {0.0f, -1.0f, 0.0f};
+    vec3 m_direction;
+    vec3 m_right;
+    vec3 m_up;
 
-    mat4 m_projection {1.0f};
-    mat4 m_view {1.0f};
-    mat4 m_view_projection {1.0f};
+    mat4 m_projection;
+    mat4 m_view;
+    mat4 m_view_projection;
 
-    bool m_view_projection_outdated {true},
-        m_projection_outdated {true},
-        m_view_outdated {true},
-        // direction is already initialized by default
-        m_direction_outdated {false};
+    // only update what's changed
+    bool m_view_projection_outdated {true};
+    bool m_projection_outdated {true};
+    bool m_view_outdated {true};
+    bool m_direction_outdated {true};
 };
 
 } // namespace Maki

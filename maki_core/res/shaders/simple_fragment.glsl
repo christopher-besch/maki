@@ -13,13 +13,13 @@
 /*     color = texture(texture_sampler, uv).rgb; */
 /* } */
 
-in vec3 pos;
+in vec4 col;
 
 uniform vec3 u_color;
 
-out vec3 color;
+out vec4 color;
 
 void main()
 {
-	color = u_color;
+	color = col;
 }

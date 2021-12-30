@@ -10,67 +10,45 @@ void RenderDriver::run()
 {
     // TODO: remove example
     Shader* shader = Shader::create("maki_core/res/shaders/simple_vertex.glsl", "maki_core/res/shaders/simple_fragment.glsl");
-    shader->set_float3("u_color", {1.0f, 1.0f, 0.0f});
+    // shader->set_float3("u_color", {1.0f, 1.0f, 0.0f});
 
     // cube vertices
-    const GLfloat vertex_buffer_data[] = {
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, 1.0f,
-        -1.0f, 1.0f, 1.0f,
+    const GLfloat vertex_pos[] = {
+        -1.0f, -1.0f, +1.0f, // 0 bottom front left
+        +1.0f, -1.0f, +1.0f, // 1 bottom front right
+        -1.0f, -1.0f, -1.0f, // 2 bottom back  left
+        +1.0f, -1.0f, -1.0f, // 3 bottom back  right
+        -1.0f, +1.0f, +1.0f, // 4 top    front left
+        +1.0f, +1.0f, +1.0f, // 5 top    front right
+        -1.0f, +1.0f, -1.0f, // 6 top    back  left
+        +1.0f, +1.0f, -1.0f  // 7 top    back  right
+    };
+    const GLfloat vertex_color[] = {
+        0.6f, 0.6f, 0.0f,
+        0.0f, 0.0f, 0.6f,
+        0.0f, 0.6f, 0.0f,
+        0.6f, 0.0f, 0.0f,
+        0.0f, 0.6f, 0.0f,
+        0.6f, 0.0f, 0.6f,
+        0.6f, 0.6f, 0.0f,
+        1.0f, 1.0f, 1.0f};
+    VertexBuffer* vertex_pos_buffer   = VertexBuffer::create({{"a_position", DataType::float3}}, vertex_pos, sizeof(vertex_pos));
+    VertexBuffer* vertex_color_buffer = VertexBuffer::create({{"a_color", DataType::float3}}, vertex_color, sizeof(vertex_color));
 
-        1.0f, 1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
+    const uint32_t index_buffer_data[] = {
+        2, 3, 0, 0, 3, 1, // bottom
+        0, 1, 5, 5, 4, 0, // front
+        2, 0, 4, 4, 6, 2, // left
+        1, 3, 7, 7, 5, 1, // right
+        3, 2, 6, 6, 7, 3, // back
+        7, 6, 4, 4, 5, 7  // top
+    };
 
-        1.0f, -1.0f, 1.0f,
-        -1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-
-        1.0f, 1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f, -1.0f,
-
-        1.0f, -1.0f, 1.0f,
-        -1.0f, -1.0f, 1.0f,
-        -1.0f, -1.0f, -1.0f,
-
-        -1.0f, 1.0f, 1.0f,
-        -1.0f, -1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f,
-
-        1.0f, 1.0f, 1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, 1.0f, -1.0f,
-
-        1.0f, -1.0f, -1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f,
-
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
-
-        1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, 1.0f,
-
-        1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f};
-    VertexBuffer* vertex_buffer = VertexBuffer::create({{"a_position", DataType::float3}}, vertex_buffer_data, sizeof(vertex_buffer_data));
-
-    uint32_t index_buffer_data[12 * 3];
-    for(uint32_t i {0}; i < 12 * 3; ++i)
-        index_buffer_data[i] = i;
-
-    IndexBuffer* index_buffer = IndexBuffer::create(48 * 3, index_buffer_data);
+    IndexBuffer* index_buffer = IndexBuffer::create(sizeof(index_buffer_data) / sizeof(uint32_t), index_buffer_data);
 
     VertexArray* vertex_array = VertexArray::create();
-    vertex_array->add_vertex_buffer(vertex_buffer);
+    vertex_array->add_vertex_buffer(vertex_pos_buffer);
+    vertex_array->add_vertex_buffer(vertex_color_buffer);
     vertex_array->set_index_buffer(index_buffer);
 
     do {
@@ -84,7 +62,7 @@ void RenderDriver::run()
     } while(!m_renderer->should_terminate());
 
     delete shader;
-    delete vertex_buffer;
+    delete vertex_pos_buffer;
     delete vertex_array;
 }
 
