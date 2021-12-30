@@ -19,7 +19,7 @@ sudo apt install build-essential cmake libxrandr-dev libxinerama-dev libxcursor-
 git clone https://github.com/christopher-besch/maki --recurse
 cd maki
 mkdir build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -Dplatform=glfw
+cmake .. -DCMAKE_BUILD_TYPE=Debug -Dplatform=glfw
 cmake --build . -j4
 ```
 
@@ -43,4 +43,3 @@ or from Python.
 - [christopher-besch/ray_tracer](https://github.com/christopher-besch/ray_tracer)
 - [The Cherno OpenGL](https://www.youtube.com/watch?v=W3gAzLwfIP0&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2)
 - [opengl-tutorial.org](http://www.opengl-tutorial.org)
-
