@@ -3,7 +3,17 @@ cmake_minimum_required(VERSION 3.10)
 project(maki)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+# required for spdlog included in a shared lib
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
+  set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+endif()
 
 # dependencies
 add_subdirectory("${CMAKE_SOURCE_DIR}/vendor/glfw")

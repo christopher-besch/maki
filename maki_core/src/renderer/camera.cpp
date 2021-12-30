@@ -54,7 +54,6 @@ void Camera::move(vec3 delta)
 }
 void Camera::rotate(vec2 delta_angle)
 {
-    MAKI_LOG_WARN("{} {}", glm::degrees(delta_angle.x), glm::degrees(delta_angle.y));
     m_angle += delta_angle;
     // can't break your ribs
     m_angle.y = std::clamp(m_angle.y, -PI / 2.0f, PI / 2.0f);

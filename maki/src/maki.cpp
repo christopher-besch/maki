@@ -7,6 +7,10 @@ namespace py = pybind11;
 void init_interface(py::module& m)
 {
     m.def("init", &Maki::init, "Initialize Maki; to be called once and only once");
+    py::enum_<Maki::Renderer::Implementation>(m, "RendererImplementation")
+        .value("none", Maki::Renderer::Implementation::none)
+        .value("opengl", Maki::Renderer::Implementation::opengl)
+        .export_values();
 }
 void init_render_driver(py::module& m)
 {
