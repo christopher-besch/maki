@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include "core/log.h"
 #include "opengl_shader.h"
 
 namespace Maki {

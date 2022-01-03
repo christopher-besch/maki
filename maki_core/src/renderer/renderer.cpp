@@ -2,7 +2,6 @@
 
 #include "renderer.h"
 
-#include "core/log.h"
 #include "renderer/opengl/opengl_renderer.h"
 
 namespace Maki {

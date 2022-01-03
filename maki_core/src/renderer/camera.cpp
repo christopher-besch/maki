@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "camera.h"
-#include "core/log.h"
 
 namespace Maki {
 

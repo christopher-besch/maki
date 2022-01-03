@@ -2,7 +2,6 @@
 
 #include "opengl_renderer.h"
 
-#include "core/log.h"
 #include "core/stringifier.h"
 
 namespace Maki {

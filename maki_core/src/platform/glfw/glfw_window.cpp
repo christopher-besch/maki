@@ -2,7 +2,6 @@
 #include "pch.h"
 
 #include "../window.h"
-#include "core/log.h"
 #include "renderer/renderer.h"
 
 namespace Maki {

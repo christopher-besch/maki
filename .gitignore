@@ -33,8 +33,9 @@
 
 build
 
-vendor/glew/
 vendor/glfw/
 vendor/glm/
-vendor/stb/
+vendor/imgui/
+vendor/pybind11/
 vendor/spdlog/
+vendor/stb/
