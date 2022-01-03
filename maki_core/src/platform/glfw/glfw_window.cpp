@@ -58,7 +58,7 @@ void Window::init()
     MAKI_LOG_EXTRA("Initializing GLFW.");
 
     int success = glfwInit();
-    MAKI_ASSERT(success, "Couldn't initialize GLFW.");
+    MAKI_ASSERT_CRITICAL(success, "Couldn't initialize GLFW.");
     glfwSetErrorCallback([](int error, const char* description) {
         MAKI_LOG_ERROR("GLFW Error ({0}): {1}", error, description);
     });

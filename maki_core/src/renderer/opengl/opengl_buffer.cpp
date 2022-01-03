@@ -29,7 +29,7 @@ OpenGLVertexBuffer::~OpenGLVertexBuffer()
 
 void OpenGLVertexBuffer::set_data(const void* data, size_t size)
 {
-    MAKI_ASSERT(!m_static, "OpenGLVertexBuffer::set_data can't be used with a static buffer.");
+    MAKI_ASSERT_CRITICAL(!m_static, "OpenGLVertexBuffer::set_data can't be used with a static buffer.");
     bind();
     // replace everything
     glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);

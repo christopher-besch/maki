@@ -16,7 +16,8 @@ void init_render_driver(py::module& m)
 {
     py::class_<Maki::RenderDriver>(m, "RenderDriver")
         .def(py::init<const std::string&, uint32_t, uint32_t>())
-        .def("run", &Maki::RenderDriver::run);
+        .def("await_termination", &Maki::RenderDriver::await_termination)
+        .def("is_terminated", &Maki::RenderDriver::is_terminated);
 }
 
 PYBIND11_MODULE(maki, m)

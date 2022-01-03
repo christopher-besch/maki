@@ -1,27 +1,23 @@
 #pragma once
 
-#include "driver/camera_driver.h"
-#include "renderer/renderer.h"
+#include <thread>
+
+#include "driver/render_thread.h"
 
 namespace Maki {
 
 class RenderDriver {
 public:
-    RenderDriver(const std::string& title, uint32_t width, uint32_t height)
-        : m_renderer {Renderer::create(title, width, height)}, m_camera_driver {new CameraDriver(m_renderer)}
-    {
-    }
+    RenderDriver(const std::string& title, uint32_t width, uint32_t height);
 
-    ~RenderDriver()
-    {
-        delete m_renderer;
-    }
+    ~RenderDriver();
 
-    void run();
+    void await_termination() { m_render_thread->await_termination(); };
+    bool is_terminated() { return m_terminated; }
 
 private:
-    Renderer*     m_renderer;
-    CameraDriver* m_camera_driver;
+    RenderThread* m_render_thread;
+    bool          m_terminated {false};
 };
 
 } // namespace Maki

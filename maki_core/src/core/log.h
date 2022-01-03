@@ -40,25 +40,31 @@ public:
     }
 };
 
-// asserts
+// asserts only in debug
 #ifdef NDEBUG
 #define MAKI_RAISE_CRITICAL(...)                                \
     do {                                                        \
         ::Maki::Log::get_error_logger()->critical(__VA_ARGS__); \
-        std::exit(EXIT_FAILURE);                                \
+        std::terminate();                                       \
     } while(0)
 
-#define MAKI_ASSERT(x, ...)
+#define MAKI_ASSERT_WARN(x, ...)
+#define MAKI_ASSERT_CRITICAL(x, ...)
 
 #else
 #define MAKI_RAISE_CRITICAL(...)                                                                                \
     do {                                                                                                        \
         ::Maki::Log::get_error_logger()->critical(__VA_ARGS__);                                                 \
         ::Maki::Log::get_error_logger()->critical("(in {}:{}; in function: {})", __FILE__, __LINE__, __func__); \
-        std::exit(EXIT_FAILURE);                                                                                \
+        std::terminate();                                                                                       \
     } while(0)
 
-#define MAKI_ASSERT(x, ...)                   \
+#define MAKI_ASSERT_WARN(x, ...)        \
+    do {                                \
+        if(!(x))                        \
+            MAKI_LOG_WARN(__VA_ARGS__); \
+    } while(0)
+#define MAKI_ASSERT_CRITICAL(x, ...)          \
     do {                                      \
         if(!(x))                              \
             MAKI_RAISE_CRITICAL(__VA_ARGS__); \
