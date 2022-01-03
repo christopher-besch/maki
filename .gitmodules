@@ -13,3 +13,6 @@
 [submodule "vendor/pybind11"]
 	path = vendor/pybind11
 	url = https://github.com/pybind/pybind11
+[submodule "vendor/imgui"]
+	path = vendor/imgui
+	url = https://github.com/ocornut/imgui

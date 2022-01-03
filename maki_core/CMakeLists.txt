@@ -16,9 +16,11 @@ target_link_libraries(maki_core PUBLIC ${OPENGL_LIBRARIES})
 target_include_directories(maki_core PUBLIC ${GLEW_INCLUDE_DIRS})
 target_link_libraries(maki_core PUBLIC ${GLEW_LIBRARIES})
 
-target_include_directories(maki_core PUBLIC ${STB_INCLUDE_DIRS})
+target_link_libraries(maki_core PUBLIC stb)
 
 target_link_libraries(maki_core PUBLIC spdlog::spdlog)
+
+target_link_libraries(maki_core PUBLIC imgui)
 
 # copy resources in beginning
 message("-- Copying resources")

@@ -15,21 +15,15 @@ if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
   set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
 
-# dependencies
-add_subdirectory("${CMAKE_SOURCE_DIR}/vendor/glfw")
-
-add_subdirectory("${CMAKE_SOURCE_DIR}/vendor/glm")
-
-find_package(GLEW REQUIRED)
-
+# dependencies #
+# opengl
 set(OpenGL_GL_PREFERENCE "GLVND")
 find_package(OpenGL REQUIRED)
 
-set(STB_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/vendor/stb")
+# glew
+find_package(GLEW REQUIRED)
 
-add_subdirectory("${CMAKE_SOURCE_DIR}/vendor/spdlog")
-
-add_subdirectory("${CMAKE_SOURCE_DIR}/vendor/pybind11")
+add_subdirectory("${CMAKE_SOURCE_DIR}/vendor")
 
 # use warnings and multi threading
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
