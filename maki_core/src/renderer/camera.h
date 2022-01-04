@@ -28,6 +28,8 @@ public:
     vec2 get_angle() { return m_angle; }
 
     const mat4& get_view_projection();
+    uint32_t    get_width() { return m_width; }
+    uint32_t    get_height() { return m_height; }
 
 private:
     // only update what's necessary

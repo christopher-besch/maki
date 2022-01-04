@@ -51,9 +51,6 @@ public:
     bool imgui_supported() { return m_window->imgui_supported(); }
 
 protected:
-    virtual void set_viewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
-
-protected:
     static inline Implementation s_renderer_impl {Renderer::Implementation::none};
 
 protected:

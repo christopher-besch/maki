@@ -26,7 +26,6 @@ Renderer::Renderer(const std::string& title, uint32_t width, uint32_t height, Ev
     EventHandler renderer_event_handler;
     renderer_event_handler.on_window_resize = [this](int width, int height) {
         m_camera->set_window_size(width, height);
-        set_viewport(0, 0, width, height);
         return false;
     };
     renderer_event_handler.on_window_close = [this]() {
