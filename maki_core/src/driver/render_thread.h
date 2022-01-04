@@ -21,6 +21,7 @@ private:
     void setup();
     void run();
     void render_frame();
+    bool imgui_support() { return m_renderer->imgui_supported(); }
 
 private:
     std::thread m_thread;
@@ -36,6 +37,9 @@ private:
     VertexBuffer* m_vertex_col_buffer;
     VertexArray*  m_vertex_array;
     IndexBuffer*  m_index_buffer;
+
+private:
+    static std::mutex s_setup_mutex;
 };
 
 } // namespace Maki

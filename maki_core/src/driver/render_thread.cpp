@@ -2,15 +2,20 @@
 
 namespace Maki {
 
+std::mutex RenderThread::s_setup_mutex;
+
 // called from control thread //
 RenderThread::RenderThread(const std::string& title, uint32_t width, uint32_t height, std::function<void()> termination_callback)
     : m_termination_callback(termination_callback)
 {
     m_thread = std::thread([this, title, width, height]() {
+        // setup can't be performed twice at the same time
+        s_setup_mutex.lock();
         m_renderer      = Renderer::create(title, width, height);
         m_camera_driver = new CameraDriver(m_renderer);
 
         setup();
+        s_setup_mutex.unlock();
         run();
         m_termination_callback();
     });

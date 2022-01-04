@@ -26,11 +26,7 @@ public:
 
 public:
     Renderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler = EventHandler {});
-    virtual ~Renderer()
-    {
-        delete m_window;
-        delete m_camera;
-    }
+    virtual ~Renderer();
 
     EventHandler& get_driver_event_handler() { return m_window->get_driver_event_handler(); }
 
@@ -44,14 +40,15 @@ public:
     virtual void set_clear_col(vec4 color) = 0;
 
     virtual void draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader) = 0;
-    // to be augmented by implementation -> Renderer func have to be called from implementation
+    // to be augmented by implementation -> Renderer func has to be called from implementation prior to anything else
     virtual void start_frame();
     virtual void end_frame();
 
-    // thread safe
+    // thread safe -> can be run from control thread //
     void terminate() { m_should_terminate = true; }
-    void de_terminate() { m_should_terminate = false; }
     bool should_terminate() { return m_should_terminate; }
+
+    bool imgui_supported() { return m_window->imgui_supported(); }
 
 protected:
     virtual void set_viewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;

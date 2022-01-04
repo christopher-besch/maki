@@ -25,8 +25,11 @@ add_library(
   "${IMGUI_DIR}/imgui.cpp"
   
   # backends
+  "${IMGUI_DIR}/backends/imgui_impl_glfw.cpp"
   "${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp"
 )
 target_include_directories(imgui PUBLIC "${IMGUI_DIR}" "${IMGUI_DIR}/backends")
 target_include_directories(imgui INTERFACE "${IMGUI_DIR}/include")
+
+target_link_libraries(imgui PUBLIC glfw)
 target_link_libraries(imgui PUBLIC ${OPENGL_LIBRARIES})

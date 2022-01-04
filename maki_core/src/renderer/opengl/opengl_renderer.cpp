@@ -57,6 +57,7 @@ OpenGLRenderer::OpenGLRenderer(const std::string& title, uint32_t width, uint32_
     },
                            nullptr);
 #endif
+    // TODO: don't hardcode
     set_clear_col({0.0f, 0.0f, 0.4f, 1.0f});
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);

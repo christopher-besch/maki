@@ -36,11 +36,18 @@ Renderer::Renderer(const std::string& title, uint32_t width, uint32_t height, Ev
     m_window = new Window(title, width, height, driver_event_handler, renderer_event_handler);
 }
 
+Renderer::~Renderer()
+{
+    delete m_window;
+    delete m_camera;
+}
+
 void Renderer::start_frame()
 {
     TimePoint current_time = Clock::now();
     m_last_frame_time      = current_time - m_last_time;
     m_last_time            = current_time;
+    m_window->start_frame();
 }
 void Renderer::end_frame()
 {

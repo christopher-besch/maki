@@ -1,6 +1,9 @@
 #pragma once
 
+#if PROJECT == glfw
 #include <GLFW/glfw3.h>
+#endif
+#include <imgui.h>
 #include <iostream>
 
 #include "core/log.h"
@@ -21,6 +24,8 @@ public:
     Window(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler, EventHandler renderer_event_handler);
     ~Window();
 
+    // should be run before gl draws
+    void start_frame();
     // should be run after gl draws
     void end_frame();
 
@@ -28,12 +33,16 @@ public:
 
     EventHandler& get_driver_event_handler() { return m_driver_event_handler; }
 
+    // thread safe //
+    bool imgui_supported() { return m_imgui_io; }
+
 private:
     void create();
     // init performed at creation of first window
     void init();
-
     void bind_event_callbacks();
+    // has to be called after bind_event_callbacks
+    void init_imgui();
 
 private:
     static inline int s_window_count {0};
@@ -44,6 +53,9 @@ private:
 
     // only two layers supported
     EventHandler m_driver_event_handler, m_renderer_event_handler;
+
+    // nullptr when imgui not supported -> only supported with first window because of https://github.com/ocornut/imgui/issues/2117
+    ImGuiIO* m_imgui_io {nullptr};
 
 #if PROJECT == glfw
     GLFWwindow* m_handle;

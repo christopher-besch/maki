@@ -8,14 +8,35 @@ namespace Maki {
 
 Window::~Window()
 {
+    if(imgui_supported()) {
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
+    }
+
     glfwDestroyWindow(m_handle);
     --s_window_count;
     if(s_window_count == 0)
         glfwTerminate();
 }
 
+void Window::start_frame()
+{
+    if(imgui_supported()) {
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        // TODO: remove example
+        ImGui::ShowDemoWindow();
+    }
+}
 void Window::end_frame()
 {
+    if(imgui_supported()) {
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    }
+
     glfwSwapBuffers(m_handle);
     glfwPollEvents();
 }
@@ -47,9 +68,25 @@ void Window::create()
         MAKI_RAISE_CRITICAL("Failed to create GLFW window.");
     glfwMakeContextCurrent(m_handle);
 
+    // used to access this instance in event callbacks
     glfwSetWindowUserPointer(m_handle, this);
 
     bind_event_callbacks();
+
+    // has been increased before
+    if(s_window_count == 1)
+        init_imgui();
+}
+void Window::init_imgui()
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    m_imgui_io = &ImGui::GetIO();
+
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplGlfw_InitForOpenGL(m_handle, true);
+    ImGui_ImplOpenGL3_Init("#version 450 core");
 }
 
 void Window::init()
@@ -70,6 +107,7 @@ void Window::init()
 
 void Window::bind_event_callbacks()
 {
+    // TODO: clean up
     glfwSetCursorPosCallback(m_handle, [](GLFWwindow* handle, double pos_x, double pos_y) {
         Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
         // propagate through layers until handled
@@ -79,18 +117,21 @@ void Window::bind_event_callbacks()
     });
     glfwSetScrollCallback(m_handle, [](GLFWwindow* handle, double offset_x, double offset_y) {
         Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
-        (window->m_renderer_event_handler.on_scroll && window->m_renderer_event_handler.on_scroll(offset_x, offset_y)) ||
+        (window->imgui_supported() && window->m_imgui_io->WantCaptureMouse) ||
+            (window->m_renderer_event_handler.on_scroll && window->m_renderer_event_handler.on_scroll(offset_x, offset_y)) ||
             (window->m_driver_event_handler.on_scroll && window->m_driver_event_handler.on_scroll(offset_x, offset_y));
     });
     glfwSetMouseButtonCallback(m_handle, [](GLFWwindow* handle, int button, int action, int) {
         Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
         switch(action) {
         case GLFW_PRESS:
-            (window->m_renderer_event_handler.on_mouse_btn_press && window->m_renderer_event_handler.on_mouse_btn_press(static_cast<MouseBtn>(button))) ||
+            (window->imgui_supported() && window->m_imgui_io->WantCaptureMouse) ||
+                (window->m_renderer_event_handler.on_mouse_btn_press && window->m_renderer_event_handler.on_mouse_btn_press(static_cast<MouseBtn>(button))) ||
                 (window->m_driver_event_handler.on_mouse_btn_press && window->m_driver_event_handler.on_mouse_btn_press(static_cast<MouseBtn>(button)));
             return;
         case GLFW_RELEASE:
-            (window->m_renderer_event_handler.on_mouse_btn_release && window->m_renderer_event_handler.on_mouse_btn_release(static_cast<MouseBtn>(button))) ||
+            (window->imgui_supported() && window->m_imgui_io->WantCaptureMouse) ||
+                (window->m_renderer_event_handler.on_mouse_btn_release && window->m_renderer_event_handler.on_mouse_btn_release(static_cast<MouseBtn>(button))) ||
                 (window->m_driver_event_handler.on_mouse_btn_release && window->m_driver_event_handler.on_mouse_btn_release(static_cast<MouseBtn>(button)));
             return;
         }
@@ -99,15 +140,18 @@ void Window::bind_event_callbacks()
         Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
         switch(action) {
         case GLFW_PRESS:
-            (window->m_renderer_event_handler.on_key_press && window->m_renderer_event_handler.on_key_press(static_cast<Key>(key))) ||
+            (window->imgui_supported() && window->m_imgui_io->WantCaptureKeyboard) ||
+                (window->m_renderer_event_handler.on_key_press && window->m_renderer_event_handler.on_key_press(static_cast<Key>(key))) ||
                 (window->m_driver_event_handler.on_key_press && window->m_driver_event_handler.on_key_press(static_cast<Key>(key)));
             return;
         case GLFW_RELEASE:
-            (window->m_renderer_event_handler.on_key_release && window->m_renderer_event_handler.on_key_release(static_cast<Key>(key))) ||
+            (window->imgui_supported() && window->m_imgui_io->WantCaptureKeyboard) ||
+                (window->m_renderer_event_handler.on_key_release && window->m_renderer_event_handler.on_key_release(static_cast<Key>(key))) ||
                 (window->m_driver_event_handler.on_key_release && window->m_driver_event_handler.on_key_release(static_cast<Key>(key)));
             return;
         case GLFW_REPEAT:
-            (window->m_renderer_event_handler.on_key_repeat && window->m_renderer_event_handler.on_key_repeat(static_cast<Key>(key))) ||
+            (window->imgui_supported() && window->m_imgui_io->WantCaptureKeyboard) ||
+                (window->m_renderer_event_handler.on_key_repeat && window->m_renderer_event_handler.on_key_repeat(static_cast<Key>(key))) ||
                 (window->m_driver_event_handler.on_key_repeat && window->m_driver_event_handler.on_key_repeat(static_cast<Key>(key)));
             return;
         }
