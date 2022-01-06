@@ -2,7 +2,7 @@
 
 #include <thread>
 
-#include "atom/atom.h"
+#include "atom/container.h"
 #include "driver/camera_driver.h"
 #include "renderer/renderer.h"
 
@@ -18,7 +18,15 @@ public:
     void await_termination();
     bool is_terminated() { return m_terminated; }
 
+    // return id of created atom
+    uint32_t add_cuboid_atom();
+    void     show_cuboid_atom(uint32_t id, uint32_t frame, bool render);
+    void     translate_cuboid_atom(uint32_t id, uint32_t frame, vec3 delta);
+
 private:
+    // to be run from control thread
+    void set_control_frame(uint32_t frame);
+
     // to be run from render thread
     void setup();
     void run();
@@ -33,10 +41,11 @@ private:
     CameraDriver* m_camera_driver;
 
     // used by control thread
-    AtomChain<CuboidAtom> m_create_cuboid_ptr;
+    AtomChain<CuboidAtom> m_control_cuboid_chain;
     // used by render thread
-    AtomChain<CuboidAtom> m_render_cuboid_ptr;
-    AtomDiffs<CuboidAtom> m_cuboid_diffs;
+    // AtomChain<CuboidAtom> m_render_cuboid_chain;
+
+    AtomDiffFrames<CuboidAtom> m_cuboid_diffs;
 
     // TODO: remove example
     Shader*       m_shader;

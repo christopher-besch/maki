@@ -47,6 +47,32 @@ void RenderDriver::await_termination()
     m_render_thread.join();
 }
 
+uint32_t RenderDriver::add_cuboid_atom()
+{
+    m_control_cuboid_chain.add();
+    return m_control_cuboid_chain.size() - 1;
+}
+void RenderDriver::show_cuboid_atom(uint32_t id, uint32_t frame, bool render)
+{
+    MAKI_ASSERT_CRITICAL(m_control_cuboid_chain.size() > id, "ID {} for CuboidAtoms hasn't been allocated yet.", id);
+    MAKI_ASSERT_CRITICAL(frame < 1, "Frame {} is invalid.", frame);
+    while(frame >= m_cuboid_diffs.size())
+        m_cuboid_diffs.emplace_back();
+
+    set_control_frame(frame - 1);
+
+    if(m_control_cuboid_chain[id].render != render)
+        m_cuboid_diffs[frame].add(new ToggleRenderDiff<CuboidAtom>());
+}
+void RenderDriver::translate_cuboid_atom(uint32_t id, uint32_t frame, vec3 delta)
+{
+}
+
+void RenderDriver::set_control_frame(uint32_t frame)
+{
+    m_control_cuboid_chain.set_frame(frame, m_cuboid_diffs);
+}
+
 // called from render thread //
 void RenderDriver::setup()
 {

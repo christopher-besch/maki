@@ -1,65 +1,43 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <set>
-#include <vector>
+#include <array>
 
 #include "core/definitions.h"
 
 namespace Maki {
 
-// atoms //
+// implementation inheritance only -> not to be used as an interface
 struct Atom {
-    bool render;
+    bool render {false};
 };
 
 struct CuboidAtom: public Atom {
-    float ver_pos[3 * 8];
-    float ver_col[3 * 8];
+    std::array<float, 3 * 8> ver_pos {
+        -1.0f, -1.0f, +1.0f, // 0 bottom front left
+        +1.0f, -1.0f, +1.0f, // 1 bottom front right
+        -1.0f, -1.0f, -1.0f, // 2 bottom back  left
+        +1.0f, -1.0f, -1.0f, // 3 bottom back  right
+        -1.0f, +1.0f, +1.0f, // 4 top    front left
+        +1.0f, +1.0f, +1.0f, // 5 top    front right
+        -1.0f, +1.0f, -1.0f, // 6 top    back  left
+        +1.0f, +1.0f, -1.0f  // 7 top    back  right
+    };
+    std::array<float, 3 * 8> ver_col {
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f};
+
+    CuboidAtom& operator+=(const CuboidAtom& atom);
+    CuboidAtom& operator-=(const CuboidAtom& atom);
+    // void        add_pos(const CuboidAtom& atom);
+    // void        add_col(const CuboidAtom& atom);
+    // void        sub_pos(const CuboidAtom& atom);
+    // void        sub_col(const CuboidAtom& atom);
 };
-
-// atom differences //
-template<typename T>
-struct AtomDiff {
-    using atom_type = T;
-
-    uint32_t id;
-};
-
-template<typename T>
-// can't cross atom type border
-struct ReplacementDiff: public AtomDiff<T> {
-    T new_atom;
-};
-
-template<typename T>
-struct LinTransformDiff: public AtomDiff<T> {
-    mat4 mat;
-    mat4 inv_mat;
-
-    LinTransformDiff(mat4 mat)
-        : mat(mat)
-    {
-        inv_mat = glm::inverse(mat);
-    }
-};
-
-// containers //
-template<typename T>
-class CompareAtom {
-public:
-    // to be rendered atoms first
-    bool operator()(const T& a, const T&)
-    {
-        return a.render;
-    }
-};
-
-template<typename T>
-using AtomChain = std::multiset<T, CompareAtom<T>>;
-
-// one entry per frame
-template<typename T>
-using AtomDiffs = std::vector<std::set<AtomDiff<T>*>>;
 
 } // namespace Maki
