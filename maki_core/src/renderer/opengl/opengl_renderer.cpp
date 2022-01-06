@@ -86,7 +86,6 @@ void OpenGLRenderer::draw(VertexArray* vertex_array, IndexBuffer* index_buffer, 
 void OpenGLRenderer::start_frame()
 {
     Renderer::start_frame();
-    int x = 0 / 0;
     // required by multiple windows
     glViewport(0, 0, m_camera->get_width(), m_camera->get_height());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
