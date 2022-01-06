@@ -6,10 +6,13 @@
 
 namespace Maki {
 
-// atom differences //
+// how to convert atom "across" frame-border
 template<typename T>
 class AtomDiff {
 public:
+    AtomDiff(uint32_t id)
+        : m_id(id) {}
+
     virtual void apply(T& atom) const   = 0;
     virtual void reverse(T& atom) const = 0;
     uint32_t     get_id() const { return m_id; }
@@ -26,6 +29,9 @@ private:
 template<typename T>
 class ToggleRenderDiff: public AtomDiff<T> {
 public:
+    ToggleRenderDiff(uint32_t id)
+        : AtomDiff<T>(id) {}
+
     virtual void apply(T& atom) const override
     {
         atom.render = !atom.render;
@@ -39,6 +45,9 @@ public:
 template<typename T>
 class ReplacementDiff: public AtomDiff<T> {
 public:
+    ReplacementDiff(uint32_t id)
+        : AtomDiff<T>(id) {}
+
     virtual void apply(T& atom) const override
     {
         atom += m_diff;
@@ -55,6 +64,9 @@ private:
 template<typename T>
 class TransformDiff: public AtomDiff<T> {
 public:
+    TransformDiff(uint32_t id)
+        : AtomDiff<T>(id) {}
+
     TransformDiff(mat4 mat)
         : m_mat(mat)
     {

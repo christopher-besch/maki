@@ -20,7 +20,7 @@ public:
 
     // return id of created atom
     uint32_t add_cuboid_atom();
-    void     show_cuboid_atom(uint32_t id, uint32_t frame, bool render);
+    void     render_cuboid_atom(uint32_t id, uint32_t frame, bool render);
     void     translate_cuboid_atom(uint32_t id, uint32_t frame, vec3 delta);
 
 private:
@@ -45,7 +45,7 @@ private:
     // used by render thread
     // AtomChain<CuboidAtom> m_render_cuboid_chain;
 
-    AtomDiffFrames<CuboidAtom> m_cuboid_diffs;
+    AtomDiffFrames<CuboidAtom> m_cuboid_diff_frames;
 
     // TODO: remove example
     Shader*       m_shader;

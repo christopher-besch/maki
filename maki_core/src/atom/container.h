@@ -12,6 +12,7 @@ namespace Maki {
 template<typename T>
 class AtomChain;
 
+// all changes required to convert frame into last or next
 template<typename T>
 class AtomDiffFrame {
 public:
@@ -43,22 +44,24 @@ private:
     std::set<AtomDiff<T>*> m_atom_diffs;
 };
 
+// represent entire runtime of scene
 // one entry per frame
 template<typename T>
 using AtomDiffFrames = std::vector<AtomDiffFrame<T>>;
 
+// representation of "current" frame
 template<typename T>
 class AtomChain {
 public:
     T&       operator[](size_t idx) { return m_atoms[idx]; }
     const T& operator[](size_t idx) const { return m_atoms[idx]; }
 
-    // final atom type -> change frame
     size_t size() { return m_atoms.size(); }
     void   add() { m_atoms.emplace_back(); }
 
     void set_frame(uint32_t frame, const AtomDiffFrames<T>& atom_diff_frames)
     {
+        // TODO: increase if necessary
         while(frame < m_frame)
             next_frame(atom_diff_frames);
         while(frame > m_frame)
@@ -82,7 +85,7 @@ private:
 private:
     uint32_t m_frame {0};
     // first frame stays empty
-    std::vector<T> m_atoms {std::vector<T>(1)};
+    std::vector<T> m_atoms {};
 };
 
 } // namespace Maki
