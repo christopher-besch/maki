@@ -5,6 +5,7 @@
 #include "atom/atom_chain.h"
 #include "atom/atom_diff_lifetime.h"
 #include "driver/camera_driver.h"
+#include "driver/cuboid_renderer.h"
 #include "renderer/renderer.h"
 
 namespace Maki {
@@ -30,6 +31,7 @@ private:
     // to be run from render thread
     void render_thread_func(const std::string& title, uint32_t width, uint32_t height);
     void setup(const std::string& title, uint32_t width, uint32_t height);
+    void cleanup();
     void run();
     void render_frame();
     bool imgui_support() { return m_renderer->imgui_supported(); }
@@ -41,8 +43,9 @@ private:
     std::thread m_render_thread;
     bool        m_terminated;
     // owned by renderering thread <- OpenGL context can only be current for one thread
-    Renderer*     m_renderer {nullptr};
-    CameraDriver* m_camera_driver {nullptr};
+    Renderer*       m_renderer {nullptr};
+    CameraDriver*   m_camera_driver {nullptr};
+    CuboidRenderer* m_cuboid_renderer {nullptr};
 
     // used by control thread
     AtomChain<CuboidAtom> m_control_cuboid_chain;

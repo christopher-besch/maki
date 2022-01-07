@@ -60,7 +60,7 @@ void Camera::rotate(vec2 delta_angle)
     outdate_direction();
 }
 
-const mat4& Camera::get_view_projection()
+const mat4& Camera::get_view_projection() const
 {
     calc_view_projection();
     return m_view_projection;
@@ -68,7 +68,7 @@ const mat4& Camera::get_view_projection()
 
 // calculate updates //
 
-void Camera::calc_view_projection()
+void Camera::calc_view_projection() const
 {
     // cache still valid?
     if(!m_view_projection_outdated)
@@ -81,7 +81,7 @@ void Camera::calc_view_projection()
 
     m_view_projection_outdated = false;
 }
-void Camera::calc_projection()
+void Camera::calc_projection() const
 {
     if(!m_projection_outdated)
         return;
@@ -99,7 +99,7 @@ void Camera::calc_projection()
     }
     m_projection_outdated = false;
 }
-void Camera::calc_view()
+void Camera::calc_view() const
 {
     if(!m_view_outdated)
         return;
@@ -110,7 +110,7 @@ void Camera::calc_view()
 
     m_view_outdated = false;
 }
-void Camera::calc_direction()
+void Camera::calc_direction() const
 {
     if(!m_direction_outdated)
         return;
@@ -128,21 +128,21 @@ void Camera::calc_direction()
     m_direction_outdated = false;
 }
 
-void Camera::outdate_view_projection()
+void Camera::outdate_view_projection() const
 {
     m_view_projection_outdated = true;
 }
-void Camera::outdate_projetion()
+void Camera::outdate_projetion() const
 {
     m_projection_outdated = true;
     outdate_view_projection();
 }
-void Camera::outdate_view()
+void Camera::outdate_view() const
 {
     m_view_outdated = true;
     outdate_view_projection();
 }
-void Camera::outdate_direction()
+void Camera::outdate_direction() const
 {
     m_direction_outdated = true;
     outdate_view();

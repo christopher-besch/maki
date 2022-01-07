@@ -33,16 +33,16 @@ public:
 
 private:
     // only update what's necessary
-    void calc_view_projection(); // depends on projection and view
-    void calc_projection();
-    void calc_view(); // depends on direction
-    void calc_direction();
+    void calc_view_projection() const; // depends on projection and view
+    void calc_projection() const;
+    void calc_view() const; // depends on direction
+    void calc_direction() const;
 
     // outdate specified and all depending on that
-    void outdate_view_projection();
-    void outdate_projetion();
-    void outdate_view();
-    void outdate_direction();
+    void outdate_view_projection() const;
+    void outdate_projetion() const;
+    void outdate_view() const;
+    void outdate_direction() const;
 
 private:
     CameraType m_type;
@@ -58,19 +58,19 @@ private:
 
     // mainly for caching
     // always normalized
-    vec3 m_direction;
-    vec3 m_right;
-    vec3 m_up;
+    mutable vec3 m_direction;
+    mutable vec3 m_right;
+    mutable vec3 m_up;
 
-    mat4 m_projection;
-    mat4 m_view;
-    mat4 m_view_projection;
+    mutable mat4 m_projection;
+    mutable mat4 m_view;
+    mutable mat4 m_view_projection;
 
     // only update what's changed
-    bool m_view_projection_outdated {true};
-    bool m_projection_outdated {true};
-    bool m_view_outdated {true};
-    bool m_direction_outdated {true};
+    mutable bool m_view_projection_outdated {true};
+    mutable bool m_projection_outdated {true};
+    mutable bool m_view_outdated {true};
+    mutable bool m_direction_outdated {true};
 };
 
 } // namespace Maki

@@ -18,16 +18,6 @@ RenderDriver::~RenderDriver()
     MAKI_ASSERT_WARN(m_render_thread.joinable(), "Attempting termination of unjoinable render thread.");
     m_renderer->terminate();
     await_termination();
-
-    delete m_renderer;
-    delete m_camera_driver;
-
-    // TODO: remove example
-    delete m_shader;
-    delete m_vertex_pos_buffer;
-    delete m_vertex_col_buffer;
-    delete m_vertex_array;
-    delete m_index_buffer;
 }
 
 void RenderDriver::await_termination()
