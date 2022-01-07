@@ -43,9 +43,9 @@ private:
     // used by control thread
     AtomChain<CuboidAtom> m_control_cuboid_chain;
     // used by render thread
-    // AtomChain<CuboidAtom> m_render_cuboid_chain;
+    AtomChain<CuboidAtom> m_render_cuboid_chain;
 
-    AtomDiffFrames<CuboidAtom> m_cuboid_diff_frames;
+    AtomDiffLifetime<CuboidAtom> m_cuboid_diff_lifetime;
 
     // TODO: remove example
     Shader*       m_shader;

@@ -49,22 +49,24 @@ void RenderDriver::await_termination()
 
 uint32_t RenderDriver::add_cuboid_atom()
 {
-    m_control_cuboid_chain.add();
-    return m_control_cuboid_chain.size() - 1;
+    uint32_t control_id = m_control_cuboid_chain.add();
+    uint32_t render_id  = m_render_cuboid_chain.add();
+    MAKI_ASSERT_CRITICAL(control_id == render_id, "Control (ID {}) and render (ID {}) cuboid chain out of sync.", control_id, render_id);
+    return control_id;
 }
+// TODO: OOP approach might be less painful for Python
 void RenderDriver::render_cuboid_atom(uint32_t id, uint32_t frame, bool render)
 {
     MAKI_ASSERT_CRITICAL(m_control_cuboid_chain.size() > id, "ID {} for CuboidAtoms hasn't been allocated yet.", id);
     // first frame can't have any diffs <- first frame used as reference for others
     MAKI_ASSERT_CRITICAL(frame > 0, "Frame {} is invalid.", frame);
-    while(frame >= m_cuboid_diff_frames.size())
-        m_cuboid_diff_frames.emplace_back();
 
-    set_control_frame(frame - 1);
+    m_cuboid_diff_lifetime.ensure_frame_existence(frame);
 
+    set_control_frame(frame);
     if(m_control_cuboid_chain[id].render != render) {
         auto diff = new ToggleRenderDiff<CuboidAtom>(id);
-        m_cuboid_diff_frames[frame].add(diff);
+        m_cuboid_diff_lifetime.add(frame, diff);
         diff->apply(m_control_cuboid_chain[id]);
     }
 }
@@ -74,7 +76,7 @@ void RenderDriver::translate_cuboid_atom(uint32_t id, uint32_t frame, vec3 delta
 
 void RenderDriver::set_control_frame(uint32_t frame)
 {
-    m_control_cuboid_chain.set_frame(frame, m_cuboid_diff_frames);
+    m_control_cuboid_chain.set_frame(frame, m_cuboid_diff_lifetime);
 }
 
 // called from render thread //

@@ -11,19 +11,43 @@ template<typename T>
 class AtomDiff {
 public:
     AtomDiff(uint32_t id)
-        : m_id(id) {}
-
-    virtual void apply(T& atom) const   = 0;
-    virtual void reverse(T& atom) const = 0;
-    uint32_t     get_id() const { return m_id; }
+        : m_id(id), m_priority(s_next_priority++) {}
 
     virtual ~AtomDiff() = default;
 
+    uint32_t get_id() const { return m_id; }
+    uint32_t get_priority() const { return m_priority; }
+
+    virtual void apply(T& atom) const   = 0;
+    virtual void reverse(T& atom) const = 0;
+
 private:
-    uint32_t m_id;
+    const uint32_t m_id;
+    const uint32_t m_priority;
 
 private:
     using s_atom_type = T;
+    static thread_local uint32_t s_next_priority;
+};
+
+template<typename T>
+thread_local uint32_t AtomDiff<T>::s_next_priority {0};
+
+// used for sorting containers
+template<typename T>
+class CompareAtomDiff {
+public:
+    bool operator()(const AtomDiff<T>* a, const AtomDiff<T>* b) const
+    {
+        if(a->get_id() < b->get_id())
+            return true;
+        if(a->get_id() > b->get_id())
+            return false;
+        // consult priority when id same
+        if(a->get_priority() <= b->get_priority())
+            return true;
+        return false;
+    }
 };
 
 template<typename T>
