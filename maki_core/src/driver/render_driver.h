@@ -21,13 +21,20 @@ public:
     bool is_terminated() { return m_terminated; }
 
     // return id of created atom
+    // TODO: create AtomDispenser
     uint32_t add_cuboid_atom();
     void     render_cuboid_atom(uint32_t id, uint32_t frame, bool render);
     void     translate_cuboid_atom(uint32_t id, uint32_t frame, vec3 delta);
+    void     color_cuboid_atom(uint32_t id, uint32_t frame, vec4 col);
 
     void set_frame(uint32_t frame);
 
 private:
+    // to be run from control thread
+    // TODO: xD
+    void prepare_cuboid_atomization(uint32_t id, uint32_t frame);
+    void finalize_cuboid_atomization(uint32_t id, uint32_t frame, AtomDiff<CuboidAtom>* diff);
+
     // to be run from render thread
     void render_thread_func(const std::string& title, uint32_t width, uint32_t height);
     void setup(const std::string& title, uint32_t width, uint32_t height);

@@ -47,21 +47,44 @@ uint32_t RenderDriver::add_cuboid_atom()
 // TODO: OOP approach might be less painful for Python
 void RenderDriver::render_cuboid_atom(uint32_t id, uint32_t frame, bool render)
 {
-    MAKI_ASSERT_CRITICAL(m_control_cuboid_chain.size() > id, "ID {} for CuboidAtoms hasn't been allocated yet.", id);
+    prepare_cuboid_atomization(id, frame);
+    if(m_control_cuboid_chain[id].render != render) {
+        auto diff = new ToggleRenderDiff<CuboidAtom>(id);
+        finalize_cuboid_atomization(id, frame, diff);
+    }
+}
+void RenderDriver::translate_cuboid_atom(uint32_t id, uint32_t frame, vec3 delta)
+{
+    prepare_cuboid_atomization(id, frame);
+    auto diff = new TransformDiff<CuboidAtom>(id, glm::translate(mat4 {1.0f}, delta));
+    finalize_cuboid_atomization(id, frame, diff);
+}
+void RenderDriver::color_cuboid_atom(uint32_t id, uint32_t frame, vec4 col)
+{
+    prepare_cuboid_atomization(id, frame);
+    // calculate difference
+    std::array<vec4, 8> delta_col;
+    delta_col.fill(col);
+    for(size_t i {0}; i != delta_col.size(); ++i) {
+        delta_col[i] -= m_control_cuboid_chain[id].ver_col[i];
+    }
+    auto diff = new ReColorDiff<CuboidAtom>(id, delta_col);
+    finalize_cuboid_atomization(id, frame, diff);
+}
+
+void RenderDriver::prepare_cuboid_atomization(uint32_t id, uint32_t frame)
+{
+    MAKI_ASSERT_CRITICAL(m_control_cuboid_chain.size() > id, "ID {} hasn't been allocated yet for specified atom type.", id);
     // first frame can't have any diffs <- first frame used as reference for others
     MAKI_ASSERT_CRITICAL(frame > 0, "Frame {} is invalid.", frame);
 
     m_cuboid_diff_lifetime.ensure_frame_existence(frame);
     m_control_cuboid_chain.set_frame(frame, m_cuboid_diff_lifetime);
-
-    if(m_control_cuboid_chain[id].render != render) {
-        auto diff = new ToggleRenderDiff<CuboidAtom>(id);
-        m_cuboid_diff_lifetime.add(frame, diff);
-        diff->apply(m_control_cuboid_chain[id]);
-    }
 }
-void RenderDriver::translate_cuboid_atom(uint32_t id, uint32_t frame, vec3 delta)
+void RenderDriver::finalize_cuboid_atomization(uint32_t id, uint32_t frame, AtomDiff<CuboidAtom>* diff)
 {
+    m_cuboid_diff_lifetime.add(frame, diff);
+    diff->apply(m_control_cuboid_chain[id]);
 }
 
 } // namespace Maki

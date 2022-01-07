@@ -6,13 +6,10 @@
 
 namespace Maki {
 
-// implementation inheritance only -> not to be used as an interface -> can be used on stack
 // represent smallest renderable unit
-struct Atom {
+struct CuboidAtom {
     bool render {false};
-};
 
-struct CuboidAtom: public Atom {
     std::array<vec3, 8> ver_pos {
         vec3 {-1.0f, -1.0f, +1.0f},  // 0 bottom front left
         vec3 {+1.0f, -1.0f, +1.0f},  // 1 bottom front right
@@ -34,10 +31,12 @@ struct CuboidAtom: public Atom {
 
     CuboidAtom& operator+=(const CuboidAtom& atom);
     CuboidAtom& operator-=(const CuboidAtom& atom);
-    void        add_pos(const CuboidAtom& atom);
-    void        add_col(const CuboidAtom& atom);
-    void        sub_pos(const CuboidAtom& atom);
-    void        sub_col(const CuboidAtom& atom);
+    void        add_pos(const std::array<vec3, 8>& delta_pos);
+    void        sub_pos(const std::array<vec3, 8>& delta_pos);
+    void        add_col(const std::array<vec4, 8>& delta_col);
+    void        sub_col(const std::array<vec4, 8>& delta_col);
+
+    static constexpr uint32_t vertex_count {8};
 };
 
 } // namespace Maki

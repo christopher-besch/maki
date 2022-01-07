@@ -10,7 +10,7 @@ namespace Maki {
 template<typename AtomType>
 class AtomDiff {
 public:
-    AtomDiff(uint32_t id)
+    explicit AtomDiff(uint32_t id)
         : m_id(id), m_priority(s_next_priority++) {}
 
     virtual ~AtomDiff() = default;
@@ -53,8 +53,8 @@ public:
 template<typename AtomType>
 class ToggleRenderDiff: public AtomDiff<AtomType> {
 public:
-    ToggleRenderDiff(uint32_t id)
-        : AtomDiff<AtomType>(id) {}
+    explicit ToggleRenderDiff(uint32_t id)
+        : AtomDiff<AtomType> {id} {}
 
     virtual void apply(AtomType& atom) const override
     {
@@ -66,73 +66,69 @@ public:
     }
 };
 
-template<typename AtomType>
-class ReplacementDiff: public AtomDiff<AtomType> {
-public:
-    ReplacementDiff(uint32_t id)
-        : AtomDiff<AtomType>(id) {}
+// template<typename AtomType>
+// class ReplacementDiff: public AtomDiff<AtomType> {
+// public:
+//     ReplacementDiff(uint32_t id)
+//         : AtomDiff<AtomType>(id) {}
 
-    virtual void apply(AtomType& atom) const override
-    {
-        atom += m_diff;
-    }
-    virtual void reverse(AtomType& atom) const override
-    {
-        atom -= m_diff;
-    }
+//     virtual void apply(AtomType& atom) const override
+//     {
+//         atom += m_diff;
+//     }
+//     virtual void reverse(AtomType& atom) const override
+//     {
+//         atom -= m_diff;
+//     }
 
-private:
-    AtomType m_diff;
-};
+// private:
+//     AtomType m_diff;
+// };
 
-// TODO: broken
 template<typename AtomType>
 class TransformDiff: public AtomDiff<AtomType> {
 public:
-    TransformDiff(uint32_t id)
-        : AtomDiff<AtomType>(id) {}
-
-    TransformDiff(mat4 mat)
-        : m_mat(mat)
+    TransformDiff(uint32_t id, mat4 mat)
+        : AtomDiff<AtomType> {id}, m_mat(mat)
     {
         m_inv_mat = glm::inverse(mat);
     }
 
     virtual void apply(AtomType& atom) const override
     {
-        for(size_t i {0}; i != atom.ver_pos; i += 3) {
-            // TODO: should use move operations instead
-            // TODO: fix code duplication
-            vec4 ver_pos {
-                atom.ver_pos[i + 0],
-                atom.ver_pos[i + 1],
-                atom.ver_pos[i + 2],
-                1.0f};
-            ver_pos             = m_mat * vec4();
-            atom.ver_pos[i + 0] = ver_pos.x;
-            atom.ver_pos[i + 1] = ver_pos.y;
-            atom.ver_pos[i + 2] = ver_pos.z;
+        for(vec3& pos: atom.ver_pos) {
+            pos = m_mat * vec4(pos, 1.0f);
         }
     }
     virtual void reverse(AtomType& atom) const override
     {
-        for(size_t i {0}; i != atom.ver_pos; i += 3) {
-            // TODO: should use move operations instead
-            vec4 ver_pos {
-                atom.ver_pos[i + 0],
-                atom.ver_pos[i + 1],
-                atom.ver_pos[i + 2],
-                1.0f};
-            ver_pos              = m_inv_mat * vec4();
-            atom.ver_post[i + 0] = ver_pos.x;
-            atom.ver_post[i + 1] = ver_pos.y;
-            atom.ver_post[i + 2] = ver_pos.z;
+        for(vec3& pos: atom.ver_pos) {
+            pos = m_inv_mat * vec4(pos, 1.0f);
         }
     }
 
 private:
     mat4 m_mat;
     mat4 m_inv_mat;
+};
+
+template<typename AtomType>
+class ReColorDiff: public AtomDiff<AtomType> {
+public:
+    ReColorDiff(uint32_t id, std::array<vec4, AtomType::vertex_count> delta_col)
+        : AtomDiff<AtomType> {id}, m_delta_col {delta_col} {}
+
+    virtual void apply(AtomType& atom) const override
+    {
+        atom.add_col(m_delta_col);
+    }
+    virtual void reverse(AtomType& atom) const override
+    {
+        atom.sub_col(m_delta_col);
+    }
+
+private:
+    std::array<vec4, AtomType::vertex_count> m_delta_col;
 };
 
 } // namespace Maki

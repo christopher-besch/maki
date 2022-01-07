@@ -40,7 +40,7 @@ public:
         update();
         return false;
     }
-    bool update()
+    void update()
     {
         rec_lock lock {m_mutex};
         m_first_outdated_frame = m_atom_diff_frames.size();
