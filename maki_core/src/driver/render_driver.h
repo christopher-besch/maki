@@ -41,9 +41,12 @@ private:
     void cleanup();
     void run();
     void render_frame();
+    void render_imgui();
 
     void sync_frame_target();
     void chrono_sync();
+
+    uint32_t get_last_frame();
 
 private:
     std::thread m_render_thread;

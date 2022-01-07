@@ -39,7 +39,7 @@ private:
 
 private:
     // how many cuboids in single render call
-    static constexpr uint32_t s_max_cuboids {2000};
+    static constexpr uint32_t s_max_cuboids {500};
     // 8 corners
     static constexpr uint32_t s_max_vertices {s_max_cuboids * 8};
     // 6 sides, 2 triangles per side, 3 vertices per triangle = 36

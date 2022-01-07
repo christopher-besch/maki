@@ -48,18 +48,42 @@ void RenderDriver::run()
 void RenderDriver::render_frame()
 {
     m_camera_driver->update(m_renderer->get_last_frame_time());
+
     m_renderer->start_frame();
+
     m_cuboid_renderer->begin_scene(m_renderer->get_camera());
     for(size_t i {0}; i < m_render_cuboid_chain.size(); ++i) {
         m_cuboid_renderer->draw_cuboid(&m_render_cuboid_chain[i]);
     }
     m_cuboid_renderer->end_scene();
+
+    render_imgui();
     m_renderer->end_frame();
+}
+
+void RenderDriver::render_imgui()
+{
+    // ImGui not thread-safe -> this required
+    int imgui_target_frame;
+    {
+        lock lock {m_target_frame_mutex};
+        imgui_target_frame = m_target_frame;
+    }
+    ImGui::Begin("Time Traveler's Toolkit");
+    ImGui::Text("fps: %f", 1000.0 / m_renderer->get_last_frame_time());
+    ImGui::SliderInt("Frame", &imgui_target_frame, 0, get_last_frame());
+    ImGui::End();
+    {
+        lock lock {m_target_frame_mutex};
+        m_target_frame = imgui_target_frame;
+    }
 }
 
 void RenderDriver::sync_frame_target()
 {
+    // TODO: jump-back could be optimized
     chrono_sync();
+    lock lock {m_target_frame_mutex};
     m_render_cuboid_chain.set_frame(m_target_frame, m_cuboid_diff_lifetime);
 }
 void RenderDriver::chrono_sync()
@@ -68,6 +92,12 @@ void RenderDriver::chrono_sync()
         m_render_cuboid_chain.chrono_sync();
         m_cuboid_diff_lifetime.update();
     }
+}
+
+uint32_t RenderDriver::get_last_frame()
+{
+    // TODO: calculate max of all
+    return m_cuboid_diff_lifetime.size() - 1;
 }
 
 } // namespace Maki

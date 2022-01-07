@@ -1,6 +1,7 @@
 # Maki
 
-**M**athematical **A**nimation and **K**nickknack **I**nscriber (Maki), an experimental rendering backend for [Manim](https://github.com/ManimCommunity/manim). 
+**M**athematical **A**nimation and **K**nickknack **I**nscriber (Maki), an experimental rendering backend for [Manim](https://github.com/ManimCommunity/manim).
+Or: How to teach Manim to time travel.
 
 This is a cross-platform project. But right now only Linux has been tested.
 If you know what you're doing, this will run everywhere.

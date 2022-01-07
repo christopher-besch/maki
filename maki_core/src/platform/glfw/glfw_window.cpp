@@ -26,8 +26,6 @@ void Window::start_frame()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        // TODO: remove example
-        ImGui::ShowDemoWindow();
     }
 }
 void Window::end_frame()
@@ -67,6 +65,10 @@ void Window::create()
     if(m_handle == nullptr)
         MAKI_RAISE_CRITICAL("Failed to create GLFW window.");
     glfwMakeContextCurrent(m_handle);
+
+    // disable vsync
+    // TODO: handle vsync
+    // glfwSwapInterval(0);
 
     // used to access this instance in event callbacks
     glfwSetWindowUserPointer(m_handle, this);
