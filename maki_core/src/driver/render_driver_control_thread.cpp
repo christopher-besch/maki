@@ -33,6 +33,7 @@ void RenderDriver::await_termination()
 void RenderDriver::set_frame(uint32_t frame)
 {
     lock lock {m_target_frame_mutex};
+    m_cuboid_diff_lifetime.ensure_frame_existence(frame);
     m_target_frame = frame;
 }
 

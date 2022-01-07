@@ -10,7 +10,7 @@ public:
     CuboidRenderer(Renderer* renderer);
     ~CuboidRenderer();
 
-    void begin_scene(const Camera& camera);
+    void begin_scene(const Camera* camera);
     void end_scene();
     // reset buffer pointer
     void start_batch();
@@ -19,7 +19,7 @@ public:
     // render call
     void flush();
 
-    void add_cuboid(const CuboidAtom* cuboid);
+    void draw_cuboid(const CuboidAtom* cuboid);
 
 private:
     struct CuboidVertex {

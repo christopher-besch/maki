@@ -49,6 +49,11 @@ void RenderDriver::render_frame()
 {
     m_camera_driver->update(m_renderer->get_last_frame_time());
     m_renderer->start_frame();
+    m_cuboid_renderer->begin_scene(m_renderer->get_camera());
+    for(size_t i {0}; i < m_render_cuboid_chain.size(); ++i) {
+        m_cuboid_renderer->draw_cuboid(&m_render_cuboid_chain[i]);
+    }
+    m_cuboid_renderer->end_scene();
     m_renderer->end_frame();
 }
 
@@ -59,8 +64,10 @@ void RenderDriver::sync_frame_target()
 }
 void RenderDriver::chrono_sync()
 {
-    if(m_cuboid_diff_lifetime.get_first_outdated_frame() <= m_render_cuboid_chain.get_frame())
+    if(m_cuboid_diff_lifetime.is_outdated(m_render_cuboid_chain.get_frame())) {
         m_render_cuboid_chain.chrono_sync();
+        m_cuboid_diff_lifetime.update();
+    }
 }
 
 } // namespace Maki

@@ -15,19 +15,19 @@ struct BufferElement {
 
     BufferElement() = default;
     BufferElement(const std::string& name, DataType type, bool normalized = false)
-        : name(name), type(type), size(data_type_size(type)), normalized(normalized) {}
+        : name {name}, type {type}, size {data_type_size(type)}, normalized {normalized} {}
 };
 
 class VertexBuffer {
 public:
-    // dunamic
+    // dynamic
     static VertexBuffer* create(const std::initializer_list<BufferElement>& elements, size_t size);
     // static
     static VertexBuffer* create(const std::initializer_list<BufferElement>& elements, const void* data, size_t size);
 
 public:
-    VertexBuffer(const std::initializer_list<BufferElement>& elements)
-        : m_elements(elements)
+    VertexBuffer(const std::initializer_list<BufferElement>& elements, bool dynamic)
+        : m_elements {elements}, m_dynamic {dynamic}
     {
         calculate_offset_and_stride();
     }
@@ -58,9 +58,9 @@ protected:
 protected:
     std::vector<BufferElement> m_elements;
     uint32_t                   m_stride {0};
-    // true -> data has to be set at creation
-    // false -> data can be updated
-    bool m_static;
+    // true -> data can be updated
+    // false -> data has to be set at creation
+    bool m_dynamic;
 };
 
 class IndexBuffer {

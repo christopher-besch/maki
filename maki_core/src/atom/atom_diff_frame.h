@@ -26,7 +26,6 @@ public:
     }
     AtomDiffFrame& operator=(AtomDiffFrame<AtomType>&& other)
     {
-        MAKI_LOG_WARN("destructing atom diff frame.");
         for(AtomDiff<AtomType>* atom_diff: m_atom_diffs)
             delete atom_diff;
         m_atom_diffs = std::move(other.m_atom_diffs);
@@ -35,7 +34,6 @@ public:
     }
     ~AtomDiffFrame()
     {
-        MAKI_LOG_WARN("destructing atom diff frame (size {}).", m_atom_diffs.size());
         for(AtomDiff<AtomType>* atom_diff: m_atom_diffs)
             delete atom_diff;
     }

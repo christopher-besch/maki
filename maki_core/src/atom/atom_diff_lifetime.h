@@ -31,12 +31,16 @@ public:
         m_atom_diff_frames[frame].add(diff);
         m_first_outdated_frame = frame;
     }
-    uint32_t get_first_outdated_frame()
+    bool is_outdated(uint32_t frame)
     {
         rec_lock lock {m_mutex};
-        return m_first_outdated_frame;
+        if(frame >= m_first_outdated_frame)
+            return true;
+        // not outdated
+        update();
+        return false;
     }
-    void updated()
+    bool update()
     {
         rec_lock lock {m_mutex};
         m_first_outdated_frame = m_atom_diff_frames.size();

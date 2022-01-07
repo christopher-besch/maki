@@ -6,7 +6,7 @@ namespace Maki {
 
 // VertexBuffer
 OpenGLVertexBuffer::OpenGLVertexBuffer(const std::initializer_list<BufferElement>& elements, size_t size)
-    : VertexBuffer(elements)
+    : VertexBuffer(elements, true)
 {
     glCreateBuffers(1, &m_id);
     bind();
@@ -15,7 +15,7 @@ OpenGLVertexBuffer::OpenGLVertexBuffer(const std::initializer_list<BufferElement
 }
 
 OpenGLVertexBuffer::OpenGLVertexBuffer(const std::initializer_list<BufferElement>& elements, const void* data, size_t size)
-    : VertexBuffer(elements)
+    : VertexBuffer(elements, false)
 {
     glCreateBuffers(1, &m_id);
     bind();
@@ -29,7 +29,7 @@ OpenGLVertexBuffer::~OpenGLVertexBuffer()
 
 void OpenGLVertexBuffer::set_data(const void* data, size_t size)
 {
-    MAKI_ASSERT_CRITICAL(!m_static, "OpenGLVertexBuffer::set_data can't be used with a static buffer.");
+    MAKI_ASSERT_CRITICAL(m_dynamic, "OpenGLVertexBuffer::set_data can't be used with a static buffer.");
     bind();
     // replace everything
     glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);

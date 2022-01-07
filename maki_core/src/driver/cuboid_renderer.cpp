@@ -91,9 +91,9 @@ CuboidRenderer::~CuboidRenderer()
     delete[] m_vertex_buffer_base;
 }
 
-void CuboidRenderer::begin_scene(const Camera& camera)
+void CuboidRenderer::begin_scene(const Camera* camera)
 {
-    m_shader->set_mat4("u_mvp", camera.get_view_projection());
+    m_shader->set_mat4("u_mvp", camera->get_view_projection());
     start_batch();
 }
 void CuboidRenderer::end_scene()
@@ -120,11 +120,14 @@ void CuboidRenderer::flush()
     m_renderer->draw(m_vertex_array, m_shader, m_index_count);
 }
 
-void CuboidRenderer::add_cuboid(const CuboidAtom* cuboid)
+void CuboidRenderer::draw_cuboid(const CuboidAtom* cuboid)
 {
+    if(!cuboid->render)
+        return;
     for(uint32_t i {0}; i < 8; ++i) {
         m_vertex_buffer_ptr->pos = vec3 {cuboid->ver_pos[i]};
         m_vertex_buffer_ptr->col = vec4 {cuboid->ver_col[i]};
+        ++m_vertex_buffer_ptr;
     }
     m_index_count += 36;
 }
