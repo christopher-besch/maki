@@ -74,13 +74,12 @@ void OpenGLRenderer::set_clear_col(vec4 color)
     glClearColor(color.r, color.g, color.b, color.a);
 }
 
-void OpenGLRenderer::draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader)
+void OpenGLRenderer::draw(VertexArray* vertex_array, Shader* shader, uint32_t index_count)
 {
     shader->bind();
     vertex_array->bind();
-    index_buffer->bind();
 
-    glDrawElements(GL_TRIANGLES, index_buffer->get_count(), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_INT, nullptr);
 }
 
 void OpenGLRenderer::start_frame()

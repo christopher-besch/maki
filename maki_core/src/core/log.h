@@ -15,14 +15,6 @@ enum class LogLevel {
 };
 
 class Log {
-private:
-    // stdout and file
-    static std::shared_ptr<spdlog::logger> s_maki_logger;
-    static std::shared_ptr<spdlog::logger> s_client_logger;
-
-    // stderr
-    static std::shared_ptr<spdlog::logger> s_error_logger;
-
 public:
     static void init();
 
@@ -38,6 +30,14 @@ public:
     {
         s_client_logger->set_level(static_cast<spdlog::level::level_enum>(log_level));
     }
+
+private:
+    // stdout and file
+    static std::shared_ptr<spdlog::logger> s_maki_logger;
+    static std::shared_ptr<spdlog::logger> s_client_logger;
+
+    // stderr
+    static std::shared_ptr<spdlog::logger> s_error_logger;
 };
 
 // asserts only in debug

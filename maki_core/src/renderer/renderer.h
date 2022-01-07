@@ -39,7 +39,7 @@ public:
 
     virtual void set_clear_col(vec4 color) = 0;
 
-    virtual void draw(VertexArray* vertex_array, IndexBuffer* index_buffer, Shader* shader) = 0;
+    virtual void draw(VertexArray* vertex_array, Shader* shader, uint32_t index_count) = 0;
     // to be augmented by implementation -> Renderer func has to be called from implementation prior to anything else
     virtual void start_frame();
     virtual void end_frame();
@@ -54,8 +54,8 @@ protected:
     static inline Implementation s_renderer_impl {Renderer::Implementation::none};
 
 protected:
-    Window* m_window;
-    Camera* m_camera;
+    Window* m_window {nullptr};
+    Camera* m_camera {nullptr};
     // single source of truth for termination status
     bool m_should_terminate {false};
 

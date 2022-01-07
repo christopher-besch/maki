@@ -15,7 +15,9 @@ void RenderDriver::setup(const std::string& title, uint32_t width, uint32_t heig
 {
     // setup can't be performed twice at the same time
     lock lock {s_setup_mutex};
-    m_renderer      = Renderer::create(title, width, height);
+    MAKI_ASSERT_CRITICAL(!m_renderer, "Recreation of Renderer.");
+    m_renderer = Renderer::create(title, width, height);
+    MAKI_ASSERT_CRITICAL(!m_camera_driver, "Recreation of CameraDriver.");
     m_camera_driver = new CameraDriver(m_renderer);
 }
 
@@ -29,13 +31,8 @@ void RenderDriver::run()
 
 void RenderDriver::render_frame()
 {
-    // TODO: remove example
     m_camera_driver->update(m_renderer->get_last_frame_time());
     m_renderer->start_frame();
-    // m_renderer->get_camera()->set_fov(glm::radians(float(i)));
-    mat4 mvp = m_renderer->get_camera()->get_view_projection() * mat4 {1.0f};
-    m_shader->set_mat4("u_mvp", mvp);
-    m_renderer->draw(m_vertex_array, m_index_buffer, m_shader);
     m_renderer->end_frame();
 }
 

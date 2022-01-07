@@ -85,6 +85,7 @@ private:
     AtomType m_diff;
 };
 
+// TODO: broken
 template<typename AtomType>
 class TransformDiff: public AtomDiff<AtomType> {
 public:

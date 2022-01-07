@@ -58,7 +58,7 @@ private:
     ImGuiIO* m_imgui_io {nullptr};
 
 #if PROJECT == glfw
-    GLFWwindow* m_handle;
+    GLFWwindow* m_handle {nullptr};
 #endif
 };
 

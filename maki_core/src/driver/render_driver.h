@@ -41,8 +41,8 @@ private:
     std::thread m_render_thread;
     bool        m_terminated;
     // owned by renderering thread <- OpenGL context can only be current for one thread
-    Renderer*     m_renderer;
-    CameraDriver* m_camera_driver;
+    Renderer*     m_renderer {nullptr};
+    CameraDriver* m_camera_driver {nullptr};
 
     // used by control thread
     AtomChain<CuboidAtom> m_control_cuboid_chain;
@@ -53,13 +53,6 @@ private:
 
     uint32_t m_target_frame {0};
     mutex    m_target_frame_mutex;
-
-    // TODO: remove example
-    Shader*       m_shader;
-    VertexBuffer* m_vertex_pos_buffer;
-    VertexBuffer* m_vertex_col_buffer;
-    VertexArray*  m_vertex_array;
-    IndexBuffer*  m_index_buffer;
 
 private:
     static mutex s_setup_mutex;

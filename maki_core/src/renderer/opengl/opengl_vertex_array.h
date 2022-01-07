@@ -19,7 +19,7 @@ private:
     uint32_t                   m_id;
     uint32_t                   m_next_attrib_id {0};
     std::vector<VertexBuffer*> m_vertex_buffers;
-    IndexBuffer*               m_index_buffer;
+    IndexBuffer*               m_index_buffer {nullptr};
 };
 
 } // namespace Maki

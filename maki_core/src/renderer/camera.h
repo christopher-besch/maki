@@ -24,12 +24,12 @@ public:
     // horizontal, vertical
     void rotate(vec2 angel);
 
-    vec3 get_position() { return m_position; }
-    vec2 get_angle() { return m_angle; }
+    vec3 get_position() const { return m_position; }
+    vec2 get_angle() const { return m_angle; }
 
-    const mat4& get_view_projection();
-    uint32_t    get_width() { return m_width; }
-    uint32_t    get_height() { return m_height; }
+    const mat4& get_view_projection() const;
+    uint32_t    get_width() const { return m_width; }
+    uint32_t    get_height() const { return m_height; }
 
 private:
     // only update what's necessary

@@ -20,7 +20,9 @@ struct BufferElement {
 
 class VertexBuffer {
 public:
+    // dunamic
     static VertexBuffer* create(const std::initializer_list<BufferElement>& elements, size_t size);
+    // static
     static VertexBuffer* create(const std::initializer_list<BufferElement>& elements, const void* data, size_t size);
 
 public:
