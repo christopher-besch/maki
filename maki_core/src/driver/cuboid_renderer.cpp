@@ -79,7 +79,7 @@ CuboidRenderer::CuboidRenderer(Renderer* renderer)
     delete[] indices;
     m_vertex_array->set_index_buffer(m_index_buffer);
 
-    m_shader = Shader::create("res/shaders/cuboid_batch_vert.glsl", "res/shaders/cuboid_batch_frag.glsl");
+    m_shader = Shader::create("maki_core/res/shaders/cuboid_vert.glsl", "maki_core/res/shaders/cuboid_frag.glsl");
 }
 
 CuboidRenderer::~CuboidRenderer()

@@ -16,8 +16,10 @@ RenderDriver::RenderDriver(const std::string& title, uint32_t width, uint32_t he
 RenderDriver::~RenderDriver()
 {
     MAKI_ASSERT_WARN(m_render_thread.joinable(), "Attempting termination of unjoinable render thread.");
-    m_renderer->terminate();
-    await_termination();
+    if(!m_terminated) {
+        m_renderer->terminate();
+        await_termination();
+    }
 }
 
 void RenderDriver::await_termination()

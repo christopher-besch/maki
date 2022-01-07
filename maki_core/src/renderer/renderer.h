@@ -45,10 +45,8 @@ public:
     virtual void end_frame();
 
     // thread safe -> can be run from control thread //
-    void terminate() { m_should_terminate = true; }
-    bool should_terminate() { return m_should_terminate; }
-
-    bool imgui_supported() { return m_window->imgui_supported(); }
+    void terminate();
+    bool should_terminate();
 
 protected:
     static inline Implementation s_renderer_impl {Renderer::Implementation::none};
@@ -57,7 +55,8 @@ protected:
     Window* m_window {nullptr};
     Camera* m_camera {nullptr};
     // single source of truth for termination status
-    bool m_should_terminate {false};
+    bool  m_should_terminate {false};
+    mutex m_should_terminate_mutex;
 
     TimePoint m_last_time;
     Duration  m_last_frame_time {0};

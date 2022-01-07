@@ -33,7 +33,6 @@ public:
 
     EventHandler& get_driver_event_handler() { return m_driver_event_handler; }
 
-    // thread safe //
     bool imgui_supported() { return m_imgui_io; }
 
 private:

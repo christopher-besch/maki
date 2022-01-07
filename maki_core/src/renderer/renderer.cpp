@@ -29,7 +29,7 @@ Renderer::Renderer(const std::string& title, uint32_t width, uint32_t height, Ev
         return false;
     };
     renderer_event_handler.on_window_close = [this]() {
-        m_should_terminate = true;
+        terminate();
         return false;
     };
     m_window = new Window(title, width, height, driver_event_handler, renderer_event_handler);
@@ -51,6 +51,18 @@ void Renderer::start_frame()
 void Renderer::end_frame()
 {
     m_window->end_frame();
+}
+
+// thread safe -> can be run from control thread //
+void Renderer::terminate()
+{
+    lock lock {m_should_terminate_mutex};
+    m_should_terminate = true;
+}
+bool Renderer::should_terminate()
+{
+    lock lock {m_should_terminate_mutex};
+    return m_should_terminate;
 }
 
 } // namespace Maki

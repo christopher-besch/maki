@@ -34,7 +34,6 @@ private:
     void cleanup();
     void run();
     void render_frame();
-    bool imgui_support() { return m_renderer->imgui_supported(); }
 
     void sync_frame_target();
     void chrono_sync();
