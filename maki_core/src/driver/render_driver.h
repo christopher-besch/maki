@@ -24,12 +24,18 @@ public:
     void     render_cuboid_atom(uint32_t id, uint32_t frame, bool render);
     void     translate_cuboid_atom(uint32_t id, uint32_t frame, vec3 delta);
 
+    void set_frame(uint32_t frame);
+
 private:
     // to be run from render thread
-    void setup();
+    void render_thread_func(const std::string& title, uint32_t width, uint32_t height);
+    void setup(const std::string& title, uint32_t width, uint32_t height);
     void run();
     void render_frame();
     bool imgui_support() { return m_renderer->imgui_supported(); }
+
+    void sync_frame_target();
+    void chrono_sync();
 
 private:
     std::thread m_render_thread;
@@ -44,6 +50,9 @@ private:
     AtomChain<CuboidAtom> m_render_cuboid_chain;
 
     AtomDiffLifetime<CuboidAtom> m_cuboid_diff_lifetime;
+
+    uint32_t m_target_frame {0};
+    mutex    m_target_frame_mutex;
 
     // TODO: remove example
     Shader*       m_shader;

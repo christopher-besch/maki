@@ -9,30 +9,52 @@ namespace Maki {
 template<typename AtomType>
 class AtomChain {
 public:
-    AtomType&       operator[](size_t idx) { return m_atoms[idx]; }
-    const AtomType& operator[](size_t idx) const { return m_atoms[idx]; }
-
-    size_t size() const
+    AtomType& operator[](size_t idx)
     {
-        rec_lock lock {m_lock};
+        lock lock {m_atoms_mutex};
+        return m_atoms[idx];
+    }
+    const AtomType& operator[](size_t idx) const
+    {
+        lock lock {m_atoms_mutex};
+        return m_atoms[idx];
+    }
+
+    uint32_t get_frame() { return m_frame; }
+    size_t   size() const
+    {
+        lock lock {m_atoms_mutex};
         return m_atoms.size();
     }
     uint32_t add()
     {
-        rec_lock lock {m_lock};
+        lock lock {m_atoms_mutex};
         m_atoms.emplace_back();
         return m_atoms.size() - 1;
     }
 
     void set_frame(uint32_t frame, const AtomDiffLifetime<AtomType>& atom_diff_lifetime)
     {
-        rec_lock lock {m_lock};
-        rec_lock atom_diff_lifetime_lock {atom_diff_lifetime.get_lock()};
+        lock lock {m_atoms_mutex};
         MAKI_ASSERT_CRITICAL(atom_diff_lifetime.size() > frame, "Frame {} hasn't been created yet.", frame);
         while(m_frame < frame)
             next_frame(atom_diff_lifetime);
         while(m_frame > frame)
             prev_frame(atom_diff_lifetime);
+    }
+    void chrono_sync()
+    {
+        lock lock {m_atoms_mutex};
+        MAKI_LOG_EXTRA("Chrono Sync initiated.");
+        // safe current state
+        size_t target_atom_count = m_atoms.size();
+
+        // evict data
+        m_atoms.resize(0);
+        m_frame = 0;
+
+        // sync
+        m_atoms.resize(target_atom_count);
     }
 
 private:
@@ -51,7 +73,7 @@ private:
     // frame that has been applied last
     uint32_t              m_frame {0};
     std::vector<AtomType> m_atoms {};
-    mutable rec_mutex     m_lock;
+    mutable mutex         m_atoms_mutex;
 };
 
 } // namespace Maki
