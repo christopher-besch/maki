@@ -7,7 +7,7 @@
 namespace Maki {
 
 // how to convert atom "across" frame-border
-template<typename T>
+template<typename AtomType>
 class AtomDiff {
 public:
     AtomDiff(uint32_t id)
@@ -18,26 +18,26 @@ public:
     uint32_t get_id() const { return m_id; }
     uint32_t get_priority() const { return m_priority; }
 
-    virtual void apply(T& atom) const   = 0;
-    virtual void reverse(T& atom) const = 0;
+    virtual void apply(AtomType& atom) const   = 0;
+    virtual void reverse(AtomType& atom) const = 0;
 
 private:
     const uint32_t m_id;
     const uint32_t m_priority;
 
 private:
-    using s_atom_type = T;
+    using s_atom_type = AtomType;
     static thread_local uint32_t s_next_priority;
 };
 
-template<typename T>
-thread_local uint32_t AtomDiff<T>::s_next_priority {0};
+template<typename AtomType>
+thread_local uint32_t AtomDiff<AtomType>::s_next_priority {0};
 
 // used for sorting containers
-template<typename T>
+template<typename AtomType>
 class CompareAtomDiff {
 public:
-    bool operator()(const AtomDiff<T>* a, const AtomDiff<T>* b) const
+    bool operator()(const AtomDiff<AtomType>* a, const AtomDiff<AtomType>* b) const
     {
         if(a->get_id() < b->get_id())
             return true;
@@ -50,46 +50,46 @@ public:
     }
 };
 
-template<typename T>
-class ToggleRenderDiff: public AtomDiff<T> {
+template<typename AtomType>
+class ToggleRenderDiff: public AtomDiff<AtomType> {
 public:
     ToggleRenderDiff(uint32_t id)
-        : AtomDiff<T>(id) {}
+        : AtomDiff<AtomType>(id) {}
 
-    virtual void apply(T& atom) const override
+    virtual void apply(AtomType& atom) const override
     {
         atom.render = !atom.render;
     }
-    virtual void reverse(T& atom) const override
+    virtual void reverse(AtomType& atom) const override
     {
         atom.render = !atom.render;
     }
 };
 
-template<typename T>
-class ReplacementDiff: public AtomDiff<T> {
+template<typename AtomType>
+class ReplacementDiff: public AtomDiff<AtomType> {
 public:
     ReplacementDiff(uint32_t id)
-        : AtomDiff<T>(id) {}
+        : AtomDiff<AtomType>(id) {}
 
-    virtual void apply(T& atom) const override
+    virtual void apply(AtomType& atom) const override
     {
         atom += m_diff;
     }
-    virtual void reverse(T& atom) const override
+    virtual void reverse(AtomType& atom) const override
     {
         atom -= m_diff;
     }
 
 private:
-    T m_diff;
+    AtomType m_diff;
 };
 
-template<typename T>
-class TransformDiff: public AtomDiff<T> {
+template<typename AtomType>
+class TransformDiff: public AtomDiff<AtomType> {
 public:
     TransformDiff(uint32_t id)
-        : AtomDiff<T>(id) {}
+        : AtomDiff<AtomType>(id) {}
 
     TransformDiff(mat4 mat)
         : m_mat(mat)
@@ -97,7 +97,7 @@ public:
         m_inv_mat = glm::inverse(mat);
     }
 
-    virtual void apply(T& atom) const override
+    virtual void apply(AtomType& atom) const override
     {
         for(size_t i {0}; i != atom.ver_pos; i += 3) {
             // TODO: should use move operations instead
@@ -113,7 +113,7 @@ public:
             atom.ver_pos[i + 2] = ver_pos.z;
         }
     }
-    virtual void reverse(T& atom) const override
+    virtual void reverse(AtomType& atom) const override
     {
         for(size_t i {0}; i != atom.ver_pos; i += 3) {
             // TODO: should use move operations instead

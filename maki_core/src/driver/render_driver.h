@@ -2,7 +2,8 @@
 
 #include <thread>
 
-#include "atom/container.h"
+#include "atom/atom_chain.h"
+#include "atom/atom_diff_lifetime.h"
 #include "driver/camera_driver.h"
 #include "renderer/renderer.h"
 
