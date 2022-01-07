@@ -25,9 +25,6 @@ public:
     void     translate_cuboid_atom(uint32_t id, uint32_t frame, vec3 delta);
 
 private:
-    // to be run from control thread
-    void set_control_frame(uint32_t frame);
-
     // to be run from render thread
     void setup();
     void run();
@@ -56,7 +53,7 @@ private:
     IndexBuffer*  m_index_buffer;
 
 private:
-    static std::mutex s_setup_mutex;
+    static mutex s_setup_mutex;
 };
 
 } // namespace Maki

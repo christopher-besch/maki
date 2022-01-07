@@ -4,7 +4,7 @@
 
 namespace Maki {
 
-std::mutex RenderDriver::s_setup_mutex;
+mutex RenderDriver::s_setup_mutex;
 
 // called from control thread //
 RenderDriver::RenderDriver(const std::string& title, uint32_t width, uint32_t height)
@@ -62,8 +62,8 @@ void RenderDriver::render_cuboid_atom(uint32_t id, uint32_t frame, bool render)
     MAKI_ASSERT_CRITICAL(frame > 0, "Frame {} is invalid.", frame);
 
     m_cuboid_diff_lifetime.ensure_frame_existence(frame);
+    m_control_cuboid_chain.set_frame(frame, m_cuboid_diff_lifetime);
 
-    set_control_frame(frame);
     if(m_control_cuboid_chain[id].render != render) {
         auto diff = new ToggleRenderDiff<CuboidAtom>(id);
         m_cuboid_diff_lifetime.add(frame, diff);
@@ -72,11 +72,6 @@ void RenderDriver::render_cuboid_atom(uint32_t id, uint32_t frame, bool render)
 }
 void RenderDriver::translate_cuboid_atom(uint32_t id, uint32_t frame, vec3 delta)
 {
-}
-
-void RenderDriver::set_control_frame(uint32_t frame)
-{
-    m_control_cuboid_chain.set_frame(frame, m_cuboid_diff_lifetime);
 }
 
 // called from render thread //

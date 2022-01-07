@@ -6,7 +6,7 @@
 
 namespace Maki {
 
-// how to convert atom "across" frame-border
+// how to convert single atom "across" frame-border
 template<typename AtomType>
 class AtomDiff {
 public:

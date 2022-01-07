@@ -10,7 +10,7 @@ namespace Maki {
 template<typename AtomType>
 class AtomChain;
 
-// all changes required to convert frame into last or next
+// all changes required to convert atoms of current frame into last or next
 template<typename AtomType>
 class AtomDiffFrame {
 public:
@@ -18,6 +18,7 @@ public:
     // copy not allowed
     AtomDiffFrame(const AtomDiffFrame<AtomType>&) = delete;
     AtomDiffFrame& operator=(const AtomDiffFrame<AtomType>&) = delete;
+
     AtomDiffFrame(AtomDiffFrame<AtomType>&& other)
         : m_atom_diffs {std::move(other.m_atom_diffs)}
     {
@@ -30,6 +31,7 @@ public:
             delete atom_diff;
         m_atom_diffs = std::move(other.m_atom_diffs);
         other.m_atom_diffs.clear();
+        return *this;
     }
     ~AtomDiffFrame()
     {
@@ -43,16 +45,16 @@ public:
         m_atom_diffs.insert(new_atom_diff);
     }
 
-    void apply(std::vector<AtomType>& atom_chain) const
+    void apply(std::vector<AtomType>& atoms) const
     {
         for(AtomDiff<AtomType>* atom_diff: m_atom_diffs) {
-            atom_diff->apply(atom_chain[atom_diff->get_id()]);
+            atom_diff->apply(atoms[atom_diff->get_id()]);
         }
     }
-    void reverse(std::vector<AtomType>& atom_chain) const
+    void reverse(std::vector<AtomType>& atoms) const
     {
         for(AtomDiff<AtomType>* atom_diff: m_atom_diffs) {
-            atom_diff->reverse(atom_chain[atom_diff->get_id()]);
+            atom_diff->reverse(atoms[atom_diff->get_id()]);
         }
     }
 

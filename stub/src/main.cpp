@@ -8,6 +8,7 @@ int main()
     uint32_t cuboid = render_driver->add_cuboid_atom();
     render_driver->render_cuboid_atom(cuboid, 3, true);
     render_driver->render_cuboid_atom(cuboid, 4, true);
+    render_driver->render_cuboid_atom(cuboid, 5, false);
     render_driver->await_termination();
     MAKI_CLIENT_LOG_EXTRA("After Render Loop");
     delete render_driver;

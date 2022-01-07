@@ -7,6 +7,7 @@
 namespace Maki {
 
 // implementation inheritance only -> not to be used as an interface -> can be used on stack
+// represent smallest renderable unit
 struct Atom {
     bool render {false};
 };
