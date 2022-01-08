@@ -1,7 +1,7 @@
 # Maki
 
 **M**athematical **A**nimation and **K**nickknack **I**nscriber (Maki), an experimental rendering backend for [Manim](https://github.com/ManimCommunity/manim).
-Or: How to teach Manim to time travel.
+Or: **How to Teach Manim Time Travel.**
 
 This is a cross-platform project. But right now only Linux has been tested.
 If you know what you're doing, this will run everywhere.
@@ -46,3 +46,4 @@ or from Python.
 - [The Cherno OpenGL](https://www.youtube.com/watch?v=W3gAzLwfIP0&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2)
 - [opengl-tutorial.org](http://www.opengl-tutorial.org)
 - [imgui-cmake](https://github.com/Pesc0/imgui-cmake)
+- [marshalling glm types](https://github.com/pybind/pybind11/issues/430)

@@ -120,7 +120,6 @@ void CuboidRenderer::flush()
         reinterpret_cast<uint8_t*>(m_vertex_buffer_ptr) -
         reinterpret_cast<uint8_t*>(m_vertex_buffer_base))};
     m_vertex_buffer->set_data(m_vertex_buffer_base, data_size);
-    MAKI_LOG_EXTRA("flush data_size: {}, m_index_count: {}", data_size, m_index_count);
     m_renderer->draw(m_vertex_array, m_shader, m_index_count);
 }
 
