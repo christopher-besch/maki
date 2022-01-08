@@ -38,3 +38,4 @@ cmake --build . -j4
 - [imgui-cmake](https://github.com/Pesc0/imgui-cmake)
 - [marshalling glm types](https://github.com/pybind/pybind11/issues/430)
 - [morphing in Blender](https://www.youtube.com/watch?v=SgDhzkv-p6s)
+- [morphing in babylon.js](https://doc.babylonjs.com/divingDeeper/mesh/dynamicMeshMorph)
