@@ -64,19 +64,22 @@ void RenderDriver::render_frame()
 void RenderDriver::render_imgui()
 {
     // ImGui not thread-safe -> this required
-    int imgui_target_frame;
+    int   target_frame;
+    float camera_speed {m_camera_driver->get_speed()};
     {
         lock lock {m_target_frame_mutex};
-        imgui_target_frame = m_target_frame;
+        target_frame = m_target_frame;
     }
     ImGui::Begin("Time Traveler's Toolkit");
     ImGui::Text("fps: %f", 1000.0 / m_renderer->get_last_frame_time());
-    ImGui::SliderInt("Frame", &imgui_target_frame, 0, get_last_frame());
+    ImGui::SliderInt("Frame", &target_frame, 0, get_last_frame());
+    ImGui::SliderFloat("Camera speed (units/ms)", &camera_speed, 0.001f, 0.5f);
     ImGui::End();
     {
         lock lock {m_target_frame_mutex};
-        m_target_frame = imgui_target_frame;
+        m_target_frame = target_frame;
     }
+    m_camera_driver->set_speed(camera_speed);
 }
 
 void RenderDriver::sync_frame_target()

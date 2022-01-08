@@ -12,13 +12,15 @@ int main()
     // render_driver->render_cuboid_atom(cuboid, 10, true);
 
     constexpr float space {4.0f};
-    for(float x {0.0f}; x < 30.0f * space; x += space) {
-        for(float y {0.0f}; y < 30.0f * space; y += space) {
-            for(float z {0.0f}; z < 2.0f * space; z += space) {
+    uint32_t        frame {1};
+    for(float x {0.0f}; x < 50.0f * space; x += space) {
+        for(float y {0.0f}; y < 50.0f * space; y += space) {
+            for(float z {0.0f}; z < 50.0f * space; z += space) {
                 uint32_t cuboid = render_driver->add_cuboid_atom();
-                render_driver->render_cuboid_atom(cuboid, 1, true);
-                render_driver->translate_cuboid_atom(cuboid, 1, {x, y, z});
-                render_driver->color_cuboid_atom(cuboid, 2, {0.8f, 0.8f, 0.0f, 0.5f});
+                render_driver->render_cuboid_atom(cuboid, frame, true);
+                render_driver->translate_cuboid_atom(cuboid, frame, {x, y, z});
+                render_driver->color_cuboid_atom(cuboid, frame, {0.8f, 0.8f, 0.0f, 0.1f});
+                ++frame;
             }
         }
     }

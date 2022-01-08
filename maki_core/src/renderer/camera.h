@@ -71,6 +71,10 @@ private:
     mutable bool m_projection_outdated {true};
     mutable bool m_view_outdated {true};
     mutable bool m_direction_outdated {true};
+
+private:
+    static constexpr float s_near_plane {0.1f};
+    static constexpr float s_far_plane {1000.0f};
 };
 
 } // namespace Maki

@@ -88,7 +88,7 @@ void Camera::calc_projection() const
 
     switch(m_type) {
     case CameraType::perspective:
-        m_projection = glm::perspective(m_fov, m_aspect_ratio, 0.1f, 100.0f);
+        m_projection = glm::perspective(m_fov, m_aspect_ratio, s_near_plane, s_far_plane);
         break;
     case CameraType::orthographic:
         MAKI_RAISE_CRITICAL("Orthographic camera isn't supported yet.");

@@ -11,7 +11,7 @@ CuboidRenderer::CuboidRenderer(Renderer* renderer)
           {{"a_pos", DataType::float3},
            {"a_col", DataType::float4}},
           s_max_vertices * sizeof(CuboidVertex))},
-      m_vertex_buffer_base {new CuboidVertex[s_max_cuboids]}
+      m_vertex_buffer_base {new CuboidVertex[s_max_vertices]}
 {
     m_vertex_array->add_vertex_buffer(m_vertex_buffer);
 
@@ -93,14 +93,12 @@ CuboidRenderer::~CuboidRenderer()
 
 void CuboidRenderer::begin_scene(const Camera* camera)
 {
-    MAKI_LOG_EXTRA("start");
     m_shader->set_mat4("u_mvp", camera->get_view_projection());
     start_batch();
 }
 void CuboidRenderer::end_scene()
 {
     flush();
-    MAKI_LOG_EXTRA("end");
 }
 void CuboidRenderer::start_batch()
 {
@@ -114,12 +112,15 @@ void CuboidRenderer::next_batch()
 }
 void CuboidRenderer::flush()
 {
-    MAKI_LOG_EXTRA("flush");
+    if(!m_index_count)
+        // nothing to draw
+        return;
     // how much of vertex buffer base is actually used
     uint32_t data_size {static_cast<uint32_t>(
         reinterpret_cast<uint8_t*>(m_vertex_buffer_ptr) -
         reinterpret_cast<uint8_t*>(m_vertex_buffer_base))};
     m_vertex_buffer->set_data(m_vertex_buffer_base, data_size);
+    MAKI_LOG_EXTRA("flush data_size: {}, m_index_count: {}", data_size, m_index_count);
     m_renderer->draw(m_vertex_array, m_shader, m_index_count);
 }
 
@@ -127,6 +128,8 @@ void CuboidRenderer::draw_cuboid(const CuboidAtom* cuboid)
 {
     if(!cuboid->render)
         return;
+    if(m_index_count >= s_max_indices)
+        next_batch();
     for(uint32_t i {0}; i < 8; ++i) {
         m_vertex_buffer_ptr->pos = cuboid->ver_pos[i];
         m_vertex_buffer_ptr->col = cuboid->ver_col[i];

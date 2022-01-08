@@ -10,7 +10,9 @@ class CameraDriver {
 public:
     CameraDriver(Renderer* renderer);
 
-    void update(long delta_time);
+    void  update(long delta_time);
+    void  set_speed(float speed) { m_speed = speed; }
+    float get_speed() { return m_speed; }
 
 private:
     void set_event_handler();
