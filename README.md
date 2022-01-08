@@ -26,18 +26,6 @@ cmake .. -DCMAKE_BUILD_TYPE=Debug -Dplatform=glfw
 cmake --build . -j4
 ```
 
-## Run
-
-Either from C++
-```
-./build/sandbox/sandbox
-```
-
-or from Python.
-```
-./example.py
-```
-
 ## References
 
 - [opengl_reference](https://github.com/christopher-besch/opengl_reference)
@@ -49,3 +37,4 @@ or from Python.
 - [opengl-tutorial.org](http://www.opengl-tutorial.org)
 - [imgui-cmake](https://github.com/Pesc0/imgui-cmake)
 - [marshalling glm types](https://github.com/pybind/pybind11/issues/430)
+- [morphing in Blender](https://www.youtube.com/watch?v=SgDhzkv-p6s)
