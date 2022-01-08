@@ -3,6 +3,8 @@
 **M**athematical **A**nimation and **K**nickknack **I**nscriber (Maki), an experimental rendering backend for [Manim](https://github.com/ManimCommunity/manim).
 Or: **How to Teach Manim Time Travel.**
 
+![image](https://user-images.githubusercontent.com/57909184/148649899-0a890deb-c435-493e-8a89-419e895296dd.png)
+
 This is a cross-platform project. But right now only Linux has been tested.
 If you know what you're doing, this will run everywhere.
 
