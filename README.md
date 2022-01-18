@@ -57,3 +57,4 @@ You can use the [issues](https://github.com/christopher-besch/maki/issues) for t
 - [morphing in Blender](https://www.youtube.com/watch?v=SgDhzkv-p6s)
 - [morphing in babylon.js](https://doc.babylonjs.com/divingDeeper/mesh/dynamicMeshMorph)
 - [more morphing](http://web.mit.edu/manoli/morph/www/morph.html)
+- [Python WebAssembly](https://almarklein.org/python_and_webassembly.html)
