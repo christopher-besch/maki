@@ -41,7 +41,6 @@ void Window::end_frame()
 
 void Window::set_cursor_type(CursorType type)
 {
-    // TODO: add function for other modes
     glfwSetInputMode(m_handle, GLFW_CURSOR, static_cast<int>(type));
 }
 
@@ -109,12 +108,17 @@ void Window::init()
 
 void Window::bind_event_callbacks()
 {
-    // TODO: clean up
+    // TODO: make easier to understand
     glfwSetCursorPosCallback(m_handle, [](GLFWwindow* handle, double pos_x, double pos_y) {
+        // get pointer to this window through glfw
+        // set using glfwSetWindowUserPointer
         Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
-        // propagate through layers until handled
-        // only execute callback when not empty
-        (window->m_renderer_event_handler.on_mouse_move && window->m_renderer_event_handler.on_mouse_move(pos_x, pos_y)) ||
+        // check if imgui is capturing the mouse -> don't propagate to next layers
+        (window->imgui_supported() && window->m_imgui_io->WantCaptureMouse) ||
+            // does the render event handler have a callback defined for this event?
+            // if so, execute it
+            (window->m_renderer_event_handler.on_mouse_move && window->m_renderer_event_handler.on_mouse_move(pos_x, pos_y)) ||
+            // if last layer's callback returned false -> event not handled yet -> propagate to next layer
             (window->m_driver_event_handler.on_mouse_move && window->m_driver_event_handler.on_mouse_move(pos_x, pos_y));
     });
     glfwSetScrollCallback(m_handle, [](GLFWwindow* handle, double offset_x, double offset_y) {
@@ -125,6 +129,7 @@ void Window::bind_event_callbacks()
     });
     glfwSetMouseButtonCallback(m_handle, [](GLFWwindow* handle, int button, int action, int) {
         Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
+        // split events into sub-categories
         switch(action) {
         case GLFW_PRESS:
             (window->imgui_supported() && window->m_imgui_io->WantCaptureMouse) ||
@@ -160,6 +165,7 @@ void Window::bind_event_callbacks()
     });
     glfwSetWindowSizeCallback(m_handle, [](GLFWwindow* handle, int width, int height) {
         Window* window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
+        // imgui doesn't use this event
         (window->m_renderer_event_handler.on_window_resize && window->m_renderer_event_handler.on_window_resize(width, height)) ||
             (window->m_driver_event_handler.on_window_resize && window->m_driver_event_handler.on_window_resize(width, height));
     });

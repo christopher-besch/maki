@@ -21,7 +21,7 @@ Renderer* Renderer::create(const std::string& title, uint32_t width, uint32_t he
 }
 
 Renderer::Renderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler)
-    : m_camera {new Camera(width, height)}, m_last_time {Clock::now()}
+    : m_camera {new Camera(width, height, Camera::Type::perspective)}, m_last_time {Clock::now()}
 {
     EventHandler renderer_event_handler;
     renderer_event_handler.on_window_resize = [this](int width, int height) {

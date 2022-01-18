@@ -10,6 +10,8 @@
 
 namespace Maki {
 
+// main interface to client program
+// creates atoms, applies diffs to atoms, starts/sops rendering (creates rendering thread)
 class RenderDriver {
 public:
     // to be run from control thread

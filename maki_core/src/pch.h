@@ -1,3 +1,4 @@
+// include everything often used and rarely or never changed -> speeds up compilation
 #pragma once
 
 #include <array>
@@ -32,6 +33,6 @@
 #endif
 #include <imgui_impl_opengl3.h>
 
-// often used custom declarations
+// often used, rarely changing custom declarations
 #include "core/definitions.h"
 #include "core/log.h"

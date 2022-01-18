@@ -5,6 +5,7 @@
 
 namespace Maki {
 
+// convert GLenums into legible output
 class Stringifier {
 public:
     static std::string gl_msg_severity(GLenum val);

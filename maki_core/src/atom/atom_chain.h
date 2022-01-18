@@ -5,7 +5,7 @@
 
 namespace Maki {
 
-// representation of current frame
+// representation of current frame (either for control or render thread)
 template<typename AtomType>
 class AtomChain {
 public:

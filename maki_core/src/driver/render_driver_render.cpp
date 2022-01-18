@@ -4,6 +4,7 @@
 
 namespace Maki {
 
+// all functions to be run from rendering thread
 void RenderDriver::render_thread_func(const std::string& title, uint32_t width, uint32_t height)
 {
     setup(title, width, height);
@@ -63,7 +64,7 @@ void RenderDriver::render_frame()
 
 void RenderDriver::render_imgui()
 {
-    // ImGui not thread-safe -> this required
+    // ImGui not thread-safe -> extra variables and locks required
     int   target_frame;
     float camera_speed {m_camera_driver->get_speed()};
     {
@@ -82,6 +83,7 @@ void RenderDriver::render_imgui()
     m_camera_driver->set_speed(camera_speed);
 }
 
+// update frame to target
 void RenderDriver::sync_frame_target()
 {
     // TODO: jump-back could be optimized
@@ -89,6 +91,7 @@ void RenderDriver::sync_frame_target()
     lock lock {m_target_frame_mutex};
     m_render_cuboid_chain.set_frame(m_target_frame, m_cuboid_diff_lifetime);
 }
+// update rendering thread atom chains if necessary
 void RenderDriver::chrono_sync()
 {
     if(m_cuboid_diff_lifetime.is_outdated(m_render_cuboid_chain.get_frame())) {
@@ -99,7 +102,7 @@ void RenderDriver::chrono_sync()
 
 uint32_t RenderDriver::get_last_frame()
 {
-    // TODO: calculate max of all
+    // TODO: calculate max of all diff_lifetimes
     return m_cuboid_diff_lifetime.size() - 1;
 }
 

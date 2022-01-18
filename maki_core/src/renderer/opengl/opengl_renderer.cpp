@@ -2,7 +2,7 @@
 
 #include "opengl_renderer.h"
 
-#include "core/stringifier.h"
+#include "renderer/opengl/opengl_stringifier.h"
 
 namespace Maki {
 

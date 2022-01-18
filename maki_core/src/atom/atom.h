@@ -6,7 +6,7 @@
 
 namespace Maki {
 
-// represent smallest renderable unit
+// smallest renderable unit
 struct CuboidAtom {
     bool render {false};
 

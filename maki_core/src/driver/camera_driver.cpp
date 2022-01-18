@@ -10,6 +10,7 @@ CameraDriver::CameraDriver(Renderer* renderer)
     set_event_handler();
 }
 
+// TODO: broken when entering ImGui while pressing
 bool CameraDriver::on_key_press(Key key)
 {
     switch(key) {

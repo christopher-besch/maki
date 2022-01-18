@@ -1,12 +1,12 @@
 #pragma once
 
-// TODO: move to pch.h, produces weird error when attempting -> break stb compilation in stb.cpp
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 
 namespace Maki {
 
+// user can deside what loglevels to display
 enum class LogLevel {
     Extra   = spdlog::level::trace,
     General = spdlog::level::debug,

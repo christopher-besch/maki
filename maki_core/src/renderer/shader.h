@@ -6,6 +6,7 @@
 
 namespace Maki {
 
+// store shader and uniform definitions
 class Shader {
 public:
     static Shader* create(const std::string& vert_path, const std::string& frag_path);

@@ -10,7 +10,7 @@ namespace Maki {
 template<typename AtomType>
 class AtomChain;
 
-// all changes required to convert atoms of current frame into last or next
+// all changes required to convert atoms of current frame into next or previous (apply or reverse)
 template<typename AtomType>
 class AtomDiffFrame {
 public:

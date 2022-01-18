@@ -4,11 +4,13 @@
 
 namespace Maki {
 
+// all functions to be run from control thread
 mutex RenderDriver::s_setup_mutex;
 
 RenderDriver::RenderDriver(const std::string& title, uint32_t width, uint32_t height)
 {
     m_render_thread = std::thread([this, title, width, height]() {
+        // only rendering thread code in this file
         render_thread_func(title, width, height);
     });
 }

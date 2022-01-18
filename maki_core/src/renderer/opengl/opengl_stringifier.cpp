@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "stringifier.h"
+#include "opengl_stringifier.h"
 
 namespace Maki {
 

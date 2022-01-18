@@ -4,7 +4,7 @@
 
 namespace Maki {
 
-Camera::Camera(uint32_t width, uint32_t height, CameraType type)
+Camera::Camera(uint32_t width, uint32_t height, Camera::Type type)
     : m_type {type}, m_width {width}, m_height {height}, m_aspect_ratio {float(width) / float(height)}
 {
     calc_projection();
@@ -16,7 +16,7 @@ void Camera::set_fov(float fov)
 
     outdate_projetion();
 }
-void Camera::set_type(CameraType type)
+void Camera::set_type(Camera::Type type)
 {
     m_type = type;
 
@@ -87,10 +87,10 @@ void Camera::calc_projection() const
         return;
 
     switch(m_type) {
-    case CameraType::perspective:
+    case Camera::Type::perspective:
         m_projection = glm::perspective(m_fov, m_aspect_ratio, s_near_plane, s_far_plane);
         break;
-    case CameraType::orthographic:
+    case Camera::Type::orthographic:
         MAKI_RAISE_CRITICAL("Orthographic camera isn't supported yet.");
         break;
     default:

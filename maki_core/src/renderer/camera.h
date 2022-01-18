@@ -4,16 +4,17 @@
 
 namespace Maki {
 
-enum class CameraType {
-    perspective = 0,
-    orthographic,
-};
-
+// handle view-projection matrix
 class Camera {
 public:
-    Camera(uint32_t width, uint32_t height, CameraType = CameraType::perspective);
+    enum class Type {
+        perspective = 0,
+        orthographic,
+    };
 
-    void set_type(CameraType type);
+    Camera(uint32_t width, uint32_t height, Camera::Type type);
+
+    void set_type(Camera::Type type);
     void set_window_size(uint32_t width, uint32_t height);
     void set_fov(float fov);
     void set_position(vec3 position);
@@ -45,9 +46,9 @@ private:
     void outdate_direction() const;
 
 private:
-    CameraType m_type;
-    uint32_t   m_width, m_height;
-    float      m_aspect_ratio;
+    Camera::Type m_type;
+    uint32_t     m_width, m_height;
+    float        m_aspect_ratio;
 
     vec3 m_position {0.0f, 0.0f, 10.0f};
     // all angles in radians

@@ -2,10 +2,11 @@
 
 #include <functional>
 
-#include "platform/keys.h"
+#include "platform/enums.h"
 
 namespace Maki {
 
+// set of callbacks to run when something happens
 struct EventHandler {
     // return true when event handled and not to be passed to next layer
     std::function<bool(double pos_x, double pos_y)>       on_mouse_move {nullptr};

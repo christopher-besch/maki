@@ -4,6 +4,7 @@
 
 namespace Maki {
 
+// bind (multiple) vertex buffers and one index buffer together
 class VertexArray {
 public:
     static VertexArray* create();

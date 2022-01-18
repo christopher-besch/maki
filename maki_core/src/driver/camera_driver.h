@@ -6,6 +6,7 @@
 
 namespace Maki {
 
+// control Camera with user input
 class CameraDriver {
 public:
     CameraDriver(Renderer* renderer);

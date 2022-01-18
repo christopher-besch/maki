@@ -9,6 +9,8 @@
 
 namespace Maki {
 
+// low-level abstraction rendering api calls
+// implementation gets chosen at runtime -> inheritance
 class Renderer {
 public:
     enum class Implementation {

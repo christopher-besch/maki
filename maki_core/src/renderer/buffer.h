@@ -5,6 +5,8 @@
 
 namespace Maki {
 
+// one variable type in a buffer
+// a buffer can have multiple BufferElements
 struct BufferElement {
     std::string name;
     DataType    type;
@@ -18,6 +20,7 @@ struct BufferElement {
         : name {name}, type {type}, size {data_type_size(type)}, normalized {normalized} {}
 };
 
+// pass data to GPU, BufferElements define how that data looks like
 class VertexBuffer {
 public:
     // dynamic
@@ -63,6 +66,7 @@ protected:
     bool m_dynamic;
 };
 
+// what vertices should be rendered in what order
 class IndexBuffer {
 public:
     static IndexBuffer* create(uint32_t count, const uint32_t* indices);

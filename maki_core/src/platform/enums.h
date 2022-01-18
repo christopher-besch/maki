@@ -4,6 +4,8 @@
 
 namespace Maki {
 
+// platform-independent enums
+// actual value dependent on platform -> actual values of enums to be treated as undefined
 enum class MouseBtn {
 #if PROJECT == glfw
     button_1      = GLFW_MOUSE_BUTTON_1,
@@ -144,6 +146,15 @@ enum class Key {
     right_alt     = GLFW_KEY_RIGHT_ALT,
     right_super   = GLFW_KEY_RIGHT_SUPER,
     menu          = GLFW_KEY_MENU,
+#endif
+};
+
+// states the cursor can be in
+enum class CursorType {
+#if PROJECT == glfw
+    normal   = GLFW_CURSOR_NORMAL,
+    hidden   = GLFW_CURSOR_HIDDEN,
+    disabled = GLFW_CURSOR_DISABLED,
 #endif
 };
 

@@ -5,6 +5,7 @@
 
 namespace Maki {
 
+// batch renderer
 class CuboidRenderer {
 public:
     CuboidRenderer(Renderer* renderer);
@@ -38,7 +39,7 @@ private:
     CuboidVertex* m_vertex_buffer_ptr {nullptr};
 
 private:
-    // how many cuboids in single render call
+    // how many cuboids in single render call / batch
     static constexpr uint32_t s_max_cuboids {3000};
     // 8 corners
     static constexpr uint32_t s_max_vertices {s_max_cuboids * 8};

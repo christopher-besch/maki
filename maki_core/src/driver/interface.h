@@ -5,6 +5,7 @@
 
 namespace Maki {
 
+// any client-facing functions outside of RenderDriver
 inline void init(Renderer::Implementation renderer_impl)
 {
     Log::init();

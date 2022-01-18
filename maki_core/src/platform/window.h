@@ -11,14 +11,8 @@
 
 namespace Maki {
 
-enum class CursorType {
-#if PROJECT == glfw
-    normal   = GLFW_CURSOR_NORMAL,
-    hidden   = GLFW_CURSOR_HIDDEN,
-    disabled = GLFW_CURSOR_DISABLED,
-#endif
-};
-
+// create window, handle events/inputs
+// implementation gets chosen at compile time with -Dplatform
 class Window {
 public:
     Window(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler, EventHandler renderer_event_handler);
@@ -50,7 +44,10 @@ private:
     std::string m_title;
     uint32_t    m_width, m_height;
 
+    // each layer can handle an event or pass it on to the next layer
     // only two layers supported
+    // driver events   -> camera movement, interactivity, ...
+    // renderer events -> close Window, resize, ImGui, ...
     EventHandler m_driver_event_handler, m_renderer_event_handler;
 
     // nullptr when imgui not supported -> only supported with first window because of https://github.com/ocornut/imgui/issues/2117

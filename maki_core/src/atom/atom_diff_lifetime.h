@@ -46,6 +46,7 @@ public:
         m_first_outdated_frame = m_atom_diff_frames.size();
     }
 
+    // apply changes of requested frame to all atoms of an atom chain
     void apply(uint32_t frame, std::vector<AtomType>& atoms) const
     {
         rec_lock lock {m_mutex};
