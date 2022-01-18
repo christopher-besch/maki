@@ -39,3 +39,6 @@ vendor/imgui/
 vendor/pybind11/
 vendor/spdlog/
 vendor/stb/
+
+# imgui safe state
+imgui.ini
