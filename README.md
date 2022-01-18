@@ -56,3 +56,4 @@ You can use the [issues](https://github.com/christopher-besch/maki/issues) for t
 - [marshalling glm types](https://github.com/pybind/pybind11/issues/430)
 - [morphing in Blender](https://www.youtube.com/watch?v=SgDhzkv-p6s)
 - [morphing in babylon.js](https://doc.babylonjs.com/divingDeeper/mesh/dynamicMeshMorph)
+- [more morphing](http://web.mit.edu/manoli/morph/www/morph.html)
