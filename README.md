@@ -5,8 +5,11 @@ Or: **How to Teach Manim Time Travel.**
 
 ![image](https://user-images.githubusercontent.com/57909184/148649899-0a890deb-c435-493e-8a89-419e895296dd.png)
 
-This is a cross-platform project. But right now only Linux has been tested.
-If you know what you're doing, this will run everywhere.
+This is a cross-platform project.
+But right now only Linux-builds have been tested.
+Though if you know what you're doing, this will compile and run everywhere.
+
+At the moment this project is under development, thus the documentation and volume of comments is left to be desired.
 
 ## Requirements
 
@@ -25,6 +28,20 @@ mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Debug -Dplatform=glfw
 cmake --build . -j4
 ```
+
+## Use
+
+You can take a look at `maki_showcase.ipynb`.
+It contains a few examples for Maki.
+For it to function correctly you have to copy (or symlink) the compiled shared object for Python (for example `maki.cpython-310-x86_64-linux-gnu.so`) into the root of this project.
+You can find that shared object in `build/maki` (if you called your build directory that).
+
+The examples work with both Debug and Release builds, but some are excruciatingly slow in the former.
+Please try both modes before reporting any bugs or performance problems.
+
+On a related note:
+Please do inform the author of any problems, bugs or feature requests.
+You can use the [issues](https://github.com/christopher-besch/maki/issues) for that.
 
 ## References
 
