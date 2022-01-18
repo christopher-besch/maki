@@ -27,7 +27,7 @@ private:
         vec4 col;
     };
 
-    Renderer*     m_renderer;
+    Renderer*     m_renderer {nullptr};
     VertexArray*  m_vertex_array {nullptr};
     VertexBuffer* m_vertex_buffer {nullptr};
     IndexBuffer*  m_index_buffer {nullptr};

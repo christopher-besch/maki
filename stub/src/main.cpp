@@ -13,14 +13,17 @@ int main()
 
     constexpr float space {4.0f};
     uint32_t        frame {1};
-    for(float x {0.0f}; x < 50.0f * space; x += space) {
-        for(float y {0.0f}; y < 50.0f * space; y += space) {
-            for(float z {0.0f}; z < 50.0f * space; z += space) {
+    for(float x {0.0f}; x < 10.0f * space; x += space) {
+        for(float y {0.0f}; y < 10.0f * space; y += space) {
+            for(float z {0.0f}; z < 10.0f * space; z += space) {
                 uint32_t cuboid = render_driver->add_cuboid_atom();
                 render_driver->render_cuboid_atom(cuboid, frame, true);
                 render_driver->translate_cuboid_atom(cuboid, frame, {x, y, z});
                 render_driver->color_cuboid_atom(cuboid, frame, {0.8f, 0.8f, 0.0f, 0.1f});
+                for(uint32_t anim_frame {101}; anim_frame < 200; ++anim_frame)
+                    render_driver->translate_cuboid_atom(cuboid, anim_frame, {0.2f, 0.0f, 0.0f});
                 ++frame;
+                MAKI_CLIENT_LOG_EXTRA("new cube {} {} {}", x, y, z);
             }
         }
     }
