@@ -12,7 +12,7 @@ public:
     CuboidRenderer(Renderer* renderer);
     ~CuboidRenderer();
 
-    void draw_cuboid(const CuboidAtom* cuboid);
+    void draw_atom(const CuboidAtom* cuboid);
 
 protected:
     virtual void        reset_vertex_buffer_ptr() override;

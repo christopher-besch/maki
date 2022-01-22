@@ -20,7 +20,7 @@ CuboidRenderer::~CuboidRenderer()
     delete[] m_vertex_buffer_base;
 }
 
-void CuboidRenderer::draw_cuboid(const CuboidAtom* cuboid)
+void CuboidRenderer::draw_atom(const CuboidAtom* cuboid)
 {
     if(!cuboid->render)
         return;
