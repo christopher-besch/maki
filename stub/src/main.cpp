@@ -11,15 +11,16 @@ int main()
     // render_driver->render_cuboid_atom(cuboid, 5, false);
     // render_driver->render_cuboid_atom(cuboid, 10, true);
 
+#if 1
     constexpr float space {4.0f};
     uint32_t        frame {1};
     for(float x {0.0f}; x < 50.0f * space; x += space) {
         for(float y {0.0f}; y < 50.0f * space; y += space) {
             for(float z {0.0f}; z < 50.0f * space; z += space) {
-                uint32_t cuboid = render_driver->add_cuboid_atom();
-                render_driver->render_cuboid_atom(cuboid, frame, true);
-                render_driver->translate_cuboid_atom(cuboid, frame, {x, y, z});
-                render_driver->color_cuboid_atom(cuboid, frame, {0.8f, 0.8f, 0.0f, 0.1f});
+                uint32_t cuboid = render_driver->add_atom<Maki::CuboidAtom>();
+                render_driver->show_atom<Maki::CuboidAtom>(cuboid, frame, true);
+                render_driver->translate_atom<Maki::CuboidAtom>(cuboid, frame, {x, y, z});
+                render_driver->color_atom<Maki::CuboidAtom>(cuboid, frame, {0.8f, 0.8f, 0.0f, 0.1f});
                 // for(uint32_t anim_frame {101}; anim_frame < 200; ++anim_frame)
                 //     render_driver->translate_cuboid_atom(cuboid, anim_frame, {0.2f, 0.0f, 0.0f});
                 ++frame;
@@ -27,6 +28,11 @@ int main()
             }
         }
     }
+#endif
+#if 0
+    uint32_t cuboid = render_driver->add_atom<Maki::CuboidAtom>();
+    render_driver->show_atom<Maki::CuboidAtom>(cuboid, 1, true);
+#endif
     MAKI_CLIENT_LOG_EXTRA("done creating");
     // uint32_t cuboid = render_driver->add_cuboid_atom();
     // render_driver->render_cuboid_atom(cuboid, 1, true);

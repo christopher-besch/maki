@@ -13,7 +13,7 @@ public:
     virtual ~BatchRenderer();
 
     // can be augmented by implementation
-    virtual void begin_scene(const Camera* camera);
+    virtual void begin_scene();
     void         end_scene();
 
 protected:

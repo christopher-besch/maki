@@ -29,11 +29,11 @@ void init_render_driver(py::module& m)
         .def(py::init<const std::string&, uint32_t, uint32_t>())
         .def("await_termination", &Maki::RenderDriver::await_termination)
         .def("is_terminated", &Maki::RenderDriver::is_terminated)
-        .def("add_cuboid_atom", &Maki::RenderDriver::add_cuboid_atom)
-        .def("render_cuboid_atom", &Maki::RenderDriver::render_cuboid_atom)
-        .def("translate_cuboid_atom", &Maki::RenderDriver::translate_cuboid_atom)
-        .def("color_cuboid_atom", &Maki::RenderDriver::color_cuboid_atom)
-        .def("set_frame", &Maki::RenderDriver::set_frame);
+        .def("add_cuboid_atom", &Maki::RenderDriver::add_atom<Maki::CuboidAtom>)
+        .def("show_cuboid_atom", &Maki::RenderDriver::show_atom<Maki::CuboidAtom>)
+        .def("translate_cuboid_atom", &Maki::RenderDriver::translate_atom<Maki::CuboidAtom>)
+        .def("color_cuboid_atom", &Maki::RenderDriver::color_atom<Maki::CuboidAtom>)
+        .def("set_target_frame", &Maki::RenderDriver::set_target_frame);
 }
 
 PYBIND11_MODULE(maki, m)

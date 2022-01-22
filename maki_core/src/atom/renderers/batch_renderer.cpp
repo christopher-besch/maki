@@ -23,9 +23,9 @@ BatchRenderer::~BatchRenderer()
     delete m_shader;
 }
 
-void BatchRenderer::begin_scene(const Camera* camera)
+void BatchRenderer::begin_scene()
 {
-    m_shader->set_mat4("u_mvp", camera->get_view_projection());
+    m_shader->set_mat4("u_mvp", m_renderer->get_camera()->get_view_projection());
     start_batch();
 }
 void BatchRenderer::end_scene()

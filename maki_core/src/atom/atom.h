@@ -36,7 +36,8 @@ struct CuboidAtom {
     void        add_col(const std::array<vec4, 8>& delta_col);
     void        sub_col(const std::array<vec4, 8>& delta_col);
 
-    static constexpr uint32_t vertex_count {8};
+    static constexpr uint32_t    vertex_count {8};
+    static constexpr const char* name {"Cuboid"};
 };
 
 } // namespace Maki
