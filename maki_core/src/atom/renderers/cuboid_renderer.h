@@ -1,44 +1,36 @@
 #pragma once
 
 #include "atom/atom.h"
+#include "atom/renderers/batch_renderer.h"
 #include "renderer/renderer.h"
 
 namespace Maki {
 
 // batch renderer
-class CuboidRenderer {
+class CuboidRenderer: public BatchRenderer {
 public:
     CuboidRenderer(Renderer* renderer);
     ~CuboidRenderer();
 
-    void begin_scene(const Camera* camera);
-    void end_scene();
-    // reset buffer pointer
-    void start_batch();
-    // flush and start new batch
-    void next_batch();
-    // render call
-    void flush();
-
     void draw_cuboid(const CuboidAtom* cuboid);
 
-private:
+protected:
+    virtual void        reset_vertex_buffer_ptr() override;
+    virtual const void* get_vertex_buffer_base() const override { return m_vertex_buffer_base; }
+    virtual const void* get_vertex_buffer_ptr() const override { return m_vertex_buffer_ptr; }
+
+    static IndexBuffer* create_index_buffer();
+
+protected:
     struct CuboidVertex {
         vec3 pos;
         vec4 col;
     };
 
-    Renderer*     m_renderer {nullptr};
-    VertexArray*  m_vertex_array {nullptr};
-    VertexBuffer* m_vertex_buffer {nullptr};
-    IndexBuffer*  m_index_buffer {nullptr};
-    Shader*       m_shader {nullptr};
-
-    uint32_t      m_index_count {0};
     CuboidVertex* m_vertex_buffer_base {nullptr};
     CuboidVertex* m_vertex_buffer_ptr {nullptr};
 
-private:
+protected:
     // how many cuboids in single render call / batch
     static constexpr uint32_t s_max_cuboids {3000};
     // 8 corners

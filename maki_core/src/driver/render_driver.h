@@ -4,8 +4,8 @@
 
 #include "atom/atom_chain.h"
 #include "atom/atom_diff_lifetime.h"
+#include "atom/renderers/cuboid_renderer.h"
 #include "driver/camera_driver.h"
-#include "driver/cuboid_renderer.h"
 #include "renderer/renderer.h"
 
 namespace Maki {
@@ -33,9 +33,10 @@ public:
 
 private:
     // to be run from control thread
-    // TODO: xD
-    void prepare_cuboid_atomization(uint32_t id, uint32_t frame);
-    void finalize_cuboid_atomization(uint32_t id, uint32_t frame, AtomDiff<CuboidAtom>* diff);
+    // set control frame -> set AtomChain
+    void prepare_cuboid_update(uint32_t id, uint32_t frame);
+    // save new AtomDiff and apply it -> current AtomChain is correct
+    void finalize_cuboid_update(uint32_t id, uint32_t frame, AtomDiff<CuboidAtom>* diff);
 
     // to be run from render thread
     void render_thread_func(const std::string& title, uint32_t width, uint32_t height);
