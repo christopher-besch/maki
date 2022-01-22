@@ -46,3 +46,6 @@ imgui.ini
 # development sym links
 compile_commands.json
 maki.cpython-310-x86_64-linux-gnu.so
+
+# Jupyter
+.ipynb_checkpoints/
