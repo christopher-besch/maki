@@ -54,7 +54,7 @@ void RenderDriver::render_frame()
 
     m_cuboid_renderer->begin_scene(m_renderer->get_camera());
     for(size_t i {0}; i < m_render_cuboid_chain.size(); ++i) {
-        m_cuboid_renderer->draw_cuboid(&m_render_cuboid_chain[i]);
+        m_cuboid_renderer->draw_atom(&m_render_cuboid_chain[i]);
     }
     m_cuboid_renderer->end_scene();
 
