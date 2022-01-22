@@ -17,8 +17,8 @@ public:
     template<typename AtomType>
     uint32_t add_atom()
     {
-        uint32_t control_id = ctrl_chain<AtomType>().add();
-        uint32_t render_id  = rndr_chain<AtomType>().add();
+        uint32_t control_id = control_chain<AtomType>().add();
+        uint32_t render_id  = render_chain<AtomType>().add();
         MAKI_ASSERT_CRITICAL(control_id == render_id, "Control (ID {}) and render (ID {}) {} chain out of sync.", control_id, render_id, AtomType::name);
         return control_id;
     }
@@ -26,7 +26,7 @@ public:
     void show_atom(uint32_t id, uint32_t frame, bool render)
     {
         prepare_update<AtomType>(id, frame);
-        if(ctrl_chain<AtomType>()[id].render != render) {
+        if(control_chain<AtomType>()[id].render != render) {
             auto diff = new ToggleRenderDiff<AtomType>(id);
             finalize_update<AtomType>(id, frame, diff);
         }
@@ -46,7 +46,7 @@ public:
         std::array<vec4, 8> delta_col;
         delta_col.fill(col);
         for(size_t i {0}; i != delta_col.size(); ++i) {
-            delta_col[i] -= ctrl_chain<AtomType>()[id].ver_col[i];
+            delta_col[i] -= control_chain<AtomType>()[id].ver_col[i];
         }
         auto diff = new ReColorDiff<AtomType>(id, delta_col);
         finalize_update<AtomType>(id, frame, diff);
@@ -68,33 +68,32 @@ public:
 
 private:
     // atom dispensing //
-
     template<typename AtomType>
-    AtomChain<AtomType>& ctrl_chain();
+    AtomChain<AtomType>& control_chain();
     template<typename AtomType>
-    AtomChain<AtomType>& rndr_chain();
+    AtomChain<AtomType>& render_chain();
     template<typename AtomType>
     AtomDiffLifetime<AtomType>& diff_lifetime();
 
     // to be run from control thread
 
-    // set control frame -> set AtomChain
+    // set control frame -> set AtomChain to frame that should be effected
     template<typename AtomType>
     void prepare_update(uint32_t id, uint32_t frame)
     {
-        MAKI_ASSERT_CRITICAL(ctrl_chain<AtomType>().size() > id, "ID {} hasn't been allocated yet for {} atoms.", id, AtomType::name);
+        MAKI_ASSERT_CRITICAL(control_chain<AtomType>().size() > id, "ID {} hasn't been allocated yet for {} atoms.", id, AtomType::name);
         // first frame can't have any diffs <- first frame used as reference for others
         MAKI_ASSERT_CRITICAL(frame > 0, "Frame {} is invalid.", frame);
 
         diff_lifetime<AtomType>().ensure_frame_existence(frame);
-        ctrl_chain<AtomType>().set_frame(frame, diff_lifetime<AtomType>());
+        control_chain<AtomType>().set_frame(frame, diff_lifetime<AtomType>());
     }
     // save new AtomDiff and apply it -> current AtomChain is correct
     template<typename AtomType>
     void finalize_update(uint32_t id, uint32_t frame, AtomDiff<AtomType>* diff)
     {
         diff_lifetime<AtomType>().add(frame, diff);
-        diff->apply(ctrl_chain<AtomType>()[id]);
+        diff->apply(control_chain<AtomType>()[id]);
     }
 
     // to be run from render thread //
@@ -106,8 +105,8 @@ private:
     template<typename AtomType>
     void individual_chrono_sync()
     {
-        if(diff_lifetime<AtomType>().is_outdated(rndr_chain<AtomType>().get_frame())) {
-            rndr_chain<AtomType>().chrono_sync();
+        if(diff_lifetime<AtomType>().is_outdated(render_chain<AtomType>().get_frame())) {
+            render_chain<AtomType>().chrono_sync();
             diff_lifetime<AtomType>().update();
         }
     }
@@ -125,14 +124,14 @@ private:
 
 // CuboidAtom
 template<>
-inline AtomChain<CuboidAtom>& AtomDispenser::ctrl_chain<CuboidAtom>()
-{
-    return m_render_cuboid_chain;
-}
-template<>
-inline AtomChain<CuboidAtom>& AtomDispenser::rndr_chain<CuboidAtom>()
+inline AtomChain<CuboidAtom>& AtomDispenser::control_chain<CuboidAtom>()
 {
     return m_control_cuboid_chain;
+}
+template<>
+inline AtomChain<CuboidAtom>& AtomDispenser::render_chain<CuboidAtom>()
+{
+    return m_render_cuboid_chain;
 }
 template<>
 inline AtomDiffLifetime<CuboidAtom>& AtomDispenser::diff_lifetime<CuboidAtom>()
