@@ -1,18 +1,18 @@
 #pragma once
 
-#include "atom/atoms/cuboid_atom.h"
+#include "atom/atoms/quadrilateral_atom.h"
 #include "atom/renderers/batch_renderer.h"
 #include "renderer/renderer.h"
 
 namespace Maki {
 
 // batch renderer
-class CuboidRenderer: public BatchRenderer {
+class QuadrilateralRenderer: public BatchRenderer {
 public:
-    CuboidRenderer(Renderer* renderer);
-    ~CuboidRenderer();
+    QuadrilateralRenderer(Renderer* renderer);
+    ~QuadrilateralRenderer();
 
-    void draw_atom(const CuboidAtom* atom);
+    void draw_atom(const QuadrilateralAtom* atom);
 
 protected:
     virtual void        reset_vertex_buffer_ptr() override;
@@ -32,11 +32,11 @@ protected:
 
 protected:
     // how many cuboids in single render call / batch
-    static constexpr uint32_t s_max_cuboids {3000};
-    // 8 corners
-    static constexpr uint32_t s_max_vertices {s_max_cuboids * 8};
-    // 6 sides, 2 triangles per side, 3 vertices per triangle = 36
-    static constexpr uint32_t s_max_indices {s_max_cuboids * 6 * 2 * 3};
+    static constexpr uint32_t s_max_quadrilaterals {12000};
+    // 4 corners
+    static constexpr uint32_t s_max_vertices {s_max_quadrilaterals * 4};
+    // 1 side, 2 triangles per side, 3 vertices per triangle = 36
+    static constexpr uint32_t s_max_indices {s_max_quadrilaterals * 1 * 2 * 3};
 };
 
 } // namespace Maki

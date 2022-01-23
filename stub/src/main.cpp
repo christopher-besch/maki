@@ -11,7 +11,7 @@ int main()
     // render_driver->render_cuboid_atom(cuboid, 5, false);
     // render_driver->render_cuboid_atom(cuboid, 10, true);
 
-#if 1
+#if 0
     constexpr float space {4.0f};
     uint32_t        frame {1};
     for(float x {0.0f}; x < 50.0f * space; x += space) {
@@ -29,7 +29,7 @@ int main()
         }
     }
 #endif
-#if 0
+#if 1
     uint32_t cuboid = render_driver->add_atom<Maki::CuboidAtom>();
     render_driver->show_atom<Maki::CuboidAtom>(cuboid, 1, true);
 #endif

@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "atom/atom.h"
+#include "core/definitions.h"
 
 namespace Maki {
 

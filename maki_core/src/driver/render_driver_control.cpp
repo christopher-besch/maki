@@ -45,7 +45,7 @@ void RenderDriver::set_target_frame(uint32_t frame)
 {
     ASSERT_CONTROL_THREAD();
     lock lock {m_target_frame_mutex};
-    m_atom_dispenser.ensure_frame_existance(frame);
+    m_atom_dispenser.ensure_frame_existence(frame);
     m_target_frame = frame;
 }
 

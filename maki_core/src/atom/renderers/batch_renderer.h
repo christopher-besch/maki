@@ -16,6 +16,9 @@ public:
     virtual void begin_scene();
     void         end_scene();
 
+    // to be defined by implementation
+    // void draw_atom(const AtomType* atom);
+
 protected:
     // reset buffer pointer
     void start_batch();
