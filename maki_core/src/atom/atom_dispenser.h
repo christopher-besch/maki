@@ -19,7 +19,7 @@ public:
     {
         uint32_t control_id = control_chain<AtomType>().add();
         uint32_t render_id  = render_chain<AtomType>().add();
-        MAKI_ASSERT_CRITICAL(control_id == render_id, "Control (ID {}) and render (ID {}) {} chain out of sync.", control_id, render_id, AtomType::name);
+        MAKI_ASSERT_CRITICAL(control_id == render_id, "Control (ID {}) and render (ID {}) {} chain out of sync.", control_id, render_id, AtomType::type_name);
         return control_id;
     }
     template<typename AtomType>
@@ -81,7 +81,7 @@ private:
     template<typename AtomType>
     void prepare_update(uint32_t id, uint32_t frame)
     {
-        MAKI_ASSERT_CRITICAL(control_chain<AtomType>().size() > id, "ID {} hasn't been allocated yet for {} atoms.", id, AtomType::name);
+        MAKI_ASSERT_CRITICAL(control_chain<AtomType>().size() > id, "ID {} hasn't been allocated yet for {} atoms.", id, AtomType::type_name);
         // first frame can't have any diffs <- first frame used as reference for others
         MAKI_ASSERT_CRITICAL(frame > 0, "Frame {} is invalid.", frame);
 
