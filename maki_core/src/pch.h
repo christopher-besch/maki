@@ -36,3 +36,4 @@
 // often used, rarely changing custom declarations
 #include "core/definitions.h"
 #include "core/log.h"
+#include "core/thread_safety.h"

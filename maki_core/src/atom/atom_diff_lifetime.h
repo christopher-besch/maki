@@ -4,6 +4,7 @@
 
 #include "atom/atom_diff_frame.h"
 #include "core/definitions.h"
+#include "core/thread_safety.h"
 
 namespace Maki {
 
@@ -13,14 +14,9 @@ class AtomDiffLifetime {
 public:
     // to be run from control thread //
 
-    size_t size() const
-    {
-        rec_lock lock {m_mutex};
-        return m_atom_diff_frames.size();
-    }
-
     void ensure_frame_existence(uint32_t frame)
     {
+        ASSERT_CONTROL_THREAD();
         rec_lock lock {m_mutex};
         if(frame >= m_atom_diff_frames.size())
             m_atom_diff_frames.resize(frame + 1);
@@ -28,6 +24,7 @@ public:
 
     void add(uint32_t frame, const AtomDiff<AtomType>* diff)
     {
+        ASSERT_CONTROL_THREAD();
         rec_lock lock {m_mutex};
         MAKI_ASSERT_CRITICAL(frame < m_atom_diff_frames.size(), "Frame {} hasn't been created yet for atom diff lifetime with {} frames.", frame, m_atom_diff_frames.size());
         m_atom_diff_frames[frame].add(diff);
@@ -38,6 +35,7 @@ public:
 
     bool is_outdated(uint32_t frame)
     {
+        ASSERT_RENDER_THREAD();
         rec_lock lock {m_mutex};
         if(frame >= m_first_outdated_frame)
             return true;
@@ -47,11 +45,18 @@ public:
     }
     void update()
     {
+        ASSERT_RENDER_THREAD();
         rec_lock lock {m_mutex};
         m_first_outdated_frame = m_atom_diff_frames.size();
     }
 
     // can be run from either thread //
+
+    size_t size() const
+    {
+        rec_lock lock {m_mutex};
+        return m_atom_diff_frames.size();
+    }
 
     // apply changes of requested frame to all atoms of an atom chain
     void apply(uint32_t frame, std::vector<AtomType>& atoms) const

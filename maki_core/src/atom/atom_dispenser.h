@@ -2,6 +2,7 @@
 
 #include "atom/atom_chain.h"
 #include "atom/renderers/cuboid_renderer.h"
+#include "core/thread_safety.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -9,14 +10,15 @@ namespace Maki {
 
 class AtomDispenser {
 public:
-    ~AtomDispenser();
-
     // to be run from control thread //
+
+    ~AtomDispenser();
 
     // return id of created atom
     template<typename AtomType>
     uint32_t add_atom()
     {
+        ASSERT_CONTROL_THREAD();
         // reason for why chains can't be thread_local
         uint32_t control_id = control_chain<AtomType>().add();
         uint32_t render_id  = render_chain<AtomType>().add();
@@ -26,6 +28,7 @@ public:
     template<typename AtomType>
     void show_atom(uint32_t id, uint32_t frame, bool render)
     {
+        ASSERT_CONTROL_THREAD();
         prepare_update<AtomType>(id, frame);
         if(control_chain<AtomType>()[id].render != render) {
             const auto diff = new ToggleRenderDiff<AtomType>(id);
@@ -35,6 +38,7 @@ public:
     template<typename AtomType>
     void translate_atom(uint32_t id, uint32_t frame, vec3 delta)
     {
+        ASSERT_CONTROL_THREAD();
         prepare_update<AtomType>(id, frame);
         auto diff = new TransformDiff<AtomType>(id, glm::translate(mat4 {1.0f}, delta));
         finalize_update<AtomType>(id, frame, diff);
@@ -42,6 +46,7 @@ public:
     template<typename AtomType>
     void color_atom(uint32_t id, uint32_t frame, vec4 col)
     {
+        ASSERT_CONTROL_THREAD();
         prepare_update<AtomType>(id, frame);
         // calculate difference
         std::array<vec4, 8> delta_col;
@@ -57,7 +62,10 @@ public:
 
     uint32_t get_last_frame();
 
+    // can't be performed in constructor <- constructed with main thread, renderer using OpenGL calls -> need to be called from render thread
     void create_all_renderers(Renderer* renderer);
+    // same with destructor
+    void delete_all_renderers();
 
     void render_all();
 
@@ -82,6 +90,7 @@ private:
     template<typename AtomType>
     void prepare_update(uint32_t id, uint32_t frame)
     {
+        ASSERT_CONTROL_THREAD();
         MAKI_ASSERT_CRITICAL(control_chain<AtomType>().size() > id, "ID {} hasn't been allocated yet for {} atoms.", id, AtomType::type_name);
         // first frame can't have any diffs <- first frame used as reference for others
         MAKI_ASSERT_CRITICAL(frame > 0, "Frame {} is invalid.", frame);
@@ -93,6 +102,7 @@ private:
     template<typename AtomType>
     void finalize_update(uint32_t id, uint32_t frame, const AtomDiff<AtomType>* diff)
     {
+        ASSERT_CONTROL_THREAD();
         diff_lifetime<AtomType>().add(frame, diff);
         diff->apply(control_chain<AtomType>()[id]);
     }
@@ -100,12 +110,12 @@ private:
     // to be run from render thread //
 
     // CuboidAtom
-    void create_cuboid_renderer(Renderer* renderer);
     void render_cuboids();
 
     template<typename AtomType>
     void individual_chrono_sync()
     {
+        ASSERT_RENDER_THREAD();
         if(diff_lifetime<AtomType>().is_outdated(render_chain<AtomType>().get_frame())) {
             render_chain<AtomType>().chrono_sync();
             diff_lifetime<AtomType>().update();

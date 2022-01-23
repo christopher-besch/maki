@@ -7,6 +7,7 @@ namespace Maki {
 // all functions to be run from rendering thread
 void RenderDriver::render_thread_func(const std::string& title, uint32_t width, uint32_t height)
 {
+    ASSERT_RENDER_THREAD();
     setup(title, width, height);
     run();
     cleanup();
@@ -15,6 +16,7 @@ void RenderDriver::render_thread_func(const std::string& title, uint32_t width, 
 
 void RenderDriver::setup(const std::string& title, uint32_t width, uint32_t height)
 {
+    ASSERT_RENDER_THREAD();
     // setup can't be performed twice at the same time
     lock lock {s_setup_mutex};
     MAKI_ASSERT_CRITICAL(!m_renderer, "Recreation of Renderer.");
@@ -27,6 +29,7 @@ void RenderDriver::setup(const std::string& title, uint32_t width, uint32_t heig
 
 void RenderDriver::cleanup()
 {
+    ASSERT_RENDER_THREAD();
     MAKI_ASSERT_CRITICAL(m_renderer, "Renderer has already been deleted.");
     delete m_renderer;
     m_renderer = nullptr;
@@ -34,10 +37,13 @@ void RenderDriver::cleanup()
     delete m_camera_driver;
     m_renderer = nullptr;
     m_renderer = nullptr;
+
+    m_atom_dispenser.delete_all_renderers();
 }
 
 void RenderDriver::run()
 {
+    ASSERT_RENDER_THREAD();
     do {
         render_frame();
     } while(!m_renderer->should_terminate());
@@ -45,6 +51,7 @@ void RenderDriver::run()
 
 void RenderDriver::render_frame()
 {
+    ASSERT_RENDER_THREAD();
     sync_frame_target();
     m_camera_driver->update(m_renderer->get_last_frame_time());
 
@@ -56,6 +63,7 @@ void RenderDriver::render_frame()
 
 void RenderDriver::render_imgui()
 {
+    ASSERT_RENDER_THREAD();
     // ImGui not thread-safe -> extra variables and locks required
     int   target_frame;
     float camera_speed {m_camera_driver->get_speed()};
@@ -77,6 +85,7 @@ void RenderDriver::render_imgui()
 
 void RenderDriver::sync_frame_target()
 {
+    ASSERT_RENDER_THREAD();
     m_atom_dispenser.chrono_sync();
     lock lock {m_target_frame_mutex};
     m_atom_dispenser.set_render_frame(m_target_frame);

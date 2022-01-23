@@ -52,6 +52,7 @@ private:
 #define MAKI_ASSERT_CRITICAL(x, ...)
 
 #else
+// TODO: would be better in single log message
 #define MAKI_RAISE_CRITICAL(...)                                                                                \
     do {                                                                                                        \
         ::Maki::Log::get_error_logger()->critical(__VA_ARGS__);                                                 \
@@ -82,6 +83,7 @@ private:
         Log::get_maki_logger()->error(__VA_ARGS__); \
     } while(0)
 #else
+// TODO: would be better in single log message
 #define MAKI_LOG_ERROR(...)                                                                         \
     do {                                                                                            \
         Log::get_maki_logger()->error(__VA_ARGS__);                                                 \

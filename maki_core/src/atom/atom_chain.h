@@ -6,6 +6,7 @@
 namespace Maki {
 
 // representation of current frame (either for control or render thread)
+// thread safe; all member functions can be called from control and render thread (though they probably shouldn't)
 template<typename AtomType>
 class AtomChain {
 public:

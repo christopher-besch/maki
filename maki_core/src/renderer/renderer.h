@@ -9,13 +9,14 @@
 
 namespace Maki {
 
-// low-level abstraction rendering api calls
+// TODO: ASSERT_RENDER_THREADs should be added, but not so clean with inheritance
+// low-level abstraction for rendering api calls
 // implementation gets chosen at runtime -> inheritance
 class Renderer {
 public:
     enum class Implementation {
         none   = 0,
-        opengl = 1
+        opengl = 1,
     };
 
 public:
@@ -57,6 +58,7 @@ protected:
     Window* m_window {nullptr};
     Camera* m_camera {nullptr};
     // single source of truth for termination status
+    // needs to be in renderer <- window close handled by renderer, otherwise reference to RenderDriver or other required, would be unclean
     bool  m_should_terminate {false};
     mutex m_should_terminate_mutex;
 
