@@ -17,6 +17,7 @@ public:
     template<typename AtomType>
     uint32_t add_atom()
     {
+        // reason for why chains can't be thread_local
         uint32_t control_id = control_chain<AtomType>().add();
         uint32_t render_id  = render_chain<AtomType>().add();
         MAKI_ASSERT_CRITICAL(control_id == render_id, "Control (ID {}) and render (ID {}) {} chain out of sync.", control_id, render_id, AtomType::type_name);
@@ -27,7 +28,7 @@ public:
     {
         prepare_update<AtomType>(id, frame);
         if(control_chain<AtomType>()[id].render != render) {
-            auto diff = new ToggleRenderDiff<AtomType>(id);
+            const auto diff = new ToggleRenderDiff<AtomType>(id);
             finalize_update<AtomType>(id, frame, diff);
         }
     }
@@ -90,7 +91,7 @@ private:
     }
     // save new AtomDiff and apply it -> current AtomChain is correct
     template<typename AtomType>
-    void finalize_update(uint32_t id, uint32_t frame, AtomDiff<AtomType>* diff)
+    void finalize_update(uint32_t id, uint32_t frame, const AtomDiff<AtomType>* diff)
     {
         diff_lifetime<AtomType>().add(frame, diff);
         diff->apply(control_chain<AtomType>()[id]);

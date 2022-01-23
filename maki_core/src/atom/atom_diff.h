@@ -6,6 +6,9 @@
 
 namespace Maki {
 
+// only to be created by control thread
+// immutable -> can't be changed by render thread -> no mutexes required
+
 // how to convert single atom "across" frame-border
 template<typename AtomType>
 class AtomDiff {
@@ -26,12 +29,11 @@ private:
     const uint32_t m_priority;
 
 private:
-    using s_atom_type = AtomType;
-    static thread_local uint32_t s_next_priority;
+    static uint32_t s_next_priority;
 };
 
 template<typename AtomType>
-thread_local uint32_t AtomDiff<AtomType>::s_next_priority {0};
+uint32_t AtomDiff<AtomType>::s_next_priority {0};
 
 // used for sorting containers
 template<typename AtomType>
