@@ -25,7 +25,7 @@ void OpenGLVertexArray::unbind() const
 
 void OpenGLVertexArray::add_vertex_buffer(VertexBuffer* vertex_buffer)
 {
-    bind();
+    auto vao_bind = VertexArrayBind(this);
     vertex_buffer->bind();
 
     for(const BufferElement& element: vertex_buffer->get_elements()) {
@@ -44,7 +44,7 @@ void OpenGLVertexArray::add_vertex_buffer(VertexBuffer* vertex_buffer)
 
 void OpenGLVertexArray::set_index_buffer(IndexBuffer* index_buffer)
 {
-    bind();
+    auto vao_bind = VertexArrayBind(this);
     index_buffer->bind();
     m_index_buffer = index_buffer;
 }

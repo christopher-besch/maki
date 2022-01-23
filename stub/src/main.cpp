@@ -32,6 +32,15 @@ int main()
 #if 1
     uint32_t cuboid = render_driver->add_atom<Maki::CuboidAtom>();
     render_driver->show_atom<Maki::CuboidAtom>(cuboid, 1, true);
+
+    // uint32_t cuboid2 = render_driver->add_atom<Maki::CuboidAtom>();
+    // render_driver->show_atom<Maki::CuboidAtom>(cuboid2, 1, true);
+    // render_driver->translate_atom<Maki::CuboidAtom>(cuboid2, 1, {0.0f, 0.0f, 1.0f});
+    // render_driver->color_atom<Maki::CuboidAtom>(cuboid2, 1, {1.0f, 1.0f, 0.0f, 1.0f});
+
+    uint32_t rect = render_driver->add_atom<Maki::QuadrilateralAtom>();
+    render_driver->show_atom<Maki::QuadrilateralAtom>(rect, 2, true);
+    render_driver->translate_atom<Maki::QuadrilateralAtom>(rect, 2, {3.0f, 3.0f, 0.0f});
 #endif
     MAKI_CLIENT_LOG_EXTRA("done creating");
     // uint32_t cuboid = render_driver->add_cuboid_atom();

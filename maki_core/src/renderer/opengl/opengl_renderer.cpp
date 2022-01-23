@@ -74,11 +74,8 @@ void OpenGLRenderer::set_clear_col(vec4 color)
     glClearColor(color.r, color.g, color.b, color.a);
 }
 
-void OpenGLRenderer::draw(VertexArray* vertex_array, Shader* shader, uint32_t index_count)
+void OpenGLRenderer::draw(uint32_t index_count)
 {
-    shader->bind();
-    vertex_array->bind();
-
     glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_INT, nullptr);
 }
 

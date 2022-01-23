@@ -42,7 +42,8 @@ public:
 
     virtual void set_clear_col(vec4 color) = 0;
 
-    virtual void draw(VertexArray* vertex_array, Shader* shader, uint32_t index_count) = 0;
+    // shader and vertex array object needs to be bound prior
+    virtual void draw(uint32_t index_count) = 0;
     // to be augmented by implementation -> Renderer func has to be called from implementation prior to anything else
     virtual void start_frame();
     virtual void end_frame();

@@ -13,6 +13,7 @@ BatchRenderer::BatchRenderer(Renderer* renderer, VertexBuffer* vertex_buffer, In
 {
     m_vertex_array->add_vertex_buffer(m_vertex_buffer);
     m_vertex_array->set_index_buffer(m_index_buffer);
+    m_vertex_array->unbind();
 }
 
 BatchRenderer::~BatchRenderer()
@@ -44,6 +45,9 @@ void BatchRenderer::next_batch()
 }
 void BatchRenderer::flush()
 {
+    m_shader->bind();
+    auto vao_bind = VertexArrayBind(m_vertex_array);
+
     if(!m_index_count)
         // nothing to draw
         return;
@@ -52,7 +56,10 @@ void BatchRenderer::flush()
         reinterpret_cast<const uint8_t*>(get_vertex_buffer_ptr()) -
         reinterpret_cast<const uint8_t*>(get_vertex_buffer_base()))};
     m_vertex_buffer->set_data(get_vertex_buffer_base(), data_size);
-    m_renderer->draw(m_vertex_array, m_shader, m_index_count);
+
+    m_renderer->draw(m_index_count);
+
+    m_shader->unbind();
 }
 
 } // namespace Maki

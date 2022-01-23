@@ -11,7 +11,7 @@ public:
 
     virtual void set_clear_col(vec4 color) override;
 
-    virtual void draw(VertexArray* vertex_array, Shader* shader, uint32_t index_count) override;
+    virtual void draw(uint32_t index_count) override;
     virtual void start_frame() override;
     // to be defined when necessary
     // virtual void end_frame() override;
