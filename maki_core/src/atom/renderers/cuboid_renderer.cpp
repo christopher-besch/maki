@@ -34,6 +34,7 @@ void CuboidRenderer::draw_atom(const CuboidAtom* atom)
     m_index_count += 36;
 }
 
+// TODO: remove code duplication
 void CuboidRenderer::reset_vertex_buffer_ptr()
 {
     m_vertex_buffer_ptr = m_vertex_buffer_base;

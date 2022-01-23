@@ -37,6 +37,7 @@ void QuadrilateralRenderer::draw_atom(const QuadrilateralAtom* atom)
     m_index_count += 6;
 }
 
+// TODO: remove code duplication
 void QuadrilateralRenderer::reset_vertex_buffer_ptr()
 {
     m_vertex_buffer_ptr = m_vertex_buffer_base;
