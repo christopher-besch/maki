@@ -7,7 +7,7 @@ namespace Maki {
 
 // used as an interface between OOP implementation of renderer and AtomDispenser using generic programming
 // can be used like:
-// AtomRendererRouter<CuboidAtom>::type* m_cuboid_renderer;
+// typename AtomRendererRouter<AtomType>::type* m_cuboid_renderer;
 template<typename AtomType>
 struct AtomRendererRouter {
     // can't be used unspecialized
