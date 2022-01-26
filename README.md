@@ -25,7 +25,7 @@ sudo apt install build-essential cmake libxrandr-dev libxinerama-dev libxcursor-
 git clone https://github.com/christopher-besch/maki --recurse
 cd maki
 mkdir build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=Debug -Dplatform=glfw
+cmake .. -DCMAKE_BUILD_TYPE=Release -Dplatform=glfw
 cmake --build . -j4
 ```
 
