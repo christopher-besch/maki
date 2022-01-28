@@ -49,7 +49,7 @@ public:
         ASSERT_CONTROL_THREAD();
         prepare_update<AtomType>(id, frame);
         // calculate difference
-        std::array<vec4, 8> delta_col;
+        std::array<vec4, AtomType::vertex_count> delta_col;
         delta_col.fill(col);
         for(size_t i {0}; i != delta_col.size(); ++i) {
             delta_col[i] -= get_control_chain<AtomType>()[id].ver_col[i];
