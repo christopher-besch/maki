@@ -28,7 +28,9 @@ public:
         rec_lock lock {m_mutex};
         MAKI_ASSERT_CRITICAL(frame < m_atom_diff_frames.size(), "Frame {} hasn't been created yet for atom diff lifetime with {} frames.", frame, m_atom_diff_frames.size());
         m_atom_diff_frames[frame].add(diff);
-        m_first_outdated_frame = frame;
+        // last frame outdated <- when currently currently going back with render thread would apply wrong reverse
+        // TODO: actually verify that this fixes https://github.com/christopher-besch/maki/issues/16
+        m_first_outdated_frame = frame - 1;
     }
 
     // to be run from render thread //

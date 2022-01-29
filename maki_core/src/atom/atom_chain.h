@@ -26,6 +26,8 @@ public:
     }
     uint32_t add()
     {
+        // reason for locks everywhere -> only function called from control thread with render atom chain
+        ASSERT_CONTROL_THREAD();
         lock lock {m_atoms_mutex};
         m_atoms.emplace_back();
         return m_atoms.size() - 1;
@@ -43,7 +45,7 @@ public:
     void chrono_sync()
     {
         lock lock {m_atoms_mutex};
-        MAKI_LOG_EXTRA("{} Chrono Sync initiated.", AtomType::type_name);
+        MAKI_LOG_EXTRA("{}Atom Chrono Sync initiated.", AtomType::type_name);
         // safe current state
         size_t target_atom_count = m_atoms.size();
 
@@ -67,6 +69,7 @@ public:
     }
 
 private:
+    // expects m_atoms_mutex to already be locked
     void next_frame(const AtomDiffLifetime<AtomType>& atom_diff_lifetime)
     {
         atom_diff_lifetime.apply(m_frame + 1, m_atoms);
