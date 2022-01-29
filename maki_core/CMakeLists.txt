@@ -22,6 +22,14 @@ target_link_libraries(maki_core PUBLIC spdlog::spdlog)
 
 target_link_libraries(maki_core PUBLIC imgui)
 
+# TODO: add only linux check
+option(ASAN "enable address and undefined behaviour sanitization" OFF)
+if(${ASAN})
+  message("-- Using ASan")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined,address")
+  set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=undefined,address")
+endif()
+
 # copy resources in beginning
 message("-- Copying resources")
 file(
