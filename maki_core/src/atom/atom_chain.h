@@ -27,7 +27,7 @@ public:
     uint32_t add()
     {
         // reason for locks everywhere -> only function called from control thread with render atom chain
-        ASSERT_CONTROL_THREAD();
+        MAKI_ASSERT_CTRL_THREAD();
         lock lock {m_atoms_mutex};
         m_atoms.emplace_back();
         return m_atoms.size() - 1;
@@ -58,7 +58,7 @@ public:
     }
     void render(typename AtomRendererRouter<AtomType>::type* renderer)
     {
-        ASSERT_RENDER_THREAD();
+        MAKI_ASSERT_RNDR_THREAD();
         lock lock {m_atoms_mutex};
 
         renderer->begin_scene();

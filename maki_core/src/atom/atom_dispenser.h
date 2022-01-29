@@ -19,7 +19,7 @@ public:
     template<typename AtomType>
     uint32_t add_atom()
     {
-        ASSERT_CONTROL_THREAD();
+        MAKI_ASSERT_CTRL_THREAD();
         // reason for why chains can't be thread_local
         uint32_t control_id = get_control_chain<AtomType>().add();
         uint32_t render_id  = get_render_chain<AtomType>().add();
@@ -29,7 +29,7 @@ public:
     template<typename AtomType>
     void show_atom(uint32_t id, uint32_t frame, bool render)
     {
-        ASSERT_CONTROL_THREAD();
+        MAKI_ASSERT_CTRL_THREAD();
         // TODO: prepare_update locks m_atoms_mutex and get_locked_atom locks it again -> inefficient
         prepare_update<AtomType>(id, frame);
         auto [lock, atom] = get_control_chain<AtomType>().get_locked_atom(id);
@@ -42,7 +42,7 @@ public:
     template<typename AtomType>
     void translate_atom(uint32_t id, uint32_t frame, vec3 delta)
     {
-        ASSERT_CONTROL_THREAD();
+        MAKI_ASSERT_CTRL_THREAD();
         prepare_update<AtomType>(id, frame);
         auto [lock, atom] = get_control_chain<AtomType>().get_locked_atom(id);
         auto diff         = new TransformDiff<AtomType>(id, glm::translate(mat4 {1.0f}, delta));
@@ -51,7 +51,7 @@ public:
     template<typename AtomType>
     void color_atom(uint32_t id, uint32_t frame, vec4 col)
     {
-        ASSERT_CONTROL_THREAD();
+        MAKI_ASSERT_CTRL_THREAD();
         prepare_update<AtomType>(id, frame);
         auto [lock, atom] = get_control_chain<AtomType>().get_locked_atom(id);
         // calculate difference
@@ -102,7 +102,7 @@ private:
     template<typename AtomType>
     void prepare_update(uint32_t id, uint32_t frame)
     {
-        ASSERT_CONTROL_THREAD();
+        MAKI_ASSERT_CTRL_THREAD();
         MAKI_ASSERT_CRITICAL(get_control_chain<AtomType>().size() > id, "ID {} hasn't been allocated yet for {} atoms.", id, AtomType::type_name);
         // first frame can't have any diffs <- first frame used as reference for others
         MAKI_ASSERT_CRITICAL(frame > 0, "Frame {} is invalid.", frame);
@@ -114,7 +114,7 @@ private:
     template<typename AtomType>
     void finalize_update(uint32_t frame, AtomType& atom, const AtomDiff<AtomType>* diff)
     {
-        ASSERT_CONTROL_THREAD();
+        MAKI_ASSERT_CTRL_THREAD();
         get_diff_lifetime<AtomType>().add(frame, diff);
         diff->apply(atom);
     }
@@ -124,7 +124,7 @@ private:
     template<typename AtomType>
     void ensure_individual_chrono_sync(bool force)
     {
-        ASSERT_RENDER_THREAD();
+        MAKI_ASSERT_RNDR_THREAD();
         if(force || get_diff_lifetime<AtomType>().is_outdated(get_render_chain<AtomType>().get_frame())) {
             get_render_chain<AtomType>().chrono_sync();
             get_diff_lifetime<AtomType>().update();
@@ -134,7 +134,7 @@ private:
     template<typename AtomType>
     void individual_render()
     {
-        ASSERT_RENDER_THREAD();
+        MAKI_ASSERT_RNDR_THREAD();
         get_render_chain<AtomType>().render(get_renderer<AtomType>());
     }
 

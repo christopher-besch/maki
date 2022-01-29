@@ -9,7 +9,7 @@
 
 namespace Maki {
 
-// TODO: ASSERT_RENDER_THREADs should be added, but not so clean with inheritance
+// TODO: MAKI_ASSERT_RNDR_THREADs should be added, but not so clean with inheritance
 // low-level abstraction for rendering api calls
 // implementation gets chosen at runtime -> inheritance
 class Renderer {

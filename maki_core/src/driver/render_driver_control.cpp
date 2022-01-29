@@ -9,7 +9,7 @@ mutex RenderDriver::s_setup_mutex;
 
 RenderDriver::RenderDriver(const std::string& title, uint32_t width, uint32_t height)
 {
-    ASSERT_CONTROL_THREAD();
+    MAKI_ASSERT_CTRL_THREAD();
     m_render_thread = std::thread([this, title, width, height]() {
         SET_THREAD_TYPE_RENDER();
         // only rendering thread code in this file
@@ -19,7 +19,7 @@ RenderDriver::RenderDriver(const std::string& title, uint32_t width, uint32_t he
 
 RenderDriver::~RenderDriver()
 {
-    ASSERT_CONTROL_THREAD();
+    MAKI_ASSERT_CTRL_THREAD();
     MAKI_ASSERT_WARN(m_render_thread.joinable(), "Attempting termination of unjoinable render thread.");
     if(!m_terminated) {
         m_renderer->terminate();
@@ -29,7 +29,7 @@ RenderDriver::~RenderDriver()
 
 void RenderDriver::await_termination()
 {
-    ASSERT_CONTROL_THREAD();
+    MAKI_ASSERT_CTRL_THREAD();
     // not even running?
     if(!m_render_thread.joinable())
         return;
@@ -37,13 +37,13 @@ void RenderDriver::await_termination()
 }
 bool RenderDriver::is_terminated()
 {
-    ASSERT_CONTROL_THREAD();
+    MAKI_ASSERT_CTRL_THREAD();
     return m_terminated;
 }
 
 void RenderDriver::set_target_frame(uint32_t frame)
 {
-    ASSERT_CONTROL_THREAD();
+    MAKI_ASSERT_CTRL_THREAD();
     lock lock {m_target_frame_mutex};
     m_atom_dispenser.ensure_frame_existence(frame);
     m_target_frame = frame;

@@ -16,7 +16,7 @@ public:
 
     void ensure_frame_existence(uint32_t frame)
     {
-        ASSERT_CONTROL_THREAD();
+        MAKI_ASSERT_CTRL_THREAD();
         rec_lock lock {m_mutex};
         if(frame >= m_atom_diff_frames.size())
             m_atom_diff_frames.resize(frame + 1);
@@ -24,7 +24,7 @@ public:
 
     void add(uint32_t frame, const AtomDiff<AtomType>* diff)
     {
-        ASSERT_CONTROL_THREAD();
+        MAKI_ASSERT_CTRL_THREAD();
         rec_lock lock {m_mutex};
         MAKI_ASSERT_CRITICAL(frame < m_atom_diff_frames.size(), "Frame {} hasn't been created yet for atom diff lifetime with {} frames.", frame, m_atom_diff_frames.size());
         m_atom_diff_frames[frame].add(diff);
@@ -37,7 +37,7 @@ public:
 
     bool is_outdated(uint32_t frame)
     {
-        ASSERT_RENDER_THREAD();
+        MAKI_ASSERT_RNDR_THREAD();
         rec_lock lock {m_mutex};
         if(frame >= m_first_outdated_frame)
             return true;
@@ -47,7 +47,7 @@ public:
     }
     void update()
     {
-        ASSERT_RENDER_THREAD();
+        MAKI_ASSERT_RNDR_THREAD();
         rec_lock lock {m_mutex};
         m_first_outdated_frame = m_atom_diff_frames.size();
     }
