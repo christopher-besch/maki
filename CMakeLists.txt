@@ -25,6 +25,14 @@ find_package(GLEW REQUIRED)
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/vendor")
 
+# TODO: add only linux check
+option(ASAN "enable address and undefined behaviour sanitization" OFF)
+if(${ASAN})
+  message("-- Using ASan")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined,address")
+  set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=undefined,address")
+endif()
+
 # use warnings and multi threading
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
