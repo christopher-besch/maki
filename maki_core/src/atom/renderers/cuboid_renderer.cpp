@@ -20,15 +20,15 @@ CuboidRenderer::~CuboidRenderer()
     delete[] m_vertex_buffer_base;
 }
 
-void CuboidRenderer::draw_atom(const CuboidAtom* atom)
+void CuboidRenderer::draw_atom(const CuboidAtom& atom)
 {
-    if(!atom->render)
+    if(!atom.render)
         return;
     if(m_index_count >= s_max_indices)
         next_batch();
     for(uint32_t i {0}; i < 8; ++i) {
-        m_vertex_buffer_ptr->pos = atom->ver_pos[i];
-        m_vertex_buffer_ptr->col = atom->ver_col[i];
+        m_vertex_buffer_ptr->pos = atom.ver_pos[i];
+        m_vertex_buffer_ptr->col = atom.ver_col[i];
         ++m_vertex_buffer_ptr;
     }
     m_index_count += 36;

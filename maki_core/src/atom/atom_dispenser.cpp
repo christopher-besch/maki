@@ -57,12 +57,12 @@ void AtomDispenser::set_render_frame(uint32_t frame)
 
     m_render_quadrilateral_chain.set_frame(frame, m_quadrilateral_diff_lifetime);
 }
-void AtomDispenser::chrono_sync()
+void AtomDispenser::ensure_chrono_sync(bool force)
 {
     ASSERT_RENDER_THREAD();
-    individual_chrono_sync<CuboidAtom>();
+    ensure_individual_chrono_sync<CuboidAtom>(force);
 
-    individual_chrono_sync<QuadrilateralAtom>();
+    ensure_individual_chrono_sync<QuadrilateralAtom>(force);
 }
 
 void AtomDispenser::ensure_frame_existence(uint32_t frame)

@@ -75,6 +75,8 @@ void RenderDriver::render_imgui()
     ImGui::Text("fps: %f", 1000.0 / m_renderer->get_last_frame_time());
     ImGui::SliderInt("Frame", &target_frame, 0, m_atom_dispenser.get_last_frame());
     ImGui::SliderFloat("Camera speed (units/ms)", &camera_speed, 0.001f, 0.5f);
+    if(ImGui::Button("Force Chrono Sync"))
+        m_atom_dispenser.ensure_chrono_sync(true);
     ImGui::End();
     {
         lock lock {m_target_frame_mutex};
@@ -86,7 +88,7 @@ void RenderDriver::render_imgui()
 void RenderDriver::sync_frame_target()
 {
     ASSERT_RENDER_THREAD();
-    m_atom_dispenser.chrono_sync();
+    m_atom_dispenser.ensure_chrono_sync();
     lock lock {m_target_frame_mutex};
     m_atom_dispenser.set_render_frame(m_target_frame);
 }

@@ -2,6 +2,7 @@
 
 #include "atom/atom_chain.h"
 #include "atom/atom_renderer.h"
+#include "core/definitions.h"
 #include "core/thread_safety.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -29,10 +30,13 @@ public:
     void show_atom(uint32_t id, uint32_t frame, bool render)
     {
         ASSERT_CONTROL_THREAD();
+        // TODO: prepare_update locks m_atoms_mutex and get_locked_atom locks it again -> inefficient
         prepare_update<AtomType>(id, frame);
-        if(get_control_chain<AtomType>()[id].render != render) {
+        auto [lock, atom] = get_control_chain<AtomType>().get_locked_atom(id);
+        if(atom.render != render) {
+            // ownsership is taken over by AtomDiffFrame
             const auto diff = new ToggleRenderDiff<AtomType>(id);
-            finalize_update<AtomType>(id, frame, diff);
+            finalize_update<AtomType>(frame, atom, diff);
         }
     }
     template<typename AtomType>
@@ -40,22 +44,24 @@ public:
     {
         ASSERT_CONTROL_THREAD();
         prepare_update<AtomType>(id, frame);
-        auto diff = new TransformDiff<AtomType>(id, glm::translate(mat4 {1.0f}, delta));
-        finalize_update<AtomType>(id, frame, diff);
+        auto [lock, atom] = get_control_chain<AtomType>().get_locked_atom(id);
+        auto diff         = new TransformDiff<AtomType>(id, glm::translate(mat4 {1.0f}, delta));
+        finalize_update<AtomType>(frame, atom, diff);
     }
     template<typename AtomType>
     void color_atom(uint32_t id, uint32_t frame, vec4 col)
     {
         ASSERT_CONTROL_THREAD();
         prepare_update<AtomType>(id, frame);
+        auto [lock, atom] = get_control_chain<AtomType>().get_locked_atom(id);
         // calculate difference
         std::array<vec4, AtomType::vertex_count> delta_col;
         delta_col.fill(col);
         for(size_t i {0}; i != delta_col.size(); ++i) {
-            delta_col[i] -= get_control_chain<AtomType>()[id].ver_col[i];
+            delta_col[i] -= atom.ver_col[i];
         }
         auto diff = new ReColorDiff<AtomType>(id, delta_col);
-        finalize_update<AtomType>(id, frame, diff);
+        finalize_update<AtomType>(frame, atom, diff);
     }
 
     // to be run from render thread //
@@ -72,7 +78,7 @@ public:
     // update frame to target
     void set_render_frame(uint32_t frame);
     // update rendering thread atom chains if necessary
-    void chrono_sync();
+    void ensure_chrono_sync(bool force = false);
 
     // can ben run from both threads //
 
@@ -106,20 +112,20 @@ private:
     }
     // save new AtomDiff and apply it -> current AtomChain is correct
     template<typename AtomType>
-    void finalize_update(uint32_t id, uint32_t frame, const AtomDiff<AtomType>* diff)
+    void finalize_update(uint32_t frame, AtomType& atom, const AtomDiff<AtomType>* diff)
     {
         ASSERT_CONTROL_THREAD();
         get_diff_lifetime<AtomType>().add(frame, diff);
-        diff->apply(get_control_chain<AtomType>()[id]);
+        diff->apply(atom);
     }
 
     // to be run from render thread //
 
     template<typename AtomType>
-    void individual_chrono_sync()
+    void ensure_individual_chrono_sync(bool force)
     {
         ASSERT_RENDER_THREAD();
-        if(get_diff_lifetime<AtomType>().is_outdated(get_render_chain<AtomType>().get_frame())) {
+        if(force || get_diff_lifetime<AtomType>().is_outdated(get_render_chain<AtomType>().get_frame())) {
             get_render_chain<AtomType>().chrono_sync();
             get_diff_lifetime<AtomType>().update();
         }
@@ -129,11 +135,7 @@ private:
     void individual_render()
     {
         ASSERT_RENDER_THREAD();
-        get_renderer<AtomType>()->begin_scene();
-        for(size_t i {0}; i < get_render_chain<AtomType>().size(); ++i) {
-            get_renderer<AtomType>()->draw_atom(&get_render_chain<AtomType>()[i]);
-        }
-        get_renderer<AtomType>()->end_scene();
+        get_render_chain<AtomType>().render(get_renderer<AtomType>());
     }
 
 private:

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "atom/atom_diff_lifetime.h"
+#include "atom/atom_renderer.h"
 #include "core/definitions.h"
 
 namespace Maki {
@@ -10,15 +11,11 @@ namespace Maki {
 template<typename AtomType>
 class AtomChain {
 public:
-    AtomType& operator[](size_t idx)
+    // returned atom shan't be used after destruction of lock
+    std::pair<lock, AtomType&> get_locked_atom(size_t id)
     {
         lock lock {m_atoms_mutex};
-        return m_atoms[idx];
-    }
-    const AtomType& operator[](size_t idx) const
-    {
-        lock lock {m_atoms_mutex};
-        return m_atoms[idx];
+        return {std::move(lock), m_atoms[id]};
     }
 
     uint32_t get_frame() { return m_frame; }
@@ -46,7 +43,7 @@ public:
     void chrono_sync()
     {
         lock lock {m_atoms_mutex};
-        MAKI_LOG_EXTRA("Chrono Sync initiated.");
+        MAKI_LOG_EXTRA("{} Chrono Sync initiated.", AtomType::type_name);
         // safe current state
         size_t target_atom_count = m_atoms.size();
 
@@ -56,6 +53,17 @@ public:
 
         // sync
         m_atoms.resize(target_atom_count);
+    }
+    void render(typename AtomRendererRouter<AtomType>::type* renderer)
+    {
+        ASSERT_RENDER_THREAD();
+        lock lock {m_atoms_mutex};
+
+        renderer->begin_scene();
+        for(size_t i {0}; i < m_atoms.size(); ++i) {
+            renderer->draw_atom(m_atoms[i]);
+        }
+        renderer->end_scene();
     }
 
 private:

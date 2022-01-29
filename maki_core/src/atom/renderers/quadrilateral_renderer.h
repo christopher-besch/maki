@@ -12,7 +12,7 @@ public:
     QuadrilateralRenderer(Renderer* renderer);
     ~QuadrilateralRenderer();
 
-    void draw_atom(const QuadrilateralAtom* atom);
+    void draw_atom(const QuadrilateralAtom& atom);
 
 protected:
     virtual void        reset_vertex_buffer_ptr() override;
