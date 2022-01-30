@@ -6,7 +6,7 @@ namespace Maki {
 
 class OpenGLRenderer: public Renderer {
 public:
-    OpenGLRenderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler = EventHandler {});
+    OpenGLRenderer(const std::string& title, uint32_t width, uint32_t height, vec4 clear_col, EventHandler driver_event_handler = EventHandler {});
     ~OpenGLRenderer();
 
     virtual void set_clear_col(vec4 color) override;

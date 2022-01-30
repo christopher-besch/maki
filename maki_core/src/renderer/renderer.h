@@ -22,7 +22,7 @@ public:
 public:
     // create renderer with implementation specified in s_renderer_impl
     // every implementation-specific class uses this concept
-    static Renderer* create(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler = EventHandler {});
+    static Renderer* create(const std::string& title, uint32_t width, uint32_t height, vec4 clear_col, EventHandler driver_event_handler = EventHandler {});
 
     static Implementation get_renderer_impl() { return s_renderer_impl; }
     static void           set_renderer_impl(Implementation renderer_impl) { s_renderer_impl = renderer_impl; }

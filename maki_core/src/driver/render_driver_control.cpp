@@ -7,13 +7,13 @@ namespace Maki {
 // all functions to be run from control thread
 mutex RenderDriver::s_setup_mutex;
 
-RenderDriver::RenderDriver(const std::string& title, uint32_t width, uint32_t height)
+RenderDriver::RenderDriver(const std::string& title, uint32_t width, uint32_t height, vec4 clear_color)
 {
     MAKI_ASSERT_CTRL_THREAD();
-    m_render_thread = std::thread([this, title, width, height]() {
+    m_render_thread = std::thread([this, title, width, height, clear_color]() {
         SET_THREAD_TYPE_RENDER();
-        // only rendering thread code in this file
-        render_thread_func(title, width, height);
+        // only render thread code in this file
+        render_thread_func(title, width, height, clear_color);
     });
 }
 
@@ -25,6 +25,10 @@ RenderDriver::~RenderDriver()
         m_renderer->terminate();
         await_termination();
     }
+
+    // ensure cleanup has been called
+    MAKI_ASSERT_CRITICAL(!m_renderer, "Renderer hasn't been deleted yet.");
+    MAKI_ASSERT_CRITICAL(!m_camera_driver, "CameraDriver hasn't been deleted yet.");
 }
 
 void RenderDriver::await_termination()

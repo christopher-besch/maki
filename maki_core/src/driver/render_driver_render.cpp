@@ -5,22 +5,22 @@
 namespace Maki {
 
 // all functions to be run from rendering thread
-void RenderDriver::render_thread_func(const std::string& title, uint32_t width, uint32_t height)
+void RenderDriver::render_thread_func(const std::string& title, uint32_t width, uint32_t height, vec4 clear_col)
 {
     MAKI_ASSERT_RNDR_THREAD();
-    setup(title, width, height);
+    setup(title, width, height, clear_col);
     run();
     cleanup();
     m_terminated = true;
 }
 
-void RenderDriver::setup(const std::string& title, uint32_t width, uint32_t height)
+void RenderDriver::setup(const std::string& title, uint32_t width, uint32_t height, vec4 clear_col)
 {
     MAKI_ASSERT_RNDR_THREAD();
     // setup can't be performed twice at the same time
     lock lock {s_setup_mutex};
     MAKI_ASSERT_CRITICAL(!m_renderer, "Recreation of Renderer.");
-    m_renderer = Renderer::create(title, width, height);
+    m_renderer = Renderer::create(title, width, height, clear_col);
     MAKI_ASSERT_CRITICAL(!m_camera_driver, "Recreation of CameraDriver.");
     m_camera_driver = new CameraDriver(m_renderer);
 
@@ -35,7 +35,6 @@ void RenderDriver::cleanup()
     m_renderer = nullptr;
     MAKI_ASSERT_CRITICAL(m_camera_driver, "CameraDriver has already been deleted.");
     delete m_camera_driver;
-    m_renderer = nullptr;
     m_renderer = nullptr;
 
     m_atom_dispenser.delete_all_renderers();

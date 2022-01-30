@@ -28,7 +28,7 @@ void init_glm_types(py::module& m)
 py::class_<Maki::RenderDriver> init_render_driver(py::module& m)
 {
     return py::class_<Maki::RenderDriver>(m, "RenderDriver")
-        .def(py::init<const std::string&, uint32_t, uint32_t>())
+        .def(py::init<const std::string&, uint32_t, uint32_t, Maki::vec4>())
         .def("await_termination", &Maki::RenderDriver::await_termination)
         .def("is_terminated", &Maki::RenderDriver::is_terminated)
         .def("set_target_frame", &Maki::RenderDriver::set_target_frame);

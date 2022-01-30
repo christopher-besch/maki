@@ -13,7 +13,7 @@ namespace Maki {
 class RenderDriver {
 public:
     // to be run from control thread
-    RenderDriver(const std::string& title, uint32_t width, uint32_t height);
+    RenderDriver(const std::string& title, uint32_t width, uint32_t height, vec4 clear_color = {0.34f, 0.74f, 0.77f, 1.0f});
 
     ~RenderDriver();
 
@@ -51,8 +51,8 @@ public:
 
 private:
     // to be run from render thread
-    void render_thread_func(const std::string& title, uint32_t width, uint32_t height);
-    void setup(const std::string& title, uint32_t width, uint32_t height);
+    void render_thread_func(const std::string& title, uint32_t width, uint32_t height, vec4 clear_col);
+    void setup(const std::string& title, uint32_t width, uint32_t height, vec4 clear_col);
     void cleanup();
     void run();
     void render_frame();

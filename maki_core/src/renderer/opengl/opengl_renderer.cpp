@@ -22,7 +22,7 @@ inline void log_gl_error(const std::string& source, const std::string& type, GLu
                    source, type, id, severity, message);
 }
 
-OpenGLRenderer::OpenGLRenderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler)
+OpenGLRenderer::OpenGLRenderer(const std::string& title, uint32_t width, uint32_t height, vec4 clear_col, EventHandler driver_event_handler)
     : Renderer {title, width, height, driver_event_handler}
 {
     MAKI_LOG_EXTRA("Creating OpenGL Renderer.");
@@ -57,8 +57,7 @@ OpenGLRenderer::OpenGLRenderer(const std::string& title, uint32_t width, uint32_
     },
                            nullptr);
 #endif
-    // TODO: don't hardcode
-    set_clear_col({0.0f, 0.0f, 0.4f, 1.0f});
+    set_clear_col(clear_col);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_LESS);
