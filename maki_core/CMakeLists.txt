@@ -18,7 +18,7 @@ target_link_libraries(maki_core PUBLIC ${GLEW_LIBRARIES})
 
 target_link_libraries(maki_core PUBLIC stb)
 
-target_link_libraries(maki_core PUBLIC spdlog::spdlog)
+target_link_libraries(maki_core PUBLIC spdlog)
 
 target_link_libraries(maki_core PUBLIC imgui)
 

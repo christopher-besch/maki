@@ -14,9 +14,9 @@ int main()
 #if 1
     constexpr float space {4.0f};
     uint32_t        frame {1};
-    for(float x {0.0f}; x < 60.0f * space; x += space) {
-        for(float y {0.0f}; y < 60.0f * space; y += space) {
-            for(float z {0.0f}; z < 100.0f * space; z += space) {
+    for(float x {0.0f}; x < 50.0f * space; x += space) {
+        for(float y {0.0f}; y < 50.0f * space; y += space) {
+            for(float z {0.0f}; z < 50.0f * space; z += space) {
                 uint32_t cuboid = render_driver->add_atom<Maki::CuboidAtom>();
                 render_driver->show_atom<Maki::CuboidAtom>(cuboid, frame, true);
                 render_driver->translate_atom<Maki::CuboidAtom>(cuboid, frame, {x, y, z});
