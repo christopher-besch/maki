@@ -69,7 +69,7 @@ public:
     uint32_t get_last_frame();
 
     // can't be performed in constructor <- constructed with main thread, renderer using OpenGL calls -> need to be called from render thread
-    void create_all_renderers(Renderer* renderer);
+    void create_all_atom_renderers(Renderer* renderer);
     // same with destructor
     void delete_all_renderers();
 

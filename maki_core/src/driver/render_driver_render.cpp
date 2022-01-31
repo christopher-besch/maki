@@ -24,7 +24,7 @@ void RenderDriver::setup(const std::string& title, uint32_t width, uint32_t heig
     MAKI_ASSERT_CRITICAL(!m_camera_driver, "Recreation of CameraDriver.");
     m_camera_driver = new CameraDriver(m_renderer);
 
-    m_atom_dispenser.create_all_renderers(m_renderer);
+    m_atom_dispenser.create_all_atom_renderers(m_renderer);
 }
 
 void RenderDriver::cleanup()

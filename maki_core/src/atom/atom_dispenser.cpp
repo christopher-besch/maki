@@ -20,7 +20,7 @@ uint32_t AtomDispenser::get_last_frame()
            1;
 }
 
-void AtomDispenser::create_all_renderers(Renderer* renderer)
+void AtomDispenser::create_all_atom_renderers(Renderer* renderer)
 {
     MAKI_ASSERT_RNDR_THREAD();
     MAKI_ASSERT_CRITICAL(!m_cuboid_renderer, "Recreation of CuboidRenderer.");
