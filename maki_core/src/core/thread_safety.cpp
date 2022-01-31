@@ -5,7 +5,7 @@
 namespace Maki {
 
 #ifndef NDEBUG
-thread_local ThreadType g_thread_type {};
+thread_local ThreadType g_thread_type {ThreadType::undefined};
 #endif
 
 } // namespace Maki

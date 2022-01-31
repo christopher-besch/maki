@@ -35,7 +35,7 @@ void RenderDriver::cleanup()
     m_renderer = nullptr;
     MAKI_ASSERT_CRITICAL(m_camera_driver, "CameraDriver has already been deleted.");
     delete m_camera_driver;
-    m_renderer = nullptr;
+    m_camera_driver = nullptr;
 
     m_atom_dispenser.delete_all_renderers();
 }
