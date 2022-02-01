@@ -9,7 +9,7 @@ struct Atom {
     bool render {false};
 
     // to be defined by implementation:
-    // static constexpr const char* type_name {"AtomType"};
+    // static constexpr const char* type_name {"Atom"};
 };
 
 } // namespace Maki
