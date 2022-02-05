@@ -63,6 +63,8 @@ void RenderDriver::render_frame()
 void RenderDriver::render_imgui()
 {
     MAKI_ASSERT_RNDR_THREAD();
+    if(!m_renderer->imgui_supported())
+        return;
     // ImGui not thread-safe -> extra variables and locks required
     int   target_frame;
     float camera_speed {m_camera_driver->get_speed()};

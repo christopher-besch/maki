@@ -31,11 +31,10 @@ public:
     Renderer(const std::string& title, uint32_t width, uint32_t height, EventHandler driver_event_handler = EventHandler {});
     virtual ~Renderer();
 
+    void          set_cursor_type(CursorType type) { m_window->set_cursor_type(type); }
     EventHandler& get_driver_event_handler() { return m_window->get_driver_event_handler(); }
-
-    void set_cursor_type(CursorType type) { m_window->set_cursor_type(type); }
-
-    Camera* get_camera() { return m_camera; }
+    Camera*       get_camera() { return m_camera; }
+    bool          imgui_supported() { return m_window->imgui_supported(); }
 
     // in milliseconds
     long get_last_frame_time() { return get_mills(m_last_frame_time); }
