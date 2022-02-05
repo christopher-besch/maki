@@ -1,7 +1,7 @@
 # Maki
 
-**M**athematical **A**nimation and **K**nickknack **I**nscriber (Maki), an experimental rendering backend for [Manim](https://github.com/ManimCommunity/manim).
-Or: **How to Teach Manim Time Travel.**
+**M**athematical **A**nimation and **K**nickknack **I**nscriber (Maki), a program for interactive and programmatic animation development.
+Or: **How to Time Travel.**
 
 ![image](https://user-images.githubusercontent.com/57909184/148649899-0a890deb-c435-493e-8a89-419e895296dd.png)
 
