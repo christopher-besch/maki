@@ -19,6 +19,12 @@ At the moment this project is under development, thus the documentation and volu
 sudo apt install build-essential cmake libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libglew-dev
 ```
 
+### Gentoo
+
+```
+sudo emerge --ask media-libs/glew
+```
+
 ## Compilation
 
 ```
