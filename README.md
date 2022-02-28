@@ -11,6 +11,8 @@ Though if you know what you're doing, this will compile and run everywhere.
 
 At the moment this project is under development, thus the documentation and volume of comments is left to be desired.
 
+Learn more in this article: [Maki, Atoms and Time Travel](https://chris-besch.com/articles/maki_atoms_and_time_travel)
+
 ## Requirements
 
 ### Debian/Ubuntu
